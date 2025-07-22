@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Edmilson Mula</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+
+        :root {
+            --cor-fundo: #FFFFFF;
+            --cor-lateral: #F0F0F0;
+            --cor-texto-principal: #333333;
+            --cor-texto-secundario: #555555;
+            --cor-barra: #333333;
+            --cor-cinza-claro: #D9D9D9;
+            --cor-link: #047FA5;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--cor-cinza-claro);
+        }
+
+        /* ---------- MENU ---------- */
+        .menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--cor-fundo);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1000;
+            box-sizing: border-box; /* Adicionado para incluir padding na largura total */
+        }
+
+        .logo-menu {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--cor-texto-principal);
+        }
+
+        .links-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .links-menu a {
+            text-decoration: none;
+            color: var(--cor-link);
+            font-weight: bold;
+        }
+
+        .hamburguer {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburguer span {
+            width: 25px;
+            height: 3px;
+            background: var(--cor-texto-principal);
+        }
+
+        @media (max-width: 768px) {
+            .links-menu {
+                display: none;
+                flex-direction: column;
+                background: var(--cor-fundo);
+                position: absolute;
+                top: 50px; /* Ajuste para ficar abaixo do menu */
+                right: 20px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                padding: 10px;
+                border-radius: 5px;
+            }
+            .links-menu.ativo {
+                display: flex;
+            }
+            .hamburguer {
+                display: flex;
+            }
+        }
+
+        /* ---------- CONTAINER CV ---------- */
+        .container-cv {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--cor-fundo);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: 80px auto 40px auto; /* Ajuste para compensar o menu fixo */
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* --- Coluna da Esquerda --- */
+        .coluna-esquerda {
+            background-color: var(--cor-lateral);
+            padding: 30px 20px;
+            color: var(--cor-texto-secundario);
+            text-align: center;
+        }
+
+        .foto-perfil {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid var(--cor-fundo);
+            margin: 0 auto 20px auto;
+            background-image: url('https://static.wixstatic.com/media/819ea0_e84a2f4f37e2457d96742cffe7b7dc2d~mv2.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .secao {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .titulo-secao {
+            font-weight: 900;
+            font-size: 16px;
+            color: var(--cor-texto-principal);
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--cor-texto-principal);
+            text-transform: uppercase;
+        }
+
+        .lista-contato p, .lista-pessoal p, .lista-interesses li, .lista-conectividade a {
+            font-size: 14px;
+            margin: 5px 0;
+            word-break: break-word;
+        }
+
+        .lista-contato a {
+            text-decoration: none;
+            color: var(--cor-link);
+            font-weight: bold;
+        }
+
+        .lista-contato a:hover {
+            text-decoration: underline;
+        }
+
+        .lista-pessoal span {
+            font-weight: bold;
+        }
+
+        .lista-interesses {
+            list-style: none;
+            padding: 0;
+        }
+
+        .lista-interesses li::before {
+            content: '▸';
+            color: var(--cor-texto-principal);
+            margin-right: 6px;
+        }
+
+        .lista-conectividade a {
+            display: block;
+            text-decoration: none;
+            color: var(--cor-link);
+        }
+
+        .lista-conectividade a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Coluna da Direita --- */
+        .coluna-direita {
+            padding: 40px;
+        }
+
+        .header-direita {
+            margin-bottom: 40px;
+        }
+
+        .nome {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--cor-texto-principal);
+            margin: 0;
+        }
+
+        .titulo-profissional {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--cor-texto-secundario);
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .perfil-texto {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .habilidade {
+            margin-bottom: 15px;
+        }
+
+        .habilidade-nome {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .barra-skill {
+            width: 100%;
+            height: 12px;
+            background-color: var(--cor-lateral);
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progresso-skill {
+            height: 100%;
+            background-color: var(--cor-barra);
+            position: absolute;
+            /* Adicione uma transição para um efeito suave */
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Classes de largura para as barras de progresso */
+        .comunicacao { width: 95%; }
+        .criatividade { width: 98%; }
+        .trabalho-equipe { width: 75%; }
+        .organizacao { width: 85%; }
+        .lideranca { width: 80%; }
+        .photoshop { width: 90%; }
+        .illustrator { width: 85%; }
+        .ms-office { width: 70%; }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: flex-start; /* Alinha o conteúdo ao topo */
+        }
+
+        .timeline-ano {
+            background-color: var(--cor-barra);
+            color: var(--cor-fundo);
+            padding: 4px 12px;
+            font-weight: bold;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-right: 25px;
+            min-width: 50px;
+            text-align: center;
+            flex-shrink: 0; /* Impede que o ano encolha */
+        }
+
+        .timeline-conteudo h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: var(--cor-texto-principal);
+        }
+
+        .timeline-conteudo .subtitulo { /* Adicionado classe para o subtítulo */
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: var(--cor-texto-principal);
+            font-weight: bold;
+        }
+
+        .timeline-conteudo p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--cor-texto-secundario);
+        }
+
+        .grid-educacao {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .item-educacao h4 {
+            margin: 0 0 5px 0;
+            font-size: 15px;
+            color: var(--cor-texto-principal);
+        }
+
+        .item-educacao p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--cor-texto-secundario);
+        }
+
+        /* ---------- PORTFÓLIO ---------- */
+        .secao-portfolio {
+            max-width: 900px;
+            margin: 0 auto 50px auto;
+            background: var(--cor-fundo);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .categorias {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            justify-content: center; /* Centraliza os botões */
+        }
+
+        .categorias button {
+            background: var(--cor-lateral);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--cor-texto-principal);
+            transition: background 0.3s ease, color 0.3s ease; /* Transição para o hover e active */
+        }
+
+        .categorias button:hover {
+            background: var(--cor-cinza-claro);
+        }
+
+        .categorias button.active {
+            background: var(--cor-link);
+            color: var(--cor-fundo);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .portfolio-item {
+            background: var(--cor-lateral);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sutil sombra para os itens */
+            transition: transform 0.3s ease; /* Transição para o hover */
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px); /* Efeito de elevação ao passar o mouse */
+        }
+
+        .portfolio-item img {
+            max-width: 100%;
+            height: auto; /* Garante que a imagem se ajuste proporcionalmente */
+            border-radius: 5px;
+            margin-bottom: 5px;
+            display: block; /* Remove espaço extra abaixo da imagem */
+        }
+
+        .portfolio-item p {
+            font-size: 14px;
+            color: var(--cor-texto-principal);
+            font-weight: bold;
+            margin: 0; /* Remove margens padrão do parágrafo */
+        }
+
+        /* ---------- MOBILE ---------- */
+        @media (max-width: 768px) {
+            .container-cv {
+                grid-template-columns: 1fr;
+                max-width: 95%;
+                margin-top: 70px; /* Ajuste para espaçamento em mobile */
+            }
+            .coluna-esquerda {
+                text-align: center;
+                padding: 20px 15px;
+            }
+            .coluna-direita {
+                padding: 20px 15px;
+            }
+            .nome {
+                font-size: 32px;
+                text-align: center;
+            }
+            .titulo-profissional {
+                font-size: 14px;
+                text-align: center;
+            }
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .timeline-ano {
+                margin-bottom: 5px;
+                margin-right: 0; /* Remove margem direita em mobile */
+            }
+            .secao-portfolio {
+                padding: 20px;
+                margin: 20px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="menu">
+        <div class="logo-menu">EDMILSON MULA</div>
+        <div class="hamburguer" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="links-menu" id="menu-links">
+            <a href="#cv">Currículo</a>
+            <a href="#portfolio">Portfólio</a>
+        </div>
+    </nav>
+
+    <div class="container-cv" id="cv">
+        <aside class="coluna-esquerda">
+            <div class="foto-perfil" role="img" aria-label="Foto de perfil de Edmilson Mula"></div>
+            <section class="secao">
+                <h2 class="titulo-secao">CONTACTO</h2>
+                <div class="lista-contato">
+                    <p><a href="tel:+258846342251">+258 84 634 2251</a></p>
+                    <p><a href="tel:+258878061697">+258 87 806 1697</a></p>
+                    <p><a href="mailto:mula.edmilson0@gmail.com">mula.edmilson0@gmail.com</a></p>
+                    <p>São Dâmaso, casa n° 222, Q93 Matola</p>
+                </div>
+            </section>
+            <section class="secao">
+                <h2 class="titulo-secao">PESSOAL</h2>
+                <div class="lista-pessoal">
+                    <p><span>Aniversário:</span> Julho, 26 1997</p>
+                    <p><span>Estado civil:</span> Solteiro</p>
+                    <p><span>Nacionalidade:</span> Moçambicano</p>
+                    <p><span>Línguas:</span> Português, Inglês</p>
+                </div>
+            </section>
+            <section class="secao">
+                <h2 class="titulo-secao">INTERESSES</h2>
+                <ul class="lista-interesses">
+                    <li>Design Gráfico</li>
+                    <li>Comunicação visual</li>
+                    <li>Marketing</li>
+                </ul>
+            </section>
+            <section class="secao">
+                <h2 class="titulo-secao">CONECTIVIDADE</h2>
+                <div class="lista-conectividade">
+                    <a href="https://twitter.com/@ed_mula7" target="_blank" rel="noopener noreferrer">Twitter</a>
+                    <a href="https://facebook.com/edmilson.mula.1" target="_blank" rel="noopener noreferrer">Facebook</a>
+                    <a href="https://linkedin.com/in/edmilsonmula" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </div>
+            </section>
+        </aside>
+
+        <main class="coluna-direita">
+            <header class="header-direita">
+                <h1 class="nome">EDMILSON MULA</h1>
+                <h3 class="titulo-profissional">DESIGNER GRÁFICO, WEB-DESIGNER, MARKETING, REDES SOCIAIS</h3>
+            </header>
+
+            <section class="secao">
+                <h2 class="titulo-secao">PERFIL</h2>
+                <p class="perfil-texto">
+                    CEO da Micarte design e estudante de Marketing. Conta com experiência de 3 anos na área de designer gráfico e gestão de redes sociais, com ampla criatividade na criação de conteúdos digitais e identidade visual.
+                </p>
+                <div class="habilidade">
+                    <p class="habilidade-nome">COMUNICAÇÃO</p>
+                    <div class="barra-skill"><div class="progresso-skill comunicacao"></div></div>
+                </div>
+                <div class="habilidade">
+                    <p class="habilidade-nome">CRIATIVIDADE</p>
+                    <div class="barra-skill"><div class="progresso-skill criatividade"></div></div>
+                </div>
+                <div class="habilidade">
+                    <p class="habilidade-nome">TRABALHO EM EQUIPE</p>
+                    <div class="barra-skill"><div class="progresso-skill trabalho-equipe"></div></div>
+                </div>
+                <div class="habilidade">
+                    <p class="habilidade-nome">ORGANIZAÇÃO</p>
+                    <div class="barra-skill"><div class="progresso-skill organizacao"></div></div>
+                </div>
+                <div class="habilidade">
+                    <p class="habilidade-nome">LIDERANÇA</p>
+                    <div class="barra-skill"><div class="progresso-skill lideranca"></div></div>
+                </div>
+            </section>
+
+            <section class="secao">
+                <h2 class="titulo-secao">EXPERIÊNCIA LABORAL</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-ano">2022-</div>
+                        <div class="timeline-conteudo">
+                            <h4>DESIGNER GRÁFICO</h4>
+                            <p class="subtitulo">DIGITAL REACH OUT (DRO)</p>
+                            <p>Início 2022 - Presente</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-ano">2021</div>
+                        <div class="timeline-conteudo">
+                            <h4>FORMADOR DE LÍNGUA INGLESA</h4>
+                            <p class="subtitulo">APTAC</p>
+                            <p>Trabalho realizado em 4 edições (7 meses)</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-ano">2020</div>
+                        <div class="timeline-conteudo">
+                            <h4>CRIADOR DE CONTEÚDOS E GESTOR DE PÁGINAS</h4>
+                            <p class="subtitulo">GESTECH, WACHENE SOLUTIONS, MICARTE DESIGN</p>
+                            <p>Criador e gestor das páginas acima mencionadas</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-ano">2018</div>
+                        <div class="timeline-conteudo">
+                            <h4>PROMOTOR DE VENDAS CORPORATIVAS</h4>
+                            <p class="subtitulo">MULTICHOICE MOÇAMBIQUE</p>
+                            <p>Experiência que durou 2 anos</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="secao">
+                <h2 class="titulo-secao">EDUCAÇÃO</h2>
+                <div class="grid-educacao">
+                    <div class="item-educacao">
+                        <h4>ENSINO SUPERIOR EM MARKETING</h4>
+                        <p>ISCIM</p>
+                        <p>Atualmente cursando.</p>
+                    </div>
+                    <div class="item-educacao">
+                        <h4>SESAL</h4>
+                        <p>CARTOGRAFIA</p>
+                        <p>Feito em 2019</p>
+                    </div>
+                    <div class="item-educacao">
+                        <h4>INSTITUTO DE LÍNGUAS</h4>
+                        <p>4° NÍVEL DE INGLÊS</p>
+                        <p>Feito em 2018</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="secao">
+                <h2 class="titulo-secao">HABILIDADES PROFISSIONAIS</h2>
+                <div class="habilidade">
+                    <p class="habilidade-nome">PHOTOSHOP</p>
+                    <div class="barra-skill"><div class="progresso-skill photoshop"></div></div>
+                </div>
+                <div class="habilidade">
+                    <p class="habilidade-nome">ILLUSTRATOR</p>
+                    <div class="barra-skill"><div class="progresso-skill illustrator"></div></div>
+                </div>
+                <div class="habilidade">
+                    <p class="habilidade-nome">MS OFFICE</p>
+                    <div class="barra-skill"><div class="progresso-skill ms-office"></div></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <section class="secao-portfolio" id="portfolio">
+        <h2 class="titulo-secao" style="text-align:center;">PORTFÓLIO</h2>
+        <div class="categorias">
+            <button class="active" onclick="filtrarPortfolio('todos', event)">Todos</button>
+            <button onclick="filtrarPortfolio('design', event)">Design</button>
+            <button onclick="filtrarPortfolio('web', event)">Web Design</button>
+            <button onclick="filtrarPortfolio('marketing', event)">Marketing</button>
+        </div>
+        <div class="portfolio-grid" id="portfolio-grid">
+            <div class="portfolio-item" data-categoria="design">
+                <img src="https://static.wixstatic.com/media/819ea0_50ef19fd260141089ae14c00a72fb968~mv2.jpg" alt="Imagem de projeto de Identidade Visual">
+              <img src="https://static.wixstatic.com/media/819ea0_93dd5e3076444243a315723bfa8191e8~mv2.jpg" alt="Imagem de projeto de Identidade Visual">
+              <img src="https://static.wixstatic.com/media/819ea0_97e7e2057b7c460fa876741065792354~mv2.jpg" alt="Imagem de projeto de Identidade Visual">
+              <img src="https://static.wixstatic.com/media/819ea0_ccaa0be2ab6440f0880d3b6d65b4ca98~mv2.png" alt="Imagem de projeto de Identidade Visual">
+                <p>Identidade Visual</p>
+            </div>
+            <div class="portfolio-item" data-categoria="web">
+                <img src="https://via.placeholder.com/300x200?text=Web+Design+1" alt="Imagem de projeto de Website Corporativo">
+                <p>Website Corporativo</p>
+            </div>
+            <div class="portfolio-item" data-categoria="marketing">
+                <img src="https://static.wixstatic.com/media/819ea0_106654cada7c451088d85ce0fc1cd745~mv2.jpg" alt="Imagem de projeto de Campanha Digital">
+              <img src="https://static.wixstatic.com/media/819ea0_96de6b3aa5a941b191346eab4554441a~mv2.png" alt="Imagem de projeto de Campanha Digital">
+               <img src="https://static.wixstatic.com/media/819ea0_f3cb411f9bb84940b853d66a5810fecd~mv2.jpg" alt="Imagem de projeto de Campanha Digital">
+              <img src="https://static.wixstatic.com/media/819ea0_9b89e2b2dd80414082dbc4b4b4966559~mv2.png" alt="Imagem de projeto de Campanha Digital">
+                <p>Campanha Digital</p>
+            </div>
+            <div class="portfolio-item" data-categoria="design">
+                <img src="https://static.wixstatic.com/media/819ea0_7a9053ff8d1444df93f1e97f793e4305~mv2.png" alt="Imagem de projeto de Cartaz Promocional">
+              <img src="https://static.wixstatic.com/media/819ea0_103c3a4327f84df0a42ee0b9ac624c93~mv2.png" alt="Imagem de projeto de Cartaz Promocional">
+              <img src="https://static.wixstatic.com/media/819ea0_338cabdfb04f45e486ddb630090b957f~mv2.png" alt="Imagem de projeto de Cartaz Promocional">
+              <img src="https://static.wixstatic.com/media/819ea0_28dd6d29b69b4fe4aea1eac1f5d46b8d~mv2.png" alt="Imagem de projeto de Cartaz Promocional">
+              <img src="https://static.wixstatic.com/media/819ea0_e2eb033fb962439f8775864f9215bbcd~mv2.png" alt="Imagem de projeto de Cartaz Promocional">
+              
+                <p>Cartaz Promocional</p>
+            </div>
+            <div class="portfolio-item" data-categoria="web">
+                <img src="https://static.wixstatic.com/media/819ea0_c6306004368749d6ad8b80499ce08042~mv2.png" alt="Imagem de outro projeto de Web Design">
+                <p>Landing Page de Produto</p>
+            </div>
+            <div class="portfolio-item" data-categoria="marketing">
+                <img src="https://via.placeholder.com/300x200?text=Marketing+2" alt="Imagem de outro projeto de Marketing">
+                <p>Gestão de Redes Sociais</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Função para alternar o menu em dispositivos móveis
+        function toggleMenu() {
+            document.getElementById('menu-links').classList.toggle('ativo');
+        }
+
+        // Função para filtrar os itens do portfólio
+        function filtrarPortfolio(categoria, event) {
+            // Remove a classe 'active' de todos os botões
+            const botoes = document.querySelectorAll('.categorias button');
+            botoes.forEach(btn => btn.classList.remove('active'));
+
+            // Adiciona a classe 'active' ao botão clicado
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+
+            // Exibe ou oculta os itens do portfólio com base na categoria
+            const items = document.querySelectorAll('.portfolio-item');
+            items.forEach(item => {
+                if (categoria === 'todos' || item.dataset.categoria === categoria) {
+                    item.style.display = 'block'; // Ou 'grid', dependendo do layout original se for um grid filho
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Garantir que a função filtrarPortfolio seja chamada ao carregar a página
+        // para exibir todos os itens por padrão, e ativar o botão "Todos"
+        document.addEventListener('DOMContentLoaded', () => {
+            filtrarPortfolio('todos', { target: document.querySelector('.categorias button.active') });
+        });
+    </script>
+
+</body>
+</html>
