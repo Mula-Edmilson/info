@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hamburguer) {
         hamburguer.addEventListener('click', () => {
-            menuLinks.classList.toggle('ativo');
+            menuLinks.classList.toggle('ativo'); // Ativa/desativa o menu
+            hamburguer.classList.toggle('ativo'); // Ativa/desativa a animação do hambúrguer
         });
     }
 

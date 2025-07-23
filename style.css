@@ -72,6 +72,10 @@ body {
     letter-spacing: 1px;
 }
 
+.links-menu {
+    display: flex; /* Garante que os links fiquem em linha por padrão em telas maiores */
+}
+
 .links-menu a {
     position: relative;
     text-decoration: none;
@@ -256,10 +260,11 @@ body {
     font-weight: 700;
 }
 
-/* Grid do Portfólio Refinado */
+/* Grid do Portfólio Refinado (Ajuste inteligente) */
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    /* Alterado para permitir um mínimo de 280px e ajustar-se automaticamente */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* */
     gap: 30px;
 }
 
@@ -307,7 +312,40 @@ body {
 .item-educacao p { font-size: 14px; color: var(--cor-texto-secundario); }
 
 /* --- HAMBURGUER E MOBILE --- */
-.hamburguer { display: none; }
+/* Estilo do ícone do hambúrguer */
+.hamburguer {
+    display: none; /* Esconde por padrão em telas maiores */
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    position: relative;
+    z-index: 1001; /* Garante que fique acima do menu */
+}
+
+.hamburguer span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--cor-texto-primario);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efeito de rotação e fechar ao ativar */
+.hamburguer.ativo span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburguer.ativo span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburguer.ativo span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+
 @media (max-width: 992px) {
     .container-cv { grid-template-columns: 1fr; }
     .coluna-esquerda { border-right: none; border-bottom: 1px solid var(--cor-borda); }
@@ -318,20 +356,32 @@ body {
 @media (max-width: 768px) {
     body { padding-top: 70px; }
     .menu { padding: 15px; }
-    .hamburguer { display: flex; }
+    
+    /* Mostrar o ícone do hambúrguer */
+    .hamburguer {
+        display: flex; /* Mostra o hambúrguer em telas pequenas */
+    }
+
     .links-menu {
-        display: none;
+        display: none; /* Esconde os links por padrão */
         flex-direction: column;
         align-items: center;
         gap: 20px;
         position: absolute;
-        top: 70px;
+        top: 70px; /* Alinha abaixo do header */
         left: 0;
         width: 100%;
         padding: 40px 0;
         background: var(--cor-fundo-primario);
+        border-bottom: 1px solid var(--cor-borda);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
-    .links-menu.ativo { display: flex; }
+    
+    /* Quando a classe 'ativo' for adicionada via JS, mostra o menu */
+    .links-menu.ativo { 
+        display: flex; 
+    }
+    
     .links-menu a { margin-left: 0; }
     .container-cv, .secao-portfolio { width: 95%; margin: 30px auto; }
     .coluna-direita { padding: 30px 25px; }
