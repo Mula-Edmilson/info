@@ -1,0 +1,339 @@
+/* =================================================================== */
+/* DESIGN SYSTEM V2: MINIMALISTA & PROFISSIONAL (POR GEMINI)     */
+/* =================================================================== */
+
+/* --- FONTES E VARIÁVEIS DE DESIGN --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
+
+:root {
+    /* Tipografia Profissional */
+    --font-principal: 'Inter', sans-serif;
+
+    /* Paleta de Cores Sóbria e Elegante */
+    --cor-fundo-primario: #111111;
+    --cor-fundo-secundario: #1A1A1A;
+    --cor-glass-bg: rgba(26, 26, 26, 0.5); /* Fundo do Glassmorphism */
+    --cor-borda: rgba(255, 255, 255, 0.08); /* Bordas muito subtis */
+    
+    --cor-texto-primario: #F0F0F0;
+    --cor-texto-secundario: #A0A0A0;
+    --cor-texto-desativado: #666666;
+
+    --cor-accento: #C9A444; /* Dourado/Gold mais refinado */
+    --cor-accento-hover: #E0B84F;
+
+    /* Métricas de Espaçamento e Bordas */
+    --border-radius-suave: 12px;
+    --border-radius-completo: 100px;
+    --transicao-rapida: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* --- ESTILOS GLOBAIS E RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-principal);
+    background-color: var(--cor-fundo-primario);
+    color: var(--cor-texto-primario);
+    padding-top: 80px; /* Espaço para o menu fixo */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- NAVEGAÇÃO SUPERIOR (HEADER) --- */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 6%;
+    background: rgba(17, 17, 17, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--cor-borda);
+    z-index: 1000;
+    transition: var(--transicao-rapida);
+}
+
+.logo-menu {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.links-menu a {
+    position: relative;
+    text-decoration: none;
+    color: var(--cor-texto-secundario);
+    font-weight: 500;
+    font-size: 15px;
+    margin-left: 32px;
+    transition: color var(--transicao-rapida);
+}
+
+.links-menu a:hover {
+    color: var(--cor-texto-primario);
+}
+
+.links-menu a.active-link {
+    color: var(--cor-accento);
+    font-weight: 700;
+}
+
+/* --- LAYOUT PRINCIPAL E CONTAINERS --- */
+.container-cv, .secao-portfolio {
+    width: 90%;
+    max-width: 1200px; /* Layout mais largo */
+    margin: 60px auto;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--border-radius-suave);
+    overflow: hidden;
+    background: var(--cor-fundo-secundario);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* --- CURRÍCULO (index.html) --- */
+.container-cv {
+    display: grid;
+    grid-template-columns: 320px 1fr; /* Coluna esquerda com largura fixa */
+}
+
+.coluna-esquerda {
+    background: var(--cor-fundo-primario);
+    padding: 40px 30px;
+    border-right: 1px solid var(--cor-borda);
+}
+
+.coluna-direita {
+    padding: 60px 50px; /* Mais espaçamento interno */
+}
+
+.foto-perfil {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 3px solid var(--cor-accento);
+    margin: 0 auto 30px auto;
+    background-image: url('https://static.wixstatic.com/media/819ea0_e84a2f4f37e2457d96742cffe7b7dc2d~mv2.jpg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 25px rgba(201, 164, 68, 0.2);
+}
+
+.secao {
+    margin-bottom: 45px;
+}
+
+.titulo-secao {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.nome {
+    font-size: 52px;
+    font-weight: 900;
+    margin-bottom: 5px;
+    background: linear-gradient(90deg, var(--cor-texto-primario) 70%, var(--cor-accento));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.titulo-profissional {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 30px;
+}
+
+.perfil-texto, .lista-pessoal p, .lista-interesses li, .timeline-conteudo p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--cor-texto-secundario);
+}
+.lista-contato a, .lista-conectividade a {
+    text-decoration: none;
+    color: var(--cor-texto-secundario);
+    transition: color var(--transicao-rapida);
+}
+.lista-contato a:hover, .lista-conectividade a:hover {
+    color: var(--cor-accento);
+}
+
+/* Melhoria na Timeline */
+.timeline {
+    position: relative;
+    padding-left: 30px;
+    border-left: 2px solid var(--cor-borda);
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -38px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--cor-fundo-secundario);
+    border: 2px solid var(--cor-accento);
+}
+.timeline-ano {
+    font-size: 13px;
+    color: var(--cor-texto-desativado);
+    margin-bottom: 5px;
+}
+.timeline-conteudo h4 {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--cor-texto-primario);
+    margin-bottom: 5px;
+}
+.timeline-conteudo .subtitulo {
+    font-size: 15px;
+    color: var(--cor-texto-secundario);
+}
+
+/* --- PORTFÓLIO (portfolio.html) --- */
+.secao-portfolio {
+    padding: 60px 50px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.titulo-secao-main {
+    font-size: 42px;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Botões de Filtro Redesenhados */
+.categorias {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 20px 0 50px 0;
+}
+.categorias button {
+    background-color: var(--cor-fundo-secundario);
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-texto-secundario);
+    padding: 10px 24px;
+    border-radius: var(--border-radius-completo);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 15px;
+    transition: var(--transicao-rapida);
+}
+.categorias button:hover {
+    color: var(--cor-texto-primario);
+    border-color: var(--cor-texto-desativado);
+}
+.categorias button.active {
+    background: var(--cor-accento);
+    color: #000;
+    border-color: var(--cor-accento);
+    font-weight: 700;
+}
+
+/* Grid do Portfólio Refinado */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.portfolio-item {
+    background: var(--cor-fundo-secundario);
+    border-radius: var(--border-radius-suave);
+    border: 1px solid var(--cor-borda);
+    overflow: hidden;
+    transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida);
+}
+.portfolio-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+.media-container img, .media-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.portfolio-item p {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 20px;
+}
+
+/* --- RODAPÉ E RESPONSIVIDADE --- */
+.rodape {
+    text-align: center;
+    padding: 30px;
+    margin-top: 60px;
+    color: var(--cor-texto-desativado);
+    font-size: 14px;
+}
+
+/* ... Outros estilos como Habilidades, Listas, etc. ... */
+.lista-pessoal span { font-weight: 700; }
+.lista-interesses { list-style: none; padding: 0; }
+.lista-interesses li { margin-bottom: 8px; }
+.habilidade-nome { font-size: 15px; font-weight: 500; margin-bottom: 10px; }
+.barra-skill { width: 100%; height: 6px; background-color: var(--cor-borda); border-radius: 3px; }
+.progresso-skill { height: 100%; background-color: var(--cor-accento); border-radius: 3px; }
+.grid-educacao { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.item-educacao h4 { font-size: 16px; margin-bottom: 5px; }
+.item-educacao p { font-size: 14px; color: var(--cor-texto-secundario); }
+
+/* --- HAMBURGUER E MOBILE --- */
+.hamburguer { display: none; }
+@media (max-width: 992px) {
+    .container-cv { grid-template-columns: 1fr; }
+    .coluna-esquerda { border-right: none; border-bottom: 1px solid var(--cor-borda); }
+    .coluna-direita { padding: 40px; }
+    .nome { font-size: 42px; }
+}
+
+@media (max-width: 768px) {
+    body { padding-top: 70px; }
+    .menu { padding: 15px; }
+    .hamburguer { display: flex; }
+    .links-menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 40px 0;
+        background: var(--cor-fundo-primario);
+    }
+    .links-menu.ativo { display: flex; }
+    .links-menu a { margin-left: 0; }
+    .container-cv, .secao-portfolio { width: 95%; margin: 30px auto; }
+    .coluna-direita { padding: 30px 25px; }
+    .secao-portfolio { padding: 40px 25px; }
+}
