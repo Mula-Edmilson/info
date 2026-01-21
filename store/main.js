@@ -211,7 +211,7 @@ filterSlides("");
 	// ==========================
 	// ✅ Botão Comprar / WhatsApp (NOVO)
 	// ==========================
-	const whatsappNumber = "258840000000"; // <- troca para o teu número (sem +)
+	const whatsappNumber = "258846342251"; // <- troca para o teu número (sem +)
 
 	document.querySelectorAll(".buy-whatsapp").forEach((btn) => {
 		btn.addEventListener("click", (e) => {
@@ -228,3 +228,4 @@ filterSlides("");
 		});
 	});
 });
+
