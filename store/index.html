@@ -1,257 +1,457 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script defer src="main.js"></script>
-    <title>Document</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+	<title>Mula Store — Premium Streetwear</title>
+	<link rel="stylesheet" href="style.css" />
+	<script defer src="main.js"></script>
+  <!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  
+  fbq('init', 'SEU_PIXEL_ID_AQUI');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+       src="https://www.facebook.com/tr?id=SEU_PIXEL_ID_AQUI&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+
 </head>
+
 <body>
-    <div class="slider-container">
-	<div class="now-showing">Mula Store</div>
+	<div class="ambient-bg" aria-hidden="true"></div>
 
-	<!-- ✅ Pesquisa rápida (NOVO + Melhorada) -->
-	<div class="top-search">
-		<div class="search-wrap">
-			<input id="searchInput" type="text" placeholder="Pesquisar (nome/colecção/cor/tamanho)..." autocomplete="off">
-			<button id="clearSearch" class="search-clear" type="button" aria-label="Limpar pesquisa">×</button>
-		</div>
-		<div class="search-empty" id="searchEmptyMsg">Nenhum resultado encontrado.</div>
-	</div>
+	<header class="header">
+		<div class="container header-inner">
+			<a class="brand" href="#">
+				<span class="brand-dot"></span>
+				<span class="brand-name">Mula Store</span>
+				<span class="brand-tag">Premium Streetwear</span>
+			</a>
 
-	<!-- ✅ Indicador de Slide Activo -->
-	<div class="slide-indicator" id="slideIndicator">01/04</div>
+			<nav class="nav">
+				<a href="#coleccao" class="nav-link">Colecção</a>
+				<a href="#beneficios" class="nav-link">Benefícios</a>
+				<a href="#faq" class="nav-link">FAQ</a>
+				<a href="#contacto" class="nav-link">Contacto</a>
+			</nav>
 
-	<div class="accordion-slider">
-		<div class="slide" 
-			data-brand="MODER-FIT" 
-			data-name="MODER-FIT Summer edition"
-			data-color="Castanho, Branco"
-			data-size="M, L, XL"
-			style="background-image: url('https://i.postimg.cc/j25PfnGS/T-SHIRT.jpg')">
-			<div class="slide-content">
-				<div class="slide-number">01</div>
-				<div class="car-brand">MODER-FIT</div>
-				<div class="car-name">MODER-FIT Summer edition</div>
-				<div class="car-subtitle">Ideal para ocasiões mais descontraidos</div>
-				<div class="car-specs">
-					<div class="spec-row">
-						<span class="spec-label">Qualidade:</span>
-						<span class="spec-value">Tecido 100% algodão</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Cor:</span>
-						<span class="spec-value">Castanho, Branco</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Tamanho:</span>
-						<span class="spec-value">M, L, XL</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Tipo de gola:</span>
-						<span class="spec-value">careca</span>
-					</div>
-				</div>
-				<div class="performance-badges">
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>QNT: Limitada</span>
-					</div>
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>Entrega: 48H</span>
-					</div>
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>Preço: 1250,00 MT</span>
-					</div>
-				</div>
-
-				<button class="buy-whatsapp"
-					data-title="MODER-FIT Summer edition"
-					data-price="1250,00 MT"
-					data-code="01">Pedir no WhatsApp
-				</button>
+			<div class="header-actions">
+				<button class="header-btn ghost" id="openInfoTop">Info</button>
+				<button class="header-btn ghost" id="openCartTop">Carrinho <span class="cart-pill" id="cartCountTop">0</span></button>
+				<button class="header-btn primary" id="scrollToCollection">Ver Colecção</button>
 			</div>
-			<div class="add-button"></div>
 		</div>
+	</header>
 
-		<div class="slide" 
-			data-brand="HOLY SPIRITS" 
-			data-name="Holy Spirits edition"
-			data-color="Verde"
-			data-size="M, L, XL"
-			style="background-image: url('https://i.postimg.cc/1XG47pbK/MULA-HOLY-SPIRITS.jpg')">
-			<div class="slide-content">
-				<div class="slide-number">02</div>
-				<div class="car-brand">HOLY SPIRITS</div>
-				<div class="car-name">Holy Spirits edition</div>
-				<div class="car-subtitle">Ideal para ocasiões mais descontraidos</div>
-				<div class="car-specs">
-					<div class="spec-row">
-						<span class="spec-label">Qualidade:</span>
-						<span class="spec-value">Tecido 80% algodão, 20% polyester</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Cor:</span>
-						<span class="spec-value">Verde</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Tamanho:</span>
-						<span class="spec-value">M, L, XL</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Tipo de gola:</span>
-						<span class="spec-value">careca</span>
-					</div>
-				</div>
-				<div class="performance-badges">
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>QNT: Limitada</span>
-					</div>
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>Entrega: 48H</span>
-					</div>
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>Preço: 1000,00 MT</span>
-					</div>
+	<section class="hero">
+		<div class="container hero-grid">
+			<div class="hero-left reveal">
+				<div class="hero-pill">
+					<span class="pill-dot"></span>
+					<span>Entrega rápida • Quantidade limitada • Estilo premium</span>
 				</div>
 
-				<button class="buy-whatsapp"
-					data-title="Holy Spirits edition"
-					data-price="1000,00 MT"
-					data-code="02">
-					Pedir no WhatsApp
-				</button>
+				<h1 class="hero-title">
+					Camisetas premium com presença.
+					<span class="hero-title-accent">Feitas para destacar.</span>
+				</h1>
+
+				<p class="hero-subtitle">
+					Escolhe a tua peça, personaliza o tamanho e finaliza em segundos no WhatsApp.
+					Experiência de compra rápida, visual premium e entrega eficiente.
+				</p>
+
+				<div class="hero-cta">
+					<button class="btn primary" id="heroCTA">Comprar agora</button>
+					<button class="btn ghost" id="heroExplore">Explorar colecção</button>
+				</div>
+
+				<div class="hero-trust">
+					<div class="trust-item">
+						<div class="trust-icon"></div>
+						<div>
+							<strong>Qualidade</strong>
+							<span>Materiais selecionados</span>
+						</div>
+					</div>
+					<div class="trust-item">
+						<div class="trust-icon"></div>
+						<div>
+							<strong>Entrega</strong>
+							<span>48H em Maputo</span>
+						</div>
+					</div>
+					<div class="trust-item">
+						<div class="trust-icon"></div>
+						<div>
+							<strong>Checkout</strong>
+							<span>WhatsApp directo</span>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="add-button"></div>
-		</div>
 
-		<div class="slide" 
-			data-brand="EXTERMINATOR" 
-			data-name="Exterminator Collection"
-			data-color="Preto"
-			data-size="M, L, XL"
-			style="background-image: url('https://i.postimg.cc/wMvb0V1P/DTF-BLACK.jpg')">
-			<div class="slide-content">
-				<div class="slide-number">03</div>
-				<div class="car-brand">EXTERMINATOR</div>
-				<div class="car-name">Exterminator Collection</div>
-				<div class="car-subtitle">Ideal para amantes de cinama clássico</div>
-				<div class="car-specs">
-					<div class="spec-row">
-						<span class="spec-label">Qualidade:</span>
-						<span class="spec-value">Tecido 100% algodão</span>
+			<div class="hero-right reveal">
+				<div class="hero-card">
+					<div class="hero-card-top">
+						<div class="hero-card-badge">Destaque</div>
+						<div class="hero-card-mini">
+							<span class="mini-dot"></span>
+							<span id="miniCollectionName">MODER-FIT Summer edition</span>
+						</div>
 					</div>
-					<div class="spec-row">
-						<span class="spec-label">Cor:</span>
-						<span class="spec-value">Preto</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Tamanho:</span>
-						<span class="spec-value">M, L, XL</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Tipo de gola:</span>
-						<span class="spec-value">careca</span>
+
+					<div class="hero-card-preview" id="heroPreview"></div>
+
+					<div class="hero-card-bottom">
+						<div class="hero-card-price">
+							<span class="price-label">Preço</span>
+							<span class="price-value" id="miniPrice">1250,00 MT</span>
+						</div>
+
+						<div class="hero-card-actions">
+							<button class="btn ghost full" id="miniOpen">Ver detalhes</button>
+							<button class="btn primary full" id="miniBuy">Adicionar ao carrinho</button>
+						</div>
 					</div>
 				</div>
-				<div class="performance-badges">
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>QNT: Limitada</span>
-					</div>
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>Entrega: 48H</span>
-					</div>
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>Preço: 1500,00 MT</span>
-					</div>
-				</div>
-
-				<button class="buy-whatsapp"
-					data-title="Exterminator Collection"
-					data-price="1500,00 MT"
-					data-code="03">
-					Pedir no WhatsApp
-				</button>
 			</div>
-			<div class="add-button"></div>
 		</div>
+	</section>
 
-		<div class="slide" 
-			data-brand="DRY SAVANA" 
-			data-name="Dry Savana edition"
-			data-color="Castanho, Branco"
-			data-size="M, L, XL"
-			style="background-image: url('https://i.postimg.cc/qvsFjgmP/SAVANA.jpg')">
-			<div class="slide-content">
-				<div class="slide-number">04</div>
-				<div class="car-brand">DRY SAVANA</div>
-				<div class="car-name">Dry Savana edition</div>
-				<div class="car-subtitle">Ideal para amantes de clima quente</div>
-				<div class="car-specs">
-					<div class="spec-row">
-						<span class="spec-label">Qualidade:</span>
-						<span class="spec-value">Tecido 100% algodão</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Cor:</span>
-						<span class="spec-value">Castanho, Branco</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-label">Tamanho:</span>
-						<span class="spec-value">M, L, XL</span>
-					</div>
-					<div class="spec-row">
-						<span class="spec-row">
-							<span class="spec-label">Tipo de gola:</span>
-							<span class="spec-value">careca</span>
-					</div>
-				</div>
-				<div class="performance-badges">
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>QNT: Limitada</span>
-					</div>
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>Entrega: 48H</span>
-					</div>
-					<div class="badge">
-						<div class="badge-icon"></div>
-						<span>Preço: 125,00 MT</span>
-					</div>
-				</div>
-
-				<button class="buy-whatsapp"
-					data-title="Dry Savana edition"
-					data-price="125,00 MT"
-					data-code="04">
-					Pedir no WhatsApp
-				</button>
+	<section class="section" id="beneficios">
+		<div class="container">
+			<div class="section-head reveal">
+				<h2 class="section-title">Experiência de marca grande</h2>
+				<p class="section-subtitle">
+					Design premium, checkout rápido e produto bem apresentado. Sem complicações.
+				</p>
 			</div>
-			<div class="add-button"></div>
+
+			<div class="features-grid">
+				<div class="feature-card reveal">
+					<div class="feature-icon"></div>
+					<h3>Apresentação premium</h3>
+					<p>Detalhes, tamanhos e preço organizados para vender mais.</p>
+				</div>
+				<div class="feature-card reveal">
+					<div class="feature-icon"></div>
+					<h3>Compra em segundos</h3>
+					<p>Carrinho rápido e checkout automático via WhatsApp.</p>
+				</div>
+				<div class="feature-card reveal">
+					<div class="feature-icon"></div>
+					<h3>Mobile perfeito</h3>
+					<p>Design adaptado para telas pequenas sem cortar demais as fotos.</p>
+				</div>
+				<div class="feature-card reveal">
+					<div class="feature-icon"></div>
+					<h3>Confiança</h3>
+					<p>FAQ, CTA e secções bem feitas aumentam conversão.</p>
+				</div>
+			</div>
 		</div>
-	</div>
+	</section>
 
-	<button class="navigation-arrows nav-prev">‹</button>
-	<button class="navigation-arrows nav-next">›</button>
+	<section class="section section-dark" id="coleccao">
+		<div class="container">
+			<div class="section-head section-head-dark reveal">
+				<h2 class="section-title">Colecção</h2>
+				<p class="section-subtitle">
+					Explora, filtra e abre cada peça num modal premium. Depois adiciona ao carrinho.
+				</p>
+			</div>
 
-	<div class="bottom-glass-bar">
-		<button class="glass-btn" id="openContact">Contacto</button>
-		<button class="glass-btn" id="openInfo">Info.</button>
-	</div>
+			<div class="slider-app reveal" aria-label="Galeria de camisetas">
+				<div class="slider-topbar">
+					<div class="search-box">
+						<input id="searchInput" type="text" placeholder="Pesquisar (nome, cor, tamanho, preço)..." autocomplete="off" />
+						<button id="clearSearch" class="search-clear" type="button" aria-label="Limpar pesquisa">×</button>
+					</div>
 
-	<div class="popup-overlay" id="contactPopup">
-		<div class="popup-card">
-			<button class="popup-close" data-close="contactPopup">×</button>
+					<div class="slider-meta">
+						<div class="slide-indicator" id="slideIndicator">01/04</div>
+						<div class="results-count" id="resultsCount">Resultados: 4</div>
+						<button class="meta-cart" id="openCart">Carrinho <span class="cart-pill" id="cartCount">0</span></button>
+					</div>
+				</div>
+
+				<div class="chips-row" id="quickFilters" aria-label="Filtros rápidos">
+					<button class="filter-chip" data-filter="preto">Preto</button>
+					<button class="filter-chip" data-filter="branco">Branco</button>
+					<button class="filter-chip" data-filter="verde">Verde</button>
+					<button class="filter-chip" data-filter="castanho">Castanho</button>
+					<button class="filter-chip" data-filter="m">M</button>
+					<button class="filter-chip" data-filter="l">L</button>
+					<button class="filter-chip" data-filter="xl">XL</button>
+					<button class="filter-chip chip-clear" id="clearChips" type="button">Limpar filtros</button>
+				</div>
+
+				<div class="search-empty" id="searchEmptyMsg">Nenhum resultado encontrado.</div>
+
+				<div class="accordion-slider" id="accordionSlider">
+					<div class="slide active"
+						data-code="01"
+						data-brand="MODER-FIT"
+						data-name="MODER-FIT Summer edition"
+						data-color="Castanho, Branco"
+						data-size="M, L, XL"
+						data-price="1250"
+						data-image="https://i.postimg.cc/j25PfnGS/T-SHIRT.jpg"
+						data-quality="Tecido 100% algodão"
+						data-neck="Gola careca"
+						data-stock="Limitada"
+						data-delivery="48H"
+						style="background-image: url('https://i.postimg.cc/j25PfnGS/T-SHIRT.jpg')">
+
+						<div class="slide-content">
+							<div class="slide-number">01</div>
+							<div class="car-brand">MODER-FIT</div>
+							<div class="car-name">MODER-FIT Summer edition</div>
+							<div class="car-subtitle">Ideal para ocasiões mais descontraídas</div>
+
+							<div class="car-specs">
+								<div class="spec-row"><span class="spec-label">Qualidade:</span><span class="spec-value">Tecido 100% algodão</span></div>
+								<div class="spec-row"><span class="spec-label">Cor:</span><span class="spec-value">Castanho, Branco</span></div>
+								<div class="spec-row"><span class="spec-label">Tamanho:</span><span class="spec-value">M, L, XL</span></div>
+								<div class="spec-row"><span class="spec-label">Tipo de gola:</span><span class="spec-value">Careca</span></div>
+							</div>
+
+							<div class="performance-badges">
+								<div class="badge"><div class="badge-icon"></div><span>QNT: Limitada</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Entrega: 48H</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Preço: 1250,00 MT</span></div>
+							</div>
+
+							<div class="cta-row">
+								<button class="buy-whatsapp">Pedir no WhatsApp</button>
+								<button class="secondary-cta open-product">Detalhes</button>
+								<button class="add-cart">+ Carrinho</button>
+								<button class="secondary-cta share-product">Partilhar</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="slide"
+						data-code="02"
+						data-brand="HOLY SPIRITS"
+						data-name="Holy Spirits edition"
+						data-color="Verde"
+						data-size="M, L, XL"
+						data-price="1000"
+						data-image="https://i.postimg.cc/1XG47pbK/MULA-HOLY-SPIRITS.jpg"
+						data-quality="80% algodão, 20% poliéster"
+						data-neck="Gola careca"
+						data-stock="Limitada"
+						data-delivery="48H"
+						style="background-image: url('https://i.postimg.cc/1XG47pbK/MULA-HOLY-SPIRITS.jpg')">
+
+						<div class="slide-content">
+							<div class="slide-number">02</div>
+							<div class="car-brand">HOLY SPIRITS</div>
+							<div class="car-name">Holy Spirits edition</div>
+							<div class="car-subtitle">Ideal para ocasiões mais descontraídas</div>
+
+							<div class="car-specs">
+								<div class="spec-row"><span class="spec-label">Qualidade:</span><span class="spec-value">80% algodão, 20% poliéster</span></div>
+								<div class="spec-row"><span class="spec-label">Cor:</span><span class="spec-value">Verde</span></div>
+								<div class="spec-row"><span class="spec-label">Tamanho:</span><span class="spec-value">M, L, XL</span></div>
+								<div class="spec-row"><span class="spec-label">Tipo de gola:</span><span class="spec-value">Careca</span></div>
+							</div>
+
+							<div class="performance-badges">
+								<div class="badge"><div class="badge-icon"></div><span>QNT: Limitada</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Entrega: 48H</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Preço: 1000,00 MT</span></div>
+							</div>
+
+							<div class="cta-row">
+								<button class="buy-whatsapp">Pedir no WhatsApp</button>
+								<button class="secondary-cta open-product">Detalhes</button>
+								<button class="add-cart">+ Carrinho</button>
+								<button class="secondary-cta share-product">Partilhar</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="slide"
+						data-code="03"
+						data-brand="EXTERMINATOR"
+						data-name="Exterminator Collection"
+						data-color="Preto"
+						data-size="M, L, XL"
+						data-price="1500"
+						data-image="https://i.postimg.cc/wMvb0V1P/DTF-BLACK.jpg"
+						data-quality="Tecido 100% algodão"
+						data-neck="Gola careca"
+						data-stock="Limitada"
+						data-delivery="48H"
+						style="background-image: url('https://i.postimg.cc/wMvb0V1P/DTF-BLACK.jpg')">
+
+						<div class="slide-content">
+							<div class="slide-number">03</div>
+							<div class="car-brand">EXTERMINATOR</div>
+							<div class="car-name">Exterminator Collection</div>
+							<div class="car-subtitle">Ideal para amantes de cinema clássico</div>
+
+							<div class="car-specs">
+								<div class="spec-row"><span class="spec-label">Qualidade:</span><span class="spec-value">Tecido 100% algodão</span></div>
+								<div class="spec-row"><span class="spec-label">Cor:</span><span class="spec-value">Preto</span></div>
+								<div class="spec-row"><span class="spec-label">Tamanho:</span><span class="spec-value">M, L, XL</span></div>
+								<div class="spec-row"><span class="spec-label">Tipo de gola:</span><span class="spec-value">Careca</span></div>
+							</div>
+
+							<div class="performance-badges">
+								<div class="badge"><div class="badge-icon"></div><span>QNT: Limitada</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Entrega: 48H</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Preço: 1500,00 MT</span></div>
+							</div>
+
+							<div class="cta-row">
+								<button class="buy-whatsapp">Pedir no WhatsApp</button>
+								<button class="secondary-cta open-product">Detalhes</button>
+								<button class="add-cart">+ Carrinho</button>
+								<button class="secondary-cta share-product">Partilhar</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="slide"
+						data-code="04"
+						data-brand="DRY SAVANA"
+						data-name="Dry Savana edition"
+						data-color="Castanho, Branco"
+						data-size="M, L, XL"
+						data-price="125"
+						data-image="https://i.postimg.cc/qvsFjgmP/SAVANA.jpg"
+						data-quality="Tecido 100% algodão"
+						data-neck="Gola careca"
+						data-stock="Limitada"
+						data-delivery="48H"
+						style="background-image: url('https://i.postimg.cc/qvsFjgmP/SAVANA.jpg')">
+
+						<div class="slide-content">
+							<div class="slide-number">04</div>
+							<div class="car-brand">DRY SAVANA</div>
+							<div class="car-name">Dry Savana edition</div>
+							<div class="car-subtitle">Ideal para amantes de clima quente</div>
+
+							<div class="car-specs">
+								<div class="spec-row"><span class="spec-label">Qualidade:</span><span class="spec-value">Tecido 100% algodão</span></div>
+								<div class="spec-row"><span class="spec-label">Cor:</span><span class="spec-value">Castanho, Branco</span></div>
+								<div class="spec-row"><span class="spec-label">Tamanho:</span><span class="spec-value">M, L, XL</span></div>
+								<div class="spec-row"><span class="spec-label">Tipo de gola:</span><span class="spec-value">Careca</span></div>
+							</div>
+
+							<div class="performance-badges">
+								<div class="badge"><div class="badge-icon"></div><span>QNT: Limitada</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Entrega: 48H</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Preço: 125,00 MT</span></div>
+							</div>
+
+							<div class="cta-row">
+								<button class="buy-whatsapp">Pedir no WhatsApp</button>
+								<button class="secondary-cta open-product">Detalhes</button>
+								<button class="add-cart">+ Carrinho</button>
+								<button class="secondary-cta share-product">Partilhar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<button class="navigation-arrows nav-prev" aria-label="Anterior">‹</button>
+				<button class="navigation-arrows nav-next" aria-label="Seguinte">›</button>
+
+				<div class="bottom-glass-bar">
+					<button class="glass-btn" id="openContact">Contacto</button>
+					<button class="glass-btn" id="openInfo">Info.</button>
+					<button class="glass-btn" id="openCartBottom">Carrinho <span class="cart-pill" id="cartCountBottom">0</span></button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" id="faq">
+		<div class="container">
+			<div class="section-head reveal">
+				<h2 class="section-title">Perguntas frequentes</h2>
+				<p class="section-subtitle">Tudo o que precisas para comprar com confiança.</p>
+			</div>
+
+			<div class="faq-grid">
+				<div class="faq-item reveal">
+					<button class="faq-q">Como faço o pedido?</button>
+					<div class="faq-a">Escolhe a peça, adiciona ao carrinho e finaliza via WhatsApp com a mensagem pronta.</div>
+				</div>
+				<div class="faq-item reveal">
+					<button class="faq-q">Quanto tempo demora a entrega?</button>
+					<div class="faq-a">Normalmente até 48H em Maputo, dependendo da zona e confirmação do pedido.</div>
+				</div>
+				<div class="faq-item reveal">
+					<button class="faq-q">Posso trocar?</button>
+					<div class="faq-a">Sim, desde que a peça esteja intacta e dentro das condições combinadas no acto da compra.</div>
+				</div>
+				<div class="faq-item reveal">
+					<button class="faq-q">Quais são os tamanhos disponíveis?</button>
+					<div class="faq-a">M, L e XL. Confirma sempre no checkout antes de finalizar.</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="cta-final" id="contacto">
+		<div class="container cta-final-inner reveal">
+			<div>
+				<h2>Pronto para vestir a tua próxima peça favorita?</h2>
+				<p>Adiciona ao carrinho, escolhe tamanho e finaliza no WhatsApp.</p>
+			</div>
+
+			<div class="cta-final-actions">
+				<button class="btn primary" id="finalCTA">Finalizar compra</button>
+				<button class="btn ghost" id="finalScroll">Ver colecção</button>
+			</div>
+		</div>
+	</section>
+
+	<footer class="footer">
+		<div class="container footer-grid">
+			<div class="footer-brand">
+				<div class="footer-logo">
+					<span class="brand-dot"></span>
+					<strong>Mula Store</strong>
+				</div>
+				<p>Premium Streetwear • Maputo</p>
+				<span class="footer-small">© <span id="year"></span> Mula Store. Todos os direitos reservados.</span>
+			</div>
+
+			<div class="footer-links">
+				<a href="#coleccao">Colecção</a>
+				<a href="#beneficios">Benefícios</a>
+				<a href="#faq">FAQ</a>
+				<a href="#contacto">Contacto</a>
+			</div>
+
+			<div class="footer-contact">
+				<div class="footer-pill">Checkout via WhatsApp</div>
+				<button class="btn primary full" id="footerCTA">Finalizar compra</button>
+			</div>
+		</div>
+	</footer>
+
+	<div class="popup-overlay" id="contactPopup" aria-hidden="true">
+		<div class="popup-card" role="dialog" aria-label="Contacto">
+			<button class="popup-close" data-close="contactPopup" aria-label="Fechar">×</button>
 			<h3>Contacto</h3>
 			<p>📞 WhatsApp: +258 84 000 0000</p>
 			<p>📍 Entregas: Maputo (48H)</p>
@@ -259,9 +459,9 @@
 		</div>
 	</div>
 
-	<div class="popup-overlay" id="infoPopup">
-		<div class="popup-card">
-			<button class="popup-close" data-close="infoPopup">×</button>
+	<div class="popup-overlay" id="infoPopup" aria-hidden="true">
+		<div class="popup-card" role="dialog" aria-label="Informações">
+			<button class="popup-close" data-close="infoPopup" aria-label="Fechar">×</button>
 			<h3>Informações</h3>
 			<p>✔️ Produtos com quantidade limitada</p>
 			<p>✔️ Pagamento e confirmação por WhatsApp</p>
@@ -269,6 +469,120 @@
 		</div>
 	</div>
 
+	<div class="modal-overlay" id="productModal" aria-hidden="true">
+		<div class="modal-card" role="dialog" aria-label="Detalhes do produto">
+			<button class="modal-close" id="closeProductModal" aria-label="Fechar">×</button>
+
+			<div class="modal-grid">
+				<div class="modal-media">
+					<div class="modal-image" id="modalImage"></div>
+				</div>
+
+				<div class="modal-info">
+					<div class="modal-top">
+						<div class="modal-code" id="modalCode">#01</div>
+						<div class="modal-brand" id="modalBrand">MODER-FIT</div>
+					</div>
+
+					<h3 class="modal-title" id="modalTitle">MODER-FIT Summer edition</h3>
+					<div class="modal-price" id="modalPrice">1250,00 MT</div>
+
+					<div class="modal-meta">
+						<div class="meta-line"><span>Qualidade:</span> <strong id="modalQuality">Tecido 100% algodão</strong></div>
+						<div class="meta-line"><span>Cor:</span> <strong id="modalColor">Castanho, Branco</strong></div>
+						<div class="meta-line"><span>Gola:</span> <strong id="modalNeck">Gola careca</strong></div>
+						<div class="meta-line"><span>Entrega:</span> <strong id="modalDelivery">48H</strong></div>
+					</div>
+
+					<div class="modal-controls">
+						<div class="control">
+							<label>Tamanho</label>
+							<div class="size-row" id="sizeRow"></div>
+						</div>
+
+						<div class="control">
+							<label>Quantidade</label>
+							<div class="qty-row">
+								<button class="qty-btn" id="qtyMinus">−</button>
+								<div class="qty-value" id="qtyValue">1</div>
+								<button class="qty-btn" id="qtyPlus">+</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal-actions">
+						<button class="btn ghost full" id="modalAddToCart">Adicionar ao carrinho</button>
+						<button class="btn primary full" id="modalBuyNow">Comprar agora</button>
+						
+	<button class="btn ghost full" id="modalShare">Partilhar produto</button>
+	<div class="share-toast" id="shareToast">Link copiado!</div>
 </div>
+					</div>
+
+					<div class="modal-note">
+						<span>Pagamento e confirmação via WhatsApp.</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- CART DRAWER (UPGRADE: Checkout Form) -->
+	<div class="drawer-overlay" id="cartOverlay" aria-hidden="true">
+		<div class="drawer" role="dialog" aria-label="Carrinho">
+			<div class="drawer-head">
+				<h3>Carrinho</h3>
+				<button class="drawer-close" id="closeCart" aria-label="Fechar">×</button>
+			</div>
+
+			<div class="drawer-body">
+				<div class="cart-list" id="cartList"></div>
+
+				<div class="cart-empty" id="cartEmpty">
+					O teu carrinho está vazio.
+				</div>
+
+				<!-- Checkout Form (NOVO) -->
+				<div class="checkout-form" id="checkoutForm">
+					<div class="checkout-title">Dados para entrega</div>
+
+					<div class="field">
+						<label>Nome</label>
+						<input id="clientName" type="text" placeholder="Ex: Edmilson" />
+					</div>
+
+					<div class="field">
+						<label>Telefone</label>
+						<input id="clientPhone" type="tel" placeholder="Ex: 84xxxxxxx" />
+					</div>
+
+					<div class="field">
+						<label>Local / Bairro</label>
+						<input id="clientAddress" type="text" placeholder="Ex: Zimpeto, Benfica..." />
+					</div>
+
+					<div class="field">
+						<label>Método de pagamento</label>
+						<select id="clientPayment">
+							<option value="M-Pesa">M-Pesa</option>
+							<option value="Cash">Cash</option>
+							<option value="Transferência">Transferência</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="drawer-foot">
+				<div class="cart-total">
+					<span>Total</span>
+					<strong id="cartTotal">0,00 MT</strong>
+				</div>
+
+				<button class="btn primary full" id="cartCheckout">Finalizar no WhatsApp</button>
+				<button class="btn ghost full" id="cartClear">Limpar carrinho</button>
+			</div>
+		</div>
+	</div>
+
 </body>
 </html>
