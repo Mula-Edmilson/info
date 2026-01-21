@@ -840,15 +840,7 @@ function showShareToast(){
 			}
 		});
 
-		// ✅ Partilhar produto (no slide)
-const shareBtn = slide.querySelector(".share-product");
-if(shareBtn){
-	shareBtn.addEventListener("click", (e) => {
-		e.stopPropagation();
-		const p = slideToProduct(slide);
-		copyShareLink(p.code);
-	});
-}
+		
 
 		// Search
 		if (searchInput) searchInput.addEventListener("input", filterSlides);
