@@ -11,13 +11,30 @@
     <div class="slider-container">
 	<div class="now-showing">Mula Store</div>
 
+	<!-- ✅ Pesquisa rápida (NOVO + Melhorada) -->
+	<div class="top-search">
+		<div class="search-wrap">
+			<input id="searchInput" type="text" placeholder="Pesquisar (nome/colecção/cor/tamanho)..." autocomplete="off">
+			<button id="clearSearch" class="search-clear" type="button" aria-label="Limpar pesquisa">×</button>
+		</div>
+		<div class="search-empty" id="searchEmptyMsg">Nenhum resultado encontrado.</div>
+	</div>
+
+	<!-- ✅ Indicador de Slide Activo -->
+	<div class="slide-indicator" id="slideIndicator">01/04</div>
+
 	<div class="accordion-slider">
-		<div class="slide" style="background-image: url('https://i.postimg.cc/j25PfnGS/T-SHIRT.jpg')">
+		<div class="slide" 
+			data-brand="MODER-FIT" 
+			data-name="MODER-FIT Summer edition"
+			data-color="Castanho, Branco"
+			data-size="M, L, XL"
+			style="background-image: url('https://i.postimg.cc/j25PfnGS/T-SHIRT.jpg')">
 			<div class="slide-content">
-				<div class="slide-number">145.00MT</div>
+				<div class="slide-number">01</div>
 				<div class="car-brand">MODER-FIT</div>
 				<div class="car-name">MODER-FIT Summer edition</div>
-				<div class="car-subtitle">Great to chill on beach</div>
+				<div class="car-subtitle">Ideal para ocasiões mais descontraidos</div>
 				<div class="car-specs">
 					<div class="spec-row">
 						<span class="spec-label">Qualidade:</span>
@@ -32,151 +49,193 @@
 						<span class="spec-value">M, L, XL</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Transmission:</span>
-						<span class="spec-value">8-Speed Automatic</span>
+						<span class="spec-label">Tipo de gola:</span>
+						<span class="spec-value">careca</span>
 					</div>
 				</div>
 				<div class="performance-badges">
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>0-100: 3.9s</span>
+						<span>QNT: Limitada</span>
 					</div>
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>Top Speed: 290 km/h</span>
+						<span>Entrega: 48H</span>
 					</div>
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>Price: $73,400</span>
+						<span>Preço: 1250,00 MT</span>
 					</div>
 				</div>
+
+				<button class="buy-whatsapp"
+					data-title="MODER-FIT Summer edition"
+					data-price="1250,00 MT"
+					data-code="01">Pedir no WhatsApp
+				</button>
 			</div>
 			<div class="add-button"></div>
 		</div>
 
-		<div class="slide" style="background-image: url('https://i.postimg.cc/1XG47pbK/MULA-HOLY-SPIRITS.jpg')">
+		<div class="slide" 
+			data-brand="HOLY SPIRITS" 
+			data-name="Holy Spirits edition"
+			data-color="Verde"
+			data-size="M, L, XL"
+			style="background-image: url('https://i.postimg.cc/1XG47pbK/MULA-HOLY-SPIRITS.jpg')">
 			<div class="slide-content">
 				<div class="slide-number">02</div>
-				<div class="car-brand">Lamborghini Huracán</div>
-				<div class="car-name">Lamborghini Huracán</div>
-				<div class="car-subtitle">Naturally Aspirated V10 Excellence</div>
+				<div class="car-brand">HOLY SPIRITS</div>
+				<div class="car-name">Holy Spirits edition</div>
+				<div class="car-subtitle">Ideal para ocasiões mais descontraidos</div>
 				<div class="car-specs">
 					<div class="spec-row">
-						<span class="spec-label">Engine:</span>
-						<span class="spec-value">5.2L V10 Naturally Aspirated</span>
+						<span class="spec-label">Qualidade:</span>
+						<span class="spec-value">Tecido 80% algodão, 20% polyester</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Power:</span>
-						<span class="spec-value">610 HP @ 8,250 RPM</span>
+						<span class="spec-label">Cor:</span>
+						<span class="spec-value">Verde</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Torque:</span>
-						<span class="spec-value">560 Nm @ 6,500 RPM</span>
+						<span class="spec-label">Tamanho:</span>
+						<span class="spec-value">M, L, XL</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Transmission:</span>
-						<span class="spec-value">7-Speed Dual-Clutch</span>
+						<span class="spec-label">Tipo de gola:</span>
+						<span class="spec-value">careca</span>
 					</div>
 				</div>
 				<div class="performance-badges">
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>0-100: 3.2s</span>
+						<span>QNT: Limitada</span>
 					</div>
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>Top Speed: 325 km/h</span>
+						<span>Entrega: 48H</span>
 					</div>
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>Price: $248,295</span>
+						<span>Preço: 1000,00 MT</span>
 					</div>
 				</div>
+
+				<button class="buy-whatsapp"
+					data-title="Holy Spirits edition"
+					data-price="1000,00 MT"
+					data-code="02">
+					Pedir no WhatsApp
+				</button>
 			</div>
 			<div class="add-button"></div>
 		</div>
 
-		<div class="slide" style="background-image: url('https://i.postimg.cc/wMvb0V1P/DTF-BLACK.jpg')">
+		<div class="slide" 
+			data-brand="EXTERMINATOR" 
+			data-name="Exterminator Collection"
+			data-color="Preto"
+			data-size="M, L, XL"
+			style="background-image: url('https://i.postimg.cc/wMvb0V1P/DTF-BLACK.jpg')">
 			<div class="slide-content">
 				<div class="slide-number">03</div>
-				<div class="car-brand">Ferrari SF90</div>
-				<div class="car-name">Ferrari SF90 Stradale</div>
-				<div class="car-subtitle">Plug-in Hybrid Revolution</div>
+				<div class="car-brand">EXTERMINATOR</div>
+				<div class="car-name">Exterminator Collection</div>
+				<div class="car-subtitle">Ideal para amantes de cinama clássico</div>
 				<div class="car-specs">
 					<div class="spec-row">
-						<span class="spec-label">Engine:</span>
-						<span class="spec-value">4.0L V8 Twin-Turbo + Electric</span>
+						<span class="spec-label">Qualidade:</span>
+						<span class="spec-value">Tecido 100% algodão</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Power:</span>
-						<span class="spec-value">1000 HP Combined</span>
+						<span class="spec-label">Cor:</span>
+						<span class="spec-value">Preto</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Torque:</span>
-						<span class="spec-value">800 Nm @ 6,000 RPM</span>
+						<span class="spec-label">Tamanho:</span>
+						<span class="spec-value">M, L, XL</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Transmission:</span>
-						<span class="spec-value">8-Speed F1 DCT</span>
+						<span class="spec-label">Tipo de gola:</span>
+						<span class="spec-value">careca</span>
 					</div>
 				</div>
 				<div class="performance-badges">
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>0-100: 2.5s</span>
+						<span>QNT: Limitada</span>
 					</div>
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>Top Speed: 340 km/h</span>
+						<span>Entrega: 48H</span>
 					</div>
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>Price: $625,000</span>
+						<span>Preço: 1500,00 MT</span>
 					</div>
 				</div>
+
+				<button class="buy-whatsapp"
+					data-title="Exterminator Collection"
+					data-price="1500,00 MT"
+					data-code="03">
+					Pedir no WhatsApp
+				</button>
 			</div>
 			<div class="add-button"></div>
 		</div>
 
-		<div class="slide" style="background-image: url('https://i.postimg.cc/qvsFjgmP/SAVANA.jpg')">
+		<div class="slide" 
+			data-brand="DRY SAVANA" 
+			data-name="Dry Savana edition"
+			data-color="Castanho, Branco"
+			data-size="M, L, XL"
+			style="background-image: url('https://i.postimg.cc/qvsFjgmP/SAVANA.jpg')">
 			<div class="slide-content">
 				<div class="slide-number">04</div>
-				<div class="car-brand">Porsche 911</div>
-				<div class="car-name">Porsche 911 Turbo S</div>
-				<div class="car-subtitle">Twin-Turbo Flat-Six Perfection</div>
+				<div class="car-brand">DRY SAVANA</div>
+				<div class="car-name">Dry Savana edition</div>
+				<div class="car-subtitle">Ideal para amantes de clima quente</div>
 				<div class="car-specs">
 					<div class="spec-row">
-						<span class="spec-label">Engine:</span>
-						<span class="spec-value">3.8L Twin-Turbo Flat-6</span>
+						<span class="spec-label">Qualidade:</span>
+						<span class="spec-value">Tecido 100% algodão</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Power:</span>
-						<span class="spec-value">640 HP @ 6,750 RPM</span>
+						<span class="spec-label">Cor:</span>
+						<span class="spec-value">Castanho, Branco</span>
 					</div>
 					<div class="spec-row">
-						<span class="spec-label">Torque:</span>
-						<span class="spec-value">800 Nm @ 2,500 RPM</span>
+						<span class="spec-label">Tamanho:</span>
+						<span class="spec-value">M, L, XL</span>
 					</div>
 					<div class="spec-row">
 						<span class="spec-row">
-							<span class="spec-label">Transmission:</span>
-							<span class="spec-value">8-Speed PDK</span>
+							<span class="spec-label">Tipo de gola:</span>
+							<span class="spec-value">careca</span>
 					</div>
 				</div>
 				<div class="performance-badges">
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>0-100: 2.7s</span>
+						<span>QNT: Limitada</span>
 					</div>
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>Top Speed: 330 km/h</span>
+						<span>Entrega: 48H</span>
 					</div>
 					<div class="badge">
 						<div class="badge-icon"></div>
-						<span>Price: $207,000</span>
+						<span>Preço: 125,00 MT</span>
 					</div>
 				</div>
+
+				<button class="buy-whatsapp"
+					data-title="Dry Savana edition"
+					data-price="125,00 MT"
+					data-code="04">
+					Pedir no WhatsApp
+				</button>
 			</div>
 			<div class="add-button"></div>
 		</div>
@@ -184,6 +243,32 @@
 
 	<button class="navigation-arrows nav-prev">‹</button>
 	<button class="navigation-arrows nav-next">›</button>
+
+	<div class="bottom-glass-bar">
+		<button class="glass-btn" id="openContact">Contacto</button>
+		<button class="glass-btn" id="openInfo">Info.</button>
+	</div>
+
+	<div class="popup-overlay" id="contactPopup">
+		<div class="popup-card">
+			<button class="popup-close" data-close="contactPopup">×</button>
+			<h3>Contacto</h3>
+			<p>📞 WhatsApp: +258 84 000 0000</p>
+			<p>📍 Entregas: Maputo (48H)</p>
+			<p>✉️ Email: contacto@mulastore.com</p>
+		</div>
+	</div>
+
+	<div class="popup-overlay" id="infoPopup">
+		<div class="popup-card">
+			<button class="popup-close" data-close="infoPopup">×</button>
+			<h3>Informações</h3>
+			<p>✔️ Produtos com quantidade limitada</p>
+			<p>✔️ Pagamento e confirmação por WhatsApp</p>
+			<p>✔️ Trocas mediante condições</p>
+		</div>
+	</div>
+
 </div>
 </body>
 </html>
