@@ -6,26 +6,26 @@
 	<title>Mula Store — Premium Streetwear</title>
 	<link rel="stylesheet" href="style.css" />
 	<script defer src="main.js"></script>
-  <!-- Meta Pixel Code -->
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  
-  fbq('init', 'SEU_PIXEL_ID_AQUI');
-  fbq('track', 'PageView');
-</script>
-<noscript>
-  <img height="1" width="1" style="display:none"
-       src="https://www.facebook.com/tr?id=SEU_PIXEL_ID_AQUI&ev=PageView&noscript=1"/>
-</noscript>
-<!-- End Meta Pixel Code -->
 
+	<!-- Meta Pixel Code -->
+	<script>
+		!function(f,b,e,v,n,t,s)
+		{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+		if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+		n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];
+		s.parentNode.insertBefore(t,s)}(window, document,'script',
+		'https://connect.facebook.net/en_US/fbevents.js');
+
+		fbq('init', 'SEU_PIXEL_ID_AQUI');
+		fbq('track', 'PageView');
+	</script>
+	<noscript>
+		<img height="1" width="1" style="display:none"
+			src="https://www.facebook.com/tr?id=SEU_PIXEL_ID_AQUI&ev=PageView&noscript=1"/>
+	</noscript>
+	<!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -39,17 +39,46 @@
 				<span class="brand-tag">Premium Streetwear</span>
 			</a>
 
-			<nav class="nav">
+			<!-- Desktop nav -->
+			<nav class="nav" id="desktopNav">
 				<a href="#coleccao" class="nav-link">Colecção</a>
 				<a href="#beneficios" class="nav-link">Benefícios</a>
 				<a href="#faq" class="nav-link">FAQ</a>
 				<a href="#contacto" class="nav-link">Contacto</a>
 			</nav>
 
-			<div class="header-actions">
+			<div class="header-actions" id="desktopActions">
 				<button class="header-btn ghost" id="openInfoTop">Info</button>
 				<button class="header-btn ghost" id="openCartTop">Carrinho <span class="cart-pill" id="cartCountTop">0</span></button>
 				<button class="header-btn primary" id="scrollToCollection">Ver Colecção</button>
+			</div>
+
+			<!-- Mobile hamburger -->
+			<button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false">
+				<span></span><span></span><span></span>
+			</button>
+		</div>
+
+		<!-- Mobile menu panel -->
+		<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+			<div class="mobile-menu-inner">
+				<div class="mobile-menu-top">
+					<strong>Menu</strong>
+					<button class="mobile-menu-close" id="closeMobileMenu" aria-label="Fechar menu">×</button>
+				</div>
+
+				<nav class="mobile-nav">
+					<a href="#coleccao" class="mobile-link">Colecção</a>
+					<a href="#beneficios" class="mobile-link">Benefícios</a>
+					<a href="#faq" class="mobile-link">FAQ</a>
+					<a href="#contacto" class="mobile-link">Contacto</a>
+				</nav>
+
+				<div class="mobile-actions">
+					<button class="btn ghost full" id="openInfoMobile">Info</button>
+					<button class="btn ghost full" id="openCartMobile">Carrinho <span class="cart-pill" id="cartCountMobile">0</span></button>
+					<button class="btn primary full" id="goCollectionMobile">Ver Colecção</button>
+				</div>
 			</div>
 		</div>
 	</header>
@@ -372,12 +401,6 @@
 
 				<button class="navigation-arrows nav-prev" aria-label="Anterior">‹</button>
 				<button class="navigation-arrows nav-next" aria-label="Seguinte">›</button>
-
-				<div class="bottom-glass-bar">
-					<button class="glass-btn" id="openContact">Contacto</button>
-					<button class="glass-btn" id="openInfo">Info.</button>
-					<button class="glass-btn" id="openCartBottom">Carrinho <span class="cart-pill" id="cartCountBottom">0</span></button>
-				</div>
 			</div>
 		</div>
 	</section>
@@ -449,6 +472,14 @@
 		</div>
 	</footer>
 
+	<!-- Bottom floating bar (GLOBAL / FIXED) -->
+	<div class="bottom-glass-bar-fixed" id="bottomBar">
+		<button class="glass-btn" id="openContact">Contacto</button>
+		<button class="glass-btn" id="openInfo">Info.</button>
+		<button class="glass-btn" id="openCartBottom">Carrinho <span class="cart-pill" id="cartCountBottom">0</span></button>
+	</div>
+
+	<!-- Popups -->
 	<div class="popup-overlay" id="contactPopup" aria-hidden="true">
 		<div class="popup-card" role="dialog" aria-label="Contacto">
 			<button class="popup-close" data-close="contactPopup" aria-label="Fechar">×</button>
@@ -469,65 +500,90 @@
 		</div>
 	</div>
 
+	<!-- Product Modal (horizontal scroll premium) -->
 	<div class="modal-overlay" id="productModal" aria-hidden="true">
 		<div class="modal-card" role="dialog" aria-label="Detalhes do produto">
 			<button class="modal-close" id="closeProductModal" aria-label="Fechar">×</button>
 
-			<div class="modal-grid">
-				<div class="modal-media">
-					<div class="modal-image" id="modalImage"></div>
-				</div>
-
-				<div class="modal-info">
-					<div class="modal-top">
-						<div class="modal-code" id="modalCode">#01</div>
-						<div class="modal-brand" id="modalBrand">MODER-FIT</div>
-					</div>
-
-					<h3 class="modal-title" id="modalTitle">MODER-FIT Summer edition</h3>
-					<div class="modal-price" id="modalPrice">1250,00 MT</div>
-
-					<div class="modal-meta">
-						<div class="meta-line"><span>Qualidade:</span> <strong id="modalQuality">Tecido 100% algodão</strong></div>
-						<div class="meta-line"><span>Cor:</span> <strong id="modalColor">Castanho, Branco</strong></div>
-						<div class="meta-line"><span>Gola:</span> <strong id="modalNeck">Gola careca</strong></div>
-						<div class="meta-line"><span>Entrega:</span> <strong id="modalDelivery">48H</strong></div>
-					</div>
-
-					<div class="modal-controls">
-						<div class="control">
-							<label>Tamanho</label>
-							<div class="size-row" id="sizeRow"></div>
+			<!-- horizontal pages -->
+			<div class="modal-pages" id="modalPages">
+				<!-- PAGE 1 -->
+				<div class="modal-page">
+					<div class="modal-grid">
+						<div class="modal-media">
+							<div class="modal-image" id="modalImage"></div>
 						</div>
 
-						<div class="control">
-							<label>Quantidade</label>
-							<div class="qty-row">
-								<button class="qty-btn" id="qtyMinus">−</button>
-								<div class="qty-value" id="qtyValue">1</div>
-								<button class="qty-btn" id="qtyPlus">+</button>
+						<div class="modal-info">
+							<div class="modal-top">
+								<div class="modal-code" id="modalCode">#01</div>
+								<div class="modal-brand" id="modalBrand">MODER-FIT</div>
+							</div>
+
+							<h3 class="modal-title" id="modalTitle">MODER-FIT Summer edition</h3>
+							<div class="modal-price" id="modalPrice">1250,00 MT</div>
+
+							<div class="modal-meta">
+								<div class="meta-line"><span>Qualidade:</span> <strong id="modalQuality">—</strong></div>
+								<div class="meta-line"><span>Cor:</span> <strong id="modalColor">—</strong></div>
+								<div class="meta-line"><span>Gola:</span> <strong id="modalNeck">—</strong></div>
+								<div class="meta-line"><span>Entrega:</span> <strong id="modalDelivery">—</strong></div>
+							</div>
+
+							<div class="modal-note">
+								<span>Desliza para o lado para escolher tamanho e comprar.</span>
 							</div>
 						</div>
 					</div>
+				</div>
 
-					<div class="modal-actions">
-						<button class="btn ghost full" id="modalAddToCart">Adicionar ao carrinho</button>
-						<button class="btn primary full" id="modalBuyNow">Comprar agora</button>
-						
-	<button class="btn ghost full" id="modalShare">Partilhar produto</button>
-	<div class="share-toast" id="shareToast">Link copiado!</div>
-</div>
-					</div>
+				<!-- PAGE 2 -->
+				<div class="modal-page">
+					<div class="modal-buy">
+						<div class="modal-buy-head">
+							<strong>Personalizar pedido</strong>
+							<span class="modal-hint">Escolhe tamanho e quantidade</span>
+						</div>
 
-					<div class="modal-note">
-						<span>Pagamento e confirmação via WhatsApp.</span>
+						<div class="modal-controls">
+							<div class="control">
+								<label>Tamanho</label>
+								<div class="size-row" id="sizeRow"></div>
+							</div>
+
+							<div class="control">
+								<label>Quantidade</label>
+								<div class="qty-row">
+									<button class="qty-btn" id="qtyMinus">−</button>
+									<div class="qty-value" id="qtyValue">1</div>
+									<button class="qty-btn" id="qtyPlus">+</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="modal-actions">
+							<button class="btn ghost full" id="modalAddToCart">Adicionar ao carrinho</button>
+							<button class="btn primary full" id="modalBuyNow">Comprar agora</button>
+							<button class="btn ghost full" id="modalShare">Partilhar produto</button>
+							<div class="share-toast" id="shareToast">Link copiado!</div>
+						</div>
+
+						<div class="modal-note">
+							<span>Pagamento e confirmação via WhatsApp.</span>
+						</div>
 					</div>
 				</div>
+			</div>
+
+			<!-- dots indicator -->
+			<div class="modal-dots" id="modalDots" aria-hidden="true">
+				<span class="dot active"></span>
+				<span class="dot"></span>
 			</div>
 		</div>
 	</div>
 
-	<!-- CART DRAWER (UPGRADE: Checkout Form) -->
+	<!-- CART DRAWER -->
 	<div class="drawer-overlay" id="cartOverlay" aria-hidden="true">
 		<div class="drawer" role="dialog" aria-label="Carrinho">
 			<div class="drawer-head">
@@ -542,7 +598,6 @@
 					O teu carrinho está vazio.
 				</div>
 
-				<!-- Checkout Form (NOVO) -->
 				<div class="checkout-form" id="checkoutForm">
 					<div class="checkout-title">Dados para entrega</div>
 
@@ -558,7 +613,7 @@
 
 					<div class="field">
 						<label>Local / Bairro</label>
-						<input id="clientAddress" type="text" placeholder="Ex: Zimpeto, Benfica..." />
+						<input id="clientAddress" type="text" placeholder="Ex: Zimpeto, Benfica." />
 					</div>
 
 					<div class="field">

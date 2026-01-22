@@ -1,9 +1,9 @@
 /* ================================
-   Mula Store — Premium JS (UPGRADE)
-   - Link único por produto (#p=03)
-   - Modal abre automaticamente pelo link
-   - Checkout com formulário no carrinho
-   - Eventos Meta Pixel (ViewContent, AddToCart, InitiateCheckout)
+   Mula Store — Premium JS (FIXED)
+   - Hamburger menu
+   - Modal horizontal scroll (2 pages)
+   - Bottom bar fixed global
+   - Cart + Pixel + Share link
 ================================ */
 
 (function () {
@@ -41,16 +41,19 @@
 		document.body.style.overflow = lock ? "hidden" : "";
 	};
 
+	const scrollToEl = (id) => {
+		const el = document.querySelector(id);
+		if (!el) return;
+		el.scrollIntoView({ behavior: "smooth", block: "start" });
+	};
+
 	/* ==========================
 	   Config
 	========================== */
-	// Troca pelo teu número real (sem +, sem espaços)
 	const WHATSAPP_NUMBER = "258846342251";
 
 	/* ==========================
-	   Pixel (Meta) - Events helper
-	   NOTA: Para funcionar de verdade, precisas inserir o Pixel no <head>.
-	   Este código já dispara os eventos caso o fbq exista.
+	   Pixel helper
 	========================== */
 	function track(eventName, payload = {}) {
 		try {
@@ -77,26 +80,33 @@
 	const quickFilters = $("#quickFilters");
 	const clearChipsBtn = $("#clearChips");
 
+	// Bottom bar buttons
 	const openContact = $("#openContact");
 	const openInfo = $("#openInfo");
-	const openCart = $("#openCart");
 	const openCartBottom = $("#openCartBottom");
 
+	// Header buttons
 	const openInfoTop = $("#openInfoTop");
 	const openCartTop = $("#openCartTop");
 	const scrollToCollection = $("#scrollToCollection");
 
+	// Hero buttons
 	const heroCTA = $("#heroCTA");
 	const heroExplore = $("#heroExplore");
 	const finalCTA = $("#finalCTA");
 	const finalScroll = $("#finalScroll");
 	const footerCTA = $("#footerCTA");
 
+	// Popups
 	const contactPopup = $("#contactPopup");
 	const infoPopup = $("#infoPopup");
 
+	// Product modal
 	const productModal = $("#productModal");
 	const closeProductModal = $("#closeProductModal");
+
+	const modalPages = $("#modalPages");
+	const modalDots = $("#modalDots");
 
 	const modalImage = $("#modalImage");
 	const modalCode = $("#modalCode");
@@ -115,6 +125,10 @@
 	const modalAddToCart = $("#modalAddToCart");
 	const modalBuyNow = $("#modalBuyNow");
 
+	const modalShare = $("#modalShare");
+	const shareToast = $("#shareToast");
+
+	// Cart drawer
 	const cartOverlay = $("#cartOverlay");
 	const closeCart = $("#closeCart");
 	const cartList = $("#cartList");
@@ -123,19 +137,19 @@
 	const cartCheckout = $("#cartCheckout");
 	const cartClear = $("#cartClear");
 
+	// Cart counters
 	const cartCount = $("#cartCount");
 	const cartCountTop = $("#cartCountTop");
 	const cartCountBottom = $("#cartCountBottom");
-	const modalShare = $("#modalShare");
-const shareToast = $("#shareToast");
+	const cartCountMobile = $("#cartCountMobile");
 
-	// Checkout form fields (NOVO)
+	// Checkout fields
 	const clientName = $("#clientName");
 	const clientPhone = $("#clientPhone");
 	const clientAddress = $("#clientAddress");
 	const clientPayment = $("#clientPayment");
 
-	// Hero Mini card
+	// Hero mini
 	const heroPreview = $("#heroPreview");
 	const miniCollectionName = $("#miniCollectionName");
 	const miniPrice = $("#miniPrice");
@@ -144,24 +158,30 @@ const shareToast = $("#shareToast");
 
 	const yearEl = $("#year");
 
+	// Hamburger menu
+	const hamburgerBtn = $("#hamburgerBtn");
+	const mobileMenu = $("#mobileMenu");
+	const closeMobileMenu = $("#closeMobileMenu");
+	const openInfoMobile = $("#openInfoMobile");
+	const openCartMobile = $("#openCartMobile");
+	const goCollectionMobile = $("#goCollectionMobile");
+
 	/* ==========================
 	   State
 	========================== */
 	let currentIndex = 0;
 	let activeChips = new Set();
 
-	// Modal state
 	let modalProduct = null;
 	let selectedSize = "M";
 	let selectedQty = 1;
 
-	// Cart state (persistente)
 	let cart = [];
 
 	/* ==========================
 	   Storage
 	========================== */
-	const CART_KEY = "mula_cart_v2";
+	const CART_KEY = "mula_cart_v3";
 
 	function loadCart() {
 		try {
@@ -180,8 +200,16 @@ const shareToast = $("#shareToast");
 	}
 
 	/* ==========================
-	   Slider (Accordion)
+	   Slider
 	========================== */
+	function getVisibleSlides() {
+		return slides.filter((s) => s.style.display !== "none");
+	}
+
+	function getActiveSlide() {
+		return $(".slide.active") || slides[0] || null;
+	}
+
 	function setActiveSlide(index) {
 		const visible = getVisibleSlides();
 		if (visible.length === 0) return;
@@ -196,14 +224,6 @@ const shareToast = $("#shareToast");
 
 		updateIndicator();
 		syncHeroWithActive();
-	}
-
-	function getVisibleSlides() {
-		return slides.filter((s) => s.style.display !== "none");
-	}
-
-	function getActiveSlide() {
-		return $(".slide.active") || slides[0] || null;
 	}
 
 	function nextSlide() {
@@ -247,7 +267,7 @@ const shareToast = $("#shareToast");
 	}
 
 	/* ==========================
-	   Product Data
+	   Product data
 	========================== */
 	function slideToProduct(slide) {
 		if (!slide) return null;
@@ -274,11 +294,10 @@ const shareToast = $("#shareToast");
 	}
 
 	/* ==========================
-	   Shareable Link (#p=03)
+	   Share link (#p=03)
 	========================== */
 	function setHashProduct(code) {
 		if (!code) return;
-		// mantém o padrão #p=03
 		window.location.hash = `p=${encodeURIComponent(code)}`;
 	}
 
@@ -286,13 +305,42 @@ const shareToast = $("#shareToast");
 		const h = (window.location.hash || "").replace("#", "").trim();
 		if (!h) return null;
 
-		// espera p=03
 		const parts = h.split("&");
 		for (const p of parts) {
 			const [k, v] = p.split("=");
 			if (k === "p" && v) return decodeURIComponent(v);
 		}
 		return null;
+	}
+
+	function getProductShareLink(code) {
+		const base = window.location.origin + window.location.pathname;
+		return `${base}#p=${encodeURIComponent(code)}`;
+	}
+
+	async function copyShareLink(code) {
+		if (!code) return;
+
+		const link = getProductShareLink(code);
+
+		try {
+			await navigator.clipboard.writeText(link);
+			showShareToast();
+		} catch {
+			const temp = document.createElement("input");
+			temp.value = link;
+			document.body.appendChild(temp);
+			temp.select();
+			document.execCommand("copy");
+			document.body.removeChild(temp);
+			showShareToast();
+		}
+	}
+
+	function showShareToast() {
+		if (!shareToast) return;
+		shareToast.classList.add("show");
+		setTimeout(() => shareToast.classList.remove("show"), 1600);
 	}
 
 	function openFromHash() {
@@ -302,13 +350,12 @@ const shareToast = $("#shareToast");
 		const slide = findSlideByCode(code);
 		if (!slide) return;
 
-		// activa slide e abre modal
 		setActiveSlide(slides.indexOf(slide));
 		openModal(slideToProduct(slide));
 	}
 
 	/* ==========================
-	   Hero Sync
+	   Hero sync
 	========================== */
 	function syncHeroWithActive() {
 		const active = getActiveSlide();
@@ -323,7 +370,26 @@ const shareToast = $("#shareToast");
 	}
 
 	/* ==========================
-	   Modal (Produto)
+	   Modal horizontal dots
+	========================== */
+	function updateModalDots() {
+		if (!modalPages || !modalDots) return;
+		const dots = $$(".dot", modalDots);
+		if (!dots.length) return;
+
+		const pageIndex = Math.round(modalPages.scrollLeft / modalPages.clientWidth);
+		dots.forEach((d) => d.classList.remove("active"));
+		if (dots[pageIndex]) dots[pageIndex].classList.add("active");
+	}
+
+	function goModalPage(index) {
+		if (!modalPages) return;
+		const x = index * modalPages.clientWidth;
+		modalPages.scrollTo({ left: x, behavior: "smooth" });
+	}
+
+	/* ==========================
+	   Modal open/close
 	========================== */
 	function openModal(product) {
 		if (!productModal || !product) return;
@@ -332,7 +398,6 @@ const shareToast = $("#shareToast");
 		selectedSize = "M";
 		selectedQty = 1;
 
-		// UI fill
 		if (modalImage) modalImage.style.backgroundImage = `url('${product.image}')`;
 		if (modalCode) modalCode.textContent = `#${product.code}`;
 		if (modalBrand) modalBrand.textContent = product.brand;
@@ -344,7 +409,7 @@ const shareToast = $("#shareToast");
 		if (modalNeck) modalNeck.textContent = product.neck || "—";
 		if (modalDelivery) modalDelivery.textContent = product.delivery || "—";
 
-		// sizes from product
+		// sizes
 		const sizes = (product.size || "M, L, XL")
 			.split(",")
 			.map((s) => s.trim())
@@ -357,11 +422,13 @@ const shareToast = $("#shareToast");
 				btn.className = "size-btn" + (i === 0 ? " active" : "");
 				btn.setAttribute("data-size", s);
 				btn.textContent = s;
+
 				btn.addEventListener("click", () => {
 					$$(".size-btn", sizeRow).forEach((b) => b.classList.remove("active"));
 					btn.classList.add("active");
 					selectedSize = s;
 				});
+
 				sizeRow.appendChild(btn);
 			});
 			selectedSize = sizes[0] || "M";
@@ -373,10 +440,12 @@ const shareToast = $("#shareToast");
 		productModal.setAttribute("aria-hidden", "false");
 		lockScroll(true);
 
-		// Atualiza hash para partilha
+		// modal always opens on page 0
+		if (modalPages) modalPages.scrollLeft = 0;
+		updateModalDots();
+
 		setHashProduct(product.code);
 
-		// Pixel: ViewContent
 		track("ViewContent", {
 			content_name: product.name,
 			content_ids: [product.code],
@@ -392,46 +461,10 @@ const shareToast = $("#shareToast");
 		productModal.setAttribute("aria-hidden", "true");
 		lockScroll(false);
 
-		// Limpa hash (fica mais clean)
-		// Mantém o histórico limpo sem dar reload
 		if (window.location.hash.startsWith("#p=")) {
 			history.replaceState(null, "", window.location.pathname + window.location.search);
 		}
 	}
-
-	function getProductShareLink(code){
-	const base = window.location.origin + window.location.pathname;
-	return `${base}#p=${encodeURIComponent(code)}`;
-}
-
-async function copyShareLink(code){
-	if(!code) return;
-
-	const link = getProductShareLink(code);
-
-	try{
-		await navigator.clipboard.writeText(link);
-		showShareToast();
-	}catch(err){
-		// fallback (para browsers antigos)
-		const temp = document.createElement("input");
-		temp.value = link;
-		document.body.appendChild(temp);
-		temp.select();
-		document.execCommand("copy");
-		document.body.removeChild(temp);
-		showShareToast();
-	}
-}
-
-function showShareToast(){
-	if(!shareToast) return;
-	shareToast.classList.add("show");
-	setTimeout(() => {
-		shareToast.classList.remove("show");
-	}, 1600);
-}
-
 
 	/* ==========================
 	   Cart
@@ -442,9 +475,10 @@ function showShareToast(){
 
 	function addToCart(product, size, qty) {
 		if (!product) return;
-		const q = Math.max(1, Number(qty || 1));
 
+		const q = Math.max(1, Number(qty || 1));
 		const key = cartKeyForItem(product, size);
+
 		const found = cart.find((i) => i.key === key);
 
 		if (found) {
@@ -466,7 +500,6 @@ function showShareToast(){
 		renderCart();
 		updateCartCount();
 
-		// Pixel: AddToCart
 		track("AddToCart", {
 			content_name: product.name,
 			content_ids: [product.code],
@@ -509,6 +542,7 @@ function showShareToast(){
 		if (cartCount) cartCount.textContent = String(count);
 		if (cartCountTop) cartCountTop.textContent = String(count);
 		if (cartCountBottom) cartCountBottom.textContent = String(count);
+		if (cartCountMobile) cartCountMobile.textContent = String(count);
 	}
 
 	function renderCart() {
@@ -612,14 +646,12 @@ function showShareToast(){
 
 		let message = `Olá! Quero fazer um pedido na Mula Store.%0A%0A`;
 
-		// Dados cliente
 		message += `DADOS DO CLIENTE:%0A`;
 		message += `• Nome: ${name || "—"}%0A`;
 		message += `• Telefone: ${phone || "—"}%0A`;
 		message += `• Local: ${address || "—"}%0A`;
 		message += `• Pagamento: ${payment || "—"}%0A%0A`;
 
-		// Itens
 		message += `ITENS:%0A`;
 		cart.forEach((i, idx) => {
 			message += `${idx + 1}) ${i.name} (#${i.code})%0A`;
@@ -640,7 +672,6 @@ function showShareToast(){
 			return;
 		}
 
-		// Pixel: InitiateCheckout
 		track("InitiateCheckout", {
 			num_items: cart.reduce((sum, i) => sum + Number(i.qty), 0),
 			value: cartTotalValue(),
@@ -653,7 +684,7 @@ function showShareToast(){
 	}
 
 	/* ==========================
-	   Popups (Info / Contacto)
+	   Popups
 	========================== */
 	function openPopup(el) {
 		if (!el) return;
@@ -718,7 +749,7 @@ function showShareToast(){
 	}
 
 	/* ==========================
-	   FAQ Toggle
+	   FAQ toggle
 	========================== */
 	function setupFAQ() {
 		$$(".faq-item").forEach((item) => {
@@ -735,57 +766,38 @@ function showShareToast(){
 	}
 
 	/* ==========================
-	   Scroll Reveal
+	   Hamburger menu
 	========================== */
-	function setupReveal() {
-		const items = $$(".reveal");
-		if (!items.length) return;
+	function openMobileMenu() {
+		if (!mobileMenu || !hamburgerBtn) return;
+		mobileMenu.classList.add("active");
+		mobileMenu.setAttribute("aria-hidden", "false");
+		hamburgerBtn.classList.add("active");
+		hamburgerBtn.setAttribute("aria-expanded", "true");
+		lockScroll(true);
+	}
 
-		const io = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((e) => {
-					if (e.isIntersecting) e.target.classList.add("show");
-				});
-			},
-			{ threshold: 0.12 }
-		);
-
-		items.forEach((el) => io.observe(el));
+	function closeMobileMenuFn() {
+		if (!mobileMenu || !hamburgerBtn) return;
+		mobileMenu.classList.remove("active");
+		mobileMenu.setAttribute("aria-hidden", "true");
+		hamburgerBtn.classList.remove("active");
+		hamburgerBtn.setAttribute("aria-expanded", "false");
+		lockScroll(false);
 	}
 
 	/* ==========================
-	   Smooth Scroll
+	   Init events
 	========================== */
-	function scrollToEl(selector) {
-		const el = $(selector);
-		if (!el) return;
-		el.scrollIntoView({ behavior: "smooth", block: "start" });
-	}
+	function bindEvents() {
+		// slider arrows
+		if (nextBtn) nextBtn.addEventListener("click", nextSlide);
+		if (prevBtn) prevBtn.addEventListener("click", prevSlide);
 
-	/* ==========================
-	   Init
-	========================== */
-	function init() {
-		// Year
-		if (yearEl) yearEl.textContent = String(new Date().getFullYear());
-		if(modalShare){
-	modalShare.addEventListener("click", () => {
-		if(!modalProduct) return;
-		copyShareLink(modalProduct.code);
-	});
-}
-
-
-		// Load cart
-		loadCart();
-		renderCart();
-		updateCartCount();
-
-		// Slider events
+		// slide click
 		slides.forEach((slide, idx) => {
 			slide.addEventListener("click", () => setActiveSlide(idx));
 
-			// open product modal
 			const openBtn = $(".open-product", slide);
 			if (openBtn) {
 				openBtn.addEventListener("click", (e) => {
@@ -794,26 +806,6 @@ function showShareToast(){
 				});
 			}
 
-			// buy whatsapp direct (1 item)
-			const waBtn = $(".buy-whatsapp", slide);
-			if (waBtn) {
-				waBtn.addEventListener("click", (e) => {
-					e.stopPropagation();
-					const p = slideToProduct(slide);
-
-					track("InitiateCheckout", {
-						num_items: 1,
-						value: p.price,
-						currency: "MZN",
-					});
-
-					const msg = `Olá! Quero pedir a camiseta (#${p.code}) - ${p.name}. Preço: ${formatMT(p.price)}.`;
-					const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-					window.open(url, "_blank");
-				});
-			}
-
-			// add cart (default M)
 			const addBtn = $(".add-cart", slide);
 			if (addBtn) {
 				addBtn.addEventListener("click", (e) => {
@@ -823,28 +815,35 @@ function showShareToast(){
 					openCartDrawer();
 				});
 			}
-		});
 
-		if (prevBtn) prevBtn.addEventListener("click", (e) => { e.stopPropagation(); prevSlide(); });
-		if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); nextSlide(); });
+			const buyBtn = $(".buy-whatsapp", slide);
+			if (buyBtn) {
+				buyBtn.addEventListener("click", (e) => {
+					e.stopPropagation();
+					const p = slideToProduct(slide);
+					const msg =
+						`Olá! Quero pedir:%0A%0A` +
+						`Produto: ${p.name} (#${p.code})%0A` +
+						`Preço: ${formatMT(p.price)}%0A%0A` +
+						`Por favor, confirme disponibilidade. Obrigado!`;
+					window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+				});
+			}
 
-		document.addEventListener("keydown", (e) => {
-			if (e.key === "ArrowLeft") prevSlide();
-			if (e.key === "ArrowRight") nextSlide();
-
-			if (e.key === "Escape") {
-				closePopup(contactPopup);
-				closePopup(infoPopup);
-				closeModal();
-				closeCartDrawer();
+			const shareBtn = $(".share-product", slide);
+			if (shareBtn) {
+				shareBtn.addEventListener("click", async (e) => {
+					e.stopPropagation();
+					const p = slideToProduct(slide);
+					await copyShareLink(p.code);
+				});
 			}
 		});
 
-		
-
-		// Search
+		// search
 		if (searchInput) searchInput.addEventListener("input", filterSlides);
-		if (clearSearch && searchInput) {
+
+		if (clearSearch) {
 			clearSearch.addEventListener("click", () => {
 				searchInput.value = "";
 				filterSlides();
@@ -852,10 +851,11 @@ function showShareToast(){
 			});
 		}
 
-		// Chips
+		// chips
 		if (quickFilters) {
 			$$(".filter-chip", quickFilters).forEach((btn) => {
 				if (btn.id === "clearChips") return;
+
 				btn.addEventListener("click", () => {
 					const val = normalizeText(btn.getAttribute("data-filter"));
 					if (activeChips.has(val)) {
@@ -879,7 +879,7 @@ function showShareToast(){
 			});
 		}
 
-		// Popups
+		// popups
 		if (openContact) openContact.addEventListener("click", () => openPopup(contactPopup));
 		if (openInfo) openInfo.addEventListener("click", () => openPopup(infoPopup));
 		if (openInfoTop) openInfoTop.addEventListener("click", () => openPopup(infoPopup));
@@ -893,7 +893,7 @@ function showShareToast(){
 			if (closeBtn) closeBtn.addEventListener("click", () => closePopup(popup));
 		});
 
-		// Modal events
+		// modal close
 		if (closeProductModal) closeProductModal.addEventListener("click", closeModal);
 		if (productModal) {
 			productModal.addEventListener("click", closeModal);
@@ -901,13 +901,22 @@ function showShareToast(){
 			if (card) card.addEventListener("click", (e) => e.stopPropagation());
 		}
 
+		// modal pages dots update
+		if (modalPages) {
+			modalPages.addEventListener("scroll", () => updateModalDots(), { passive: true });
+		}
+		if (modalDots) {
+			const dots = $$(".dot", modalDots);
+			dots.forEach((d, idx) => d.addEventListener("click", () => goModalPage(idx)));
+		}
+
+		// qty
 		if (qtyMinus) {
 			qtyMinus.addEventListener("click", () => {
 				selectedQty = Math.max(1, selectedQty - 1);
 				if (qtyValue) qtyValue.textContent = String(selectedQty);
 			});
 		}
-
 		if (qtyPlus) {
 			qtyPlus.addEventListener("click", () => {
 				selectedQty = Math.min(99, selectedQty + 1);
@@ -915,6 +924,7 @@ function showShareToast(){
 			});
 		}
 
+		// modal add/buy/share
 		if (modalAddToCart) {
 			modalAddToCart.addEventListener("click", () => {
 				if (!modalProduct) return;
@@ -943,12 +953,19 @@ function showShareToast(){
 					`Total: ${formatMT(modalProduct.price * selectedQty)}%0A%0A` +
 					`Por favor, confirme disponibilidade. Obrigado!`;
 
-				const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-				window.open(url, "_blank");
+				window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
 			});
 		}
 
-		// Cart drawer events
+		if (modalShare) {
+			modalShare.addEventListener("click", async () => {
+				if (!modalProduct) return;
+				await copyShareLink(modalProduct.code);
+			});
+		}
+
+		// cart open
+		const openCart = $("#openCart");
 		if (openCart) openCart.addEventListener("click", openCartDrawer);
 		if (openCartBottom) openCartBottom.addEventListener("click", openCartDrawer);
 		if (openCartTop) openCartTop.addEventListener("click", openCartDrawer);
@@ -963,59 +980,142 @@ function showShareToast(){
 		if (cartCheckout) cartCheckout.addEventListener("click", checkoutWhatsApp);
 		if (cartClear) cartClear.addEventListener("click", clearCart);
 
-		// Hero CTAs
+		// hero CTAs
 		if (scrollToCollection) scrollToCollection.addEventListener("click", () => scrollToEl("#coleccao"));
 		if (heroCTA) heroCTA.addEventListener("click", () => scrollToEl("#coleccao"));
 		if (heroExplore) heroExplore.addEventListener("click", () => scrollToEl("#coleccao"));
-
-		if (finalCTA) finalCTA.addEventListener("click", () => {
-			openCartDrawer();
-			if (cart.length === 0) scrollToEl("#coleccao");
-		});
-
 		if (finalScroll) finalScroll.addEventListener("click", () => scrollToEl("#coleccao"));
-		if (footerCTA) footerCTA.addEventListener("click", () => {
+
+		if (finalCTA) finalCTA.addEventListener("click", openCartDrawer);
+		if (footerCTA) footerCTA.addEventListener("click", openCartDrawer);
+
+		// hero mini
+		if (miniOpen) miniOpen.addEventListener("click", () => openModal(slideToProduct(getActiveSlide())));
+		if (miniBuy) miniBuy.addEventListener("click", () => {
+			const p = slideToProduct(getActiveSlide());
+			addToCart(p, "M", 1);
 			openCartDrawer();
-			if (cart.length === 0) scrollToEl("#coleccao");
 		});
 
-		// Hero mini actions
-		if (miniOpen) {
-			miniOpen.addEventListener("click", () => {
-				const active = getActiveSlide();
-				if (!active) return;
-				openModal(slideToProduct(active));
-			});
+		// hamburger events
+		if (hamburgerBtn) hamburgerBtn.addEventListener("click", () => {
+			const isOpen = mobileMenu?.classList.contains("active");
+			if (isOpen) closeMobileMenuFn();
+			else openMobileMenu();
+		});
+
+		if (closeMobileMenu) closeMobileMenu.addEventListener("click", closeMobileMenuFn);
+
+		if (mobileMenu) {
+			mobileMenu.addEventListener("click", closeMobileMenuFn);
+			const inner = $(".mobile-menu-inner", mobileMenu);
+			if (inner) inner.addEventListener("click", (e) => e.stopPropagation());
 		}
 
-		if (miniBuy) {
-			miniBuy.addEventListener("click", () => {
-				const active = getActiveSlide();
-				if (!active) return;
-				addToCart(slideToProduct(active), "M", 1);
-				openCartDrawer();
-			});
-		}
+		// mobile menu actions
+		if (openInfoMobile) openInfoMobile.addEventListener("click", () => {
+			closeMobileMenuFn();
+			openPopup(infoPopup);
+		});
 
-		// FAQ
-		setupFAQ();
+		if (openCartMobile) openCartMobile.addEventListener("click", () => {
+			closeMobileMenuFn();
+			openCartDrawer();
+		});
 
-		// Reveal
-		setupReveal();
+		if (goCollectionMobile) goCollectionMobile.addEventListener("click", () => {
+			closeMobileMenuFn();
+			scrollToEl("#coleccao");
+		});
 
-		// First sync
-		setActiveSlide(slides.findIndex((s) => s.classList.contains("active")) || 0);
-		filterSlides();
-		syncHeroWithActive();
+		// mobile links close menu
+		$$(".mobile-link").forEach((a) => {
+			a.addEventListener("click", () => closeMobileMenuFn());
+		});
 
-		// Abrir produto se vier via link (#p=03)
-		openFromHash();
+		// ESC key close
+		window.addEventListener("keydown", (e) => {
+			if (e.key !== "Escape") return;
 
-		// Se mudar hash manualmente
-		window.addEventListener("hashchange", () => {
-			openFromHash();
+			if (productModal?.classList.contains("active")) closeModal();
+			if (cartOverlay?.classList.contains("active")) closeCartDrawer();
+			if (contactPopup?.classList.contains("active")) closePopup(contactPopup);
+			if (infoPopup?.classList.contains("active")) closePopup(infoPopup);
+			if (mobileMenu?.classList.contains("active")) closeMobileMenuFn();
 		});
 	}
 
-	document.addEventListener("DOMContentLoaded", init);
+		/* ==========================
+	   Swipe (Mobile) — Accordion Slider
+	========================== */
+	function setupSliderSwipe() {
+		const slider = $("#accordionSlider");
+		if (!slider) return;
+
+		let startX = 0;
+		let startY = 0;
+		let dragging = false;
+
+		const MIN_DISTANCE = 40; // sensibilidade do swipe
+
+		slider.addEventListener("touchstart", (e) => {
+			if (!e.touches || e.touches.length !== 1) return;
+			dragging = true;
+			startX = e.touches[0].clientX;
+			startY = e.touches[0].clientY;
+		}, { passive: true });
+
+		slider.addEventListener("touchmove", (e) => {
+			if (!dragging || !e.touches || e.touches.length !== 1) return;
+
+			const dx = e.touches[0].clientX - startX;
+			const dy = e.touches[0].clientY - startY;
+
+			// Se o user estiver a fazer scroll vertical, não interferimos
+			if (Math.abs(dy) > Math.abs(dx)) return;
+
+			// impedir scroll lateral acidental
+			e.preventDefault();
+		}, { passive: false });
+
+		slider.addEventListener("touchend", (e) => {
+			if (!dragging) return;
+			dragging = false;
+
+			const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
+			const dx = endX - startX;
+
+			if (Math.abs(dx) < MIN_DISTANCE) return;
+
+			if (dx < 0) {
+				nextSlide();
+			} else {
+				prevSlide();
+			}
+		});
+	}
+
+	/* ==========================
+	   Init
+	========================== */
+	function init() {
+		// year
+		if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+		loadCart();
+		renderCart();
+		updateCartCount();
+
+		setActiveSlide(0);
+		syncHeroWithActive();
+
+		setupFAQ();
+		bindEvents();
+		setupSliderSwipe();
+
+		filterSlides();
+		openFromHash();
+	}
+
+	init();
 })();
