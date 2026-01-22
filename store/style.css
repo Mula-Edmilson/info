@@ -1742,3 +1742,176 @@ body{
     display: none !important;
   }
 }
+/* ================================
+   SVG minimalista + animação premium (bolinhas verdes)
+================================ */
+.trust-icon,
+.feature-icon{
+	display: grid;
+	place-items: center;
+}
+
+.mini-ico{
+	width: 18px;
+	height: 18px;
+	color: rgba(255,255,255,0.92);
+	opacity: 0.92;
+	transform: translateZ(0);
+	transition: transform .25s ease, opacity .25s ease, filter .25s ease;
+}
+
+/* Micro animação suave (respiração) */
+@keyframes icoFloat{
+	0%   { transform: translateY(0) scale(1); opacity: .92; }
+	50%  { transform: translateY(-1px) scale(1.03); opacity: 1; }
+	100% { transform: translateY(0) scale(1); opacity: .92; }
+}
+
+.trust-item:hover .mini-ico,
+.feature-card:hover .mini-ico{
+	animation: icoFloat 1.6s ease-in-out infinite;
+	filter: drop-shadow(0 8px 18px rgba(159,255,107,0.22));
+}
+
+/* Mobile: animação mais leve */
+@media (max-width: 560px){
+	.trust-item:active .mini-ico,
+	.feature-card:active .mini-ico{
+		animation: icoFloat 1.2s ease-in-out infinite;
+	}
+}
+/* ================================
+   Modal CTA com SVG (premium + compacto no mobile)
+================================ */
+.modal-cta{
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.modal-cta .cta-ico{
+	width: 18px;
+	height: 18px;
+	color: rgba(255,255,255,0.92);
+	opacity: 0.92;
+	transform: translateZ(0);
+	transition: transform .22s ease, opacity .22s ease, filter .22s ease;
+}
+
+.modal-cta:hover .cta-ico{
+	transform: translateY(-1px);
+	opacity: 1;
+	filter: drop-shadow(0 10px 22px rgba(159,255,107,0.18));
+}
+
+/* Mobile: só ícone (poupa espaço) */
+@media (max-width: 560px){
+	.modal-cta{
+		padding: 12px 14px;
+	}
+
+	.modal-cta .btn-txt{
+		display: none;
+	}
+
+	.modal-cta .cta-ico{
+		width: 20px;
+		height: 20px;
+	}
+}
+
+/* ================================
+   Modal Floating CTA Bar (premium)
+================================ */
+.modal-card{
+	position: relative;
+}
+
+/* dá espaço no conteúdo para não ficar tapado pela barra */
+.modal-page{
+	padding-bottom: 92px;
+}
+
+.modal-cta-bar{
+	position: absolute;
+	left: 18px;
+	right: 18px;
+	bottom: 18px;
+
+	display: grid;
+	grid-template-columns: 54px 54px 1fr;
+	gap: 12px;
+
+	padding: 12px;
+	border-radius: 22px;
+	border: 1px solid rgba(255,255,255,0.14);
+	background: rgba(12,14,18,0.65);
+	backdrop-filter: blur(18px);
+	-webkit-backdrop-filter: blur(18px);
+	box-shadow: 0 20px 70px rgba(0,0,0,0.55);
+	z-index: 10;
+}
+
+.modal-cta-mini,
+.modal-cta-main{
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	border-radius: 18px;
+}
+
+.modal-cta-mini{
+	width: 54px;
+	height: 46px;
+	padding: 0;
+}
+
+.modal-cta-main{
+	height: 46px;
+}
+
+.modal-cta-bar .cta-ico{
+	width: 18px;
+	height: 18px;
+	color: rgba(255,255,255,0.92);
+	opacity: 0.95;
+	transition: transform .22s ease, opacity .22s ease, filter .22s ease;
+}
+
+.modal-cta-bar button:hover .cta-ico{
+	transform: translateY(-1px);
+	opacity: 1;
+	filter: drop-shadow(0 10px 22px rgba(159,255,107,0.18));
+}
+
+.modal-cta-main .cta-label{
+	font-weight: 990;
+	font-size: 13px;
+	letter-spacing: 0.2px;
+}
+
+/* Mobile: ainda mais compacto (só ícone nos mini, label curto no main) */
+@media (max-width: 560px){
+	.modal-cta-bar{
+		left: 14px;
+		right: 14px;
+		bottom: 14px;
+		padding: 10px;
+		gap: 10px;
+	}
+
+	.modal-cta-mini{
+		width: 52px;
+		height: 44px;
+	}
+
+	.modal-cta-main{
+		height: 44px;
+	}
+
+	.modal-cta-main .cta-label{
+		font-size: 13px;
+	}
+}

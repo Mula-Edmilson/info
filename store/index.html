@@ -108,21 +108,39 @@
 
 				<div class="hero-trust">
 					<div class="trust-item">
-						<div class="trust-icon"></div>
+						<div class="trust-icon" aria-hidden="true">
+	<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+		<path d="M12 3l7 4v6c0 5-3 8-7 8s-7-3-7-8V7l7-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		<path d="M9.5 12l1.8 1.8L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+	</svg>
+</div>
 						<div>
 							<strong>Qualidade</strong>
 							<span>Materiais selecionados</span>
 						</div>
 					</div>
 					<div class="trust-item">
-						<div class="trust-icon"></div>
+						<div class="trust-icon" aria-hidden="true">
+	<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+		<path d="M3 7h11v10H3V7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		<path d="M14 10h4l3 3v4h-7v-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		<path d="M7 17a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+		<path d="M17 17a2 2 0 104 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+	</svg>
+</div>
 						<div>
 							<strong>Entrega</strong>
 							<span>48H em Maputo</span>
 						</div>
 					</div>
 					<div class="trust-item">
-						<div class="trust-icon"></div>
+						<div class="trust-icon" aria-hidden="true">
+	<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+		<path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		<path d="M8 10h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+		<path d="M8 8h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+	</svg>
+</div>
 						<div>
 							<strong>Checkout</strong>
 							<span>WhatsApp directo</span>
@@ -170,22 +188,45 @@
 
 			<div class="features-grid">
 				<div class="feature-card reveal">
-					<div class="feature-icon"></div>
+					<div class="feature-icon" aria-hidden="true">
+	<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+		<path d="M6 4h12v16H6V4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		<path d="M8.5 8h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+		<path d="M8.5 12h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+		<path d="M8.5 16h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+	</svg>
+</div>
 					<h3>Apresentação premium</h3>
 					<p>Detalhes, tamanhos e preço organizados para vender mais.</p>
 				</div>
 				<div class="feature-card reveal">
-					<div class="feature-icon"></div>
+					<div class="feature-icon" aria-hidden="true">
+	<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+		<path d="M12 3v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+		<path d="M12 12l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/>
+	</svg>
+</div>
 					<h3>Compra em segundos</h3>
 					<p>Carrinho rápido e checkout automático via WhatsApp.</p>
 				</div>
 				<div class="feature-card reveal">
-					<div class="feature-icon"></div>
+					<div class="feature-icon" aria-hidden="true">
+	<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+		<path d="M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		<path d="M11 17h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+	</svg>
+</div>
 					<h3>Mobile perfeito</h3>
 					<p>Design adaptado para telas pequenas sem cortar demais as fotos.</p>
 				</div>
 				<div class="feature-card reveal">
-					<div class="feature-icon"></div>
+					<div class="feature-icon" aria-hidden="true">
+	<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+		<path d="M12 3l7 4v6c0 5-3 8-7 8s-7-3-7-8V7l7-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		<path d="M9.5 12l1.8 1.8L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+	</svg>
+</div>
 					<h3>Confiança</h3>
 					<p>FAQ, CTA e secções bem feitas aumentam conversão.</p>
 				</div>
@@ -565,11 +606,37 @@
 						</div>
 
 						<div class="modal-actions">
-							<button class="btn ghost full" id="modalAddToCart">Adicionar ao carrinho</button>
-							<button class="btn primary full" id="modalBuyNow">Comprar agora</button>
-							<button class="btn ghost full" id="modalShare">Partilhar produto</button>
-							<div class="share-toast" id="shareToast">Link copiado!</div>
-						</div>
+	<div class="share-toast" id="shareToast">Link copiado!</div>
+</div>
+
+<!-- Floating CTA bar (modal) -->
+<div class="modal-cta-bar" role="group" aria-label="Ações rápidas do produto">
+	<button class="btn ghost modal-cta-mini" id="modalShare" aria-label="Partilhar produto" title="Partilhar" type="button">
+		<svg class="cta-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+			<path d="M16 8a3 3 0 10-2.9-3.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			<path d="M8 14l8-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			<path d="M8 10l8 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			<path d="M6 18a3 3 0 103-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			<path d="M18 18a3 3 0 10-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+		</svg>
+	</button>
+
+	<button class="btn ghost modal-cta-mini" id="modalAddToCart" aria-label="Adicionar ao carrinho" title="Carrinho" type="button">
+		<svg class="cta-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+			<path d="M6 6h15l-2 8H8L6 6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+			<path d="M6 6L5 3H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			<path d="M9 20a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/>
+			<path d="M18 20a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/>
+		</svg>
+	</button>
+
+	<button class="btn primary modal-cta-main" id="modalBuyNow" aria-label="Comprar agora" title="Comprar agora" type="button">
+		<svg class="cta-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+			<path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		</svg>
+		<span class="cta-label">Comprar</span>
+	</button>
+</div>
 
 						<div class="modal-note">
 							<span>Pagamento e confirmação via WhatsApp.</span>
