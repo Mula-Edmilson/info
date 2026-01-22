@@ -117,6 +117,8 @@
 	const modalColor = $("#modalColor");
 	const modalNeck = $("#modalNeck");
 	const modalDelivery = $("#modalDelivery");
+	const modalMeta = $("#modalMeta");
+const modalDetailsToggle = $("#modalDetailsToggle");
 
 	const sizeRow = $("#sizeRow");
 	const qtyMinus = $("#qtyMinus");
@@ -439,6 +441,10 @@
 		productModal.classList.add("active");
 		productModal.setAttribute("aria-hidden", "false");
 		lockScroll(true);
+		// Mobile: começar com detalhes escondidos
+productModal.classList.remove("details-expanded");
+productModal.classList.add("details-collapsed");
+if (modalDetailsToggle) modalDetailsToggle.textContent = "Detalhes";
 
 		// modal always opens on page 0
 		if (modalPages) modalPages.scrollLeft = 0;
@@ -796,7 +802,10 @@
 
 		// slide click
 		slides.forEach((slide, idx) => {
-			slide.addEventListener("click", () => setActiveSlide(idx));
+			// Desktop mantém clique normal; Mobile o carousel controla o centro
+slide.addEventListener("click", () => {
+	if (!isMobileCarousel()) setActiveSlide(idx);
+});
 
 			const openBtn = $(".open-product", slide);
 			if (openBtn) {
@@ -900,7 +909,24 @@
 			const card = $(".modal-card", productModal);
 			if (card) card.addEventListener("click", (e) => e.stopPropagation());
 		}
+// Botão "Detalhes" (apenas no modal)
+if (modalDetailsToggle) {
+  modalDetailsToggle.addEventListener("click", () => {
+    if (!productModal) return;
 
+    const isCollapsed = productModal.classList.contains("details-collapsed");
+
+    if (isCollapsed) {
+      productModal.classList.remove("details-collapsed");
+      productModal.classList.add("details-expanded");
+      modalDetailsToggle.textContent = "Ocultar detalhes";
+    } else {
+      productModal.classList.remove("details-expanded");
+      productModal.classList.add("details-collapsed");
+      modalDetailsToggle.textContent = "Detalhes";
+    }
+  });
+}
 		// modal pages dots update
 		if (modalPages) {
 			modalPages.addEventListener("scroll", () => updateModalDots(), { passive: true });
@@ -909,6 +935,7 @@
 			const dots = $$(".dot", modalDots);
 			dots.forEach((d, idx) => d.addEventListener("click", () => goModalPage(idx)));
 		}
+
 
 		// qty
 		if (qtyMinus) {
@@ -1045,13 +1072,274 @@
 		});
 	}
 
+	/* ==========================
+   Mobile: Carousel centrado + loop infinito (apenas <=560px)
+========================== */
+function isMobileCarousel() {
+	return window.matchMedia("(max-width: 560px)").matches;
+}
+
+function getSliderEl() {
+	return $("#accordionSlider");
+}
+
+function getAllSlidesInSlider() {
+	const slider = getSliderEl();
+	if (!slider) return [];
+	return $$(".slide", slider);
+}
+
+function getClosestSlideToCenter(slider) {
+	if (!slider) return null;
+
+	const rect = slider.getBoundingClientRect();
+	const centerX = rect.left + rect.width / 2;
+
+	const all = getAllSlidesInSlider();
+	let closest = null;
+	let bestDist = Infinity;
+
+	all.forEach((s) => {
+		// ignorar slides escondidos (filtros)
+		if (s.style.display === "none") return;
+
+		const r = s.getBoundingClientRect();
+		const slideCenter = r.left + r.width / 2;
+		const dist = Math.abs(centerX - slideCenter);
+
+		if (dist < bestDist) {
+			bestDist = dist;
+			closest = s;
+		}
+	});
+
+	return closest;
+}
+
+function scrollToSlideCenter(slider, slideEl, behavior = "smooth") {
+	if (!slider || !slideEl) return;
+
+	const sliderRect = slider.getBoundingClientRect();
+	const slideRect = slideEl.getBoundingClientRect();
+
+	const currentScrollLeft = slider.scrollLeft;
+
+	// posição do slide dentro do slider (em px)
+	const slideLeftInsideSlider = (slideRect.left - sliderRect.left) + currentScrollLeft;
+
+	// queremos que o centro do slide fique no centro do slider
+	const targetScrollLeft =
+		slideLeftInsideSlider - (slider.clientWidth / 2) + (slideRect.width / 2);
+
+	slider.scrollTo({ left: targetScrollLeft, behavior });
+}
+
+function setActiveSlideFromElement(slideEl) {
+	if (!slideEl) return;
+
+	// Se for clone, usar o original pelo data-code
+	if (slideEl.classList.contains("clone")) {
+		const code = slideEl.getAttribute("data-code");
+		const original = slides.find((s) => s.getAttribute("data-code") === code);
+		if (original) {
+			setActiveSlide(slides.indexOf(original));
+			return;
+		}
+	}
+
+	const idx = slides.indexOf(slideEl);
+	if (idx >= 0) setActiveSlide(idx);
+}
+
+function bindSlideActions(slide) {
+	if (!slide) return;
+	if (slide.dataset.bound === "1") return;
+	slide.dataset.bound = "1";
+
+	// tocar no slide centra e activa (mobile)
+	slide.addEventListener("click", () => {
+		if (isMobileCarousel()) {
+			const slider = getSliderEl();
+			scrollToSlideCenter(slider, slide);
+			setActiveSlideFromElement(slide);
+		} else {
+			const idx = slides.indexOf(slide);
+			if (idx >= 0) setActiveSlide(idx);
+		}
+	});
+
+	// Botão Detalhes (abre modal)
+	const openBtn = $(".open-product", slide);
+	if (openBtn) {
+		openBtn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			openModal(slideToProduct(slide));
+		});
+	}
+
+	// Botão + Carrinho
+	const addBtn = $(".add-cart", slide);
+	if (addBtn) {
+		addBtn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			const p = slideToProduct(slide);
+			addToCart(p, "M", 1);
+			openCartDrawer();
+		});
+	}
+
+	// Botão Pedir no WhatsApp
+	const buyBtn = $(".buy-whatsapp", slide);
+	if (buyBtn) {
+		buyBtn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			const p = slideToProduct(slide);
+			const msg =
+				`Olá! Quero pedir:%0A%0A` +
+				`Produto: ${p.name} (#${p.code})%0A` +
+				`Preço: ${formatMT(p.price)}%0A%0A` +
+				`Por favor, confirme disponibilidade. Obrigado!`;
+			window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+		});
+	}
+
+	// Partilhar
+	const shareBtn = $(".share-product", slide);
+	if (shareBtn) {
+		shareBtn.addEventListener("click", async (e) => {
+			e.stopPropagation();
+			const p = slideToProduct(slide);
+			await copyShareLink(p.code);
+		});
+	}
+}
+
+function setupMobileLoopCarousel() {
+	const slider = getSliderEl();
+	if (!slider) return;
+	if (!isMobileCarousel()) return;
+	
+
+	// evitar duplicar clones
+	if (slider.dataset.loopReady === "1") return;
+	slider.dataset.loopReady = "1";
+
+	// garantir que os slides originais têm handlers
+	slides.forEach(bindSlideActions);
+
+	// só considerar slides visíveis (respeita filtros)
+	const visibleOriginals = slides.filter((s) => s.style.display !== "none");
+	if (visibleOriginals.length <= 1) return;
+
+	const first = visibleOriginals[0];
+	const last = visibleOriginals[visibleOriginals.length - 1];
+
+	// criar clones para loop
+	const firstClone = first.cloneNode(true);
+	const lastClone = last.cloneNode(true);
+
+	firstClone.classList.add("clone");
+	lastClone.classList.add("clone");
+
+	// inserir clones no DOM
+	slider.insertBefore(lastClone, slider.firstChild);
+	slider.appendChild(firstClone);
+
+	// bind actions também nos clones
+	bindSlideActions(firstClone);
+	bindSlideActions(lastClone);
+
+	// começar no primeiro slide real (centrado)
+	requestAnimationFrame(() => {
+		scrollToSlideCenter(slider, first, "auto");
+		setActiveSlideFromElement(first);
+		updateIndicator();
+	});
+
+	// loop invisível + active sempre no centro (SEM vibração)
+let loopLock = false;
+let snapTimer = null;
+let lastClosest = null;
+
+function teleportTo(targetEl) {
+  if (!targetEl) return;
+
+  loopLock = true;
+
+  // desligar snap durante o teleporte
+  slider.style.scrollSnapType = "none";
+
+  scrollToSlideCenter(slider, targetEl, "auto");
+  setActiveSlideFromElement(targetEl);
+  updateIndicator();
+
+  requestAnimationFrame(() => {
+    slider.style.scrollSnapType = "";
+    setTimeout(() => (loopLock = false), 80);
+  });
+}
+
+slider.addEventListener(
+  "scroll",
+  () => {
+    if (!isMobileCarousel()) return;
+    if (loopLock) return;
+
+    lastClosest = getClosestSlideToCenter(slider);
+    if (!lastClosest) return;
+
+    // actualiza active "leve" durante scroll (sem teleportar)
+    setActiveSlideFromElement(lastClosest);
+    updateIndicator();
+
+    clearTimeout(snapTimer);
+    snapTimer = setTimeout(() => {
+      if (!isMobileCarousel()) return;
+      if (loopLock) return;
+
+      const closest = lastClosest;
+      if (!closest) return;
+
+      // 1) centra primeiro (snap manual)
+      scrollToSlideCenter(slider, closest, "smooth");
+
+      const all = getAllSlidesInSlider();
+      if (all.length < 3) return;
+
+      const firstReal = all.find((x) => !x.classList.contains("clone"));
+      const lastReal = [...all].reverse().find((x) => !x.classList.contains("clone"));
+
+      const firstCloneNow = all[all.length - 1];
+      const lastCloneNow = all[0];
+
+      // 2) só depois de parar: teleporte se for clone
+      if (closest === firstCloneNow && firstReal) {
+        teleportTo(firstReal);
+        return;
+      }
+
+      if (closest === lastCloneNow && lastReal) {
+        teleportTo(lastReal);
+        return;
+      }
+
+      setActiveSlideFromElement(closest);
+      updateIndicator();
+    }, 120);
+  },
+  { passive: true }
+);
+}
+
 		/* ==========================
 	   Swipe (Mobile) — Accordion Slider
 	========================== */
 	function setupSliderSwipe() {
-		const slider = $("#accordionSlider");
-		if (!slider) return;
+  const slider = $("#accordionSlider");
+  if (!slider) return;
 
+  // No mobile carousel (scroll), não usar swipe antigo por "next/prev"
+  if (isMobileCarousel()) return;
 		let startX = 0;
 		let startY = 0;
 		let dragging = false;
@@ -1110,11 +1398,12 @@
 		syncHeroWithActive();
 
 		setupFAQ();
-		bindEvents();
-		setupSliderSwipe();
+bindEvents();
+setupSliderSwipe();
+setupMobileLoopCarousel();
 
-		filterSlides();
-		openFromHash();
+filterSlides();
+openFromHash();
 	}
 
 	init();

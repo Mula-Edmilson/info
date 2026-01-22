@@ -1126,6 +1126,10 @@ body{
 	box-shadow: 0 30px 110px rgba(0,0,0,0.60);
 	position: relative;
 	overflow: hidden;
+
+	max-height: calc(100dvh - 24px);
+	display: flex;
+	flex-direction: column;
 }
 
 .modal-close{
@@ -1152,6 +1156,7 @@ body{
 	overflow-y: hidden;
 	scroll-snap-type: x mandatory;
 	scrollbar-width: none;
+	-webkit-overflow-scrolling: touch;
 }
 .modal-pages::-webkit-scrollbar{ display:none; }
 
@@ -1608,7 +1613,8 @@ body{
 		grid-template-columns: 1fr;
 	}
 	.modal-image{
-		height: 320px;
+		height: clamp(200px, 32vh, 320px);
+		background-position: center top;
 	}
 }
 
@@ -1639,15 +1645,46 @@ body{
 	.hero-trust{
 		grid-template-columns: 1fr;
 	}
+
+	/* ==========================
+	   MOBILE: Carousel centrado (1 produto no centro)
+	========================== */
 	.accordion-slider{
 		height: 520px;
+		display: flex;
+		gap: 14px;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x mandatory;
+		padding: 0 12vw; /* espaço para centrar o slide */
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
 	}
+	.accordion-slider::-webkit-scrollbar{ display:none; }
+
+	.slide{
+		flex: 0 0 76vw;          /* 1 slide por vez */
+		scroll-snap-align: center;
+		border-radius: 22px;
+		filter: grayscale(0.35);
+		transform: scale(0.94);
+		transition: transform 0.25s ease, filter 0.25s ease;
+	}
+
+	/* O slide activo (centrado) */
+	.slide.active{
+		flex: 0 0 76vw;
+		filter: grayscale(0);
+		transform: scale(1);
+	}
+
 	.car-brand{
 		font-size: 22px;
 	}
 	.car-name{
 		font-size: 20px;
 	}
+
 	.bottom-glass-bar-fixed{
 		gap: 8px;
 		padding: 10px;
@@ -1672,4 +1709,36 @@ body{
 		padding: 12px 12px;
 		border-radius: 16px;
 	}
+}
+/* ================================
+   Mobile Modal: mostrar essencial + botão "Detalhes"
+================================ */
+@media (max-width: 560px){
+
+  /* Por padrão, no mobile escondemos a lista de detalhes */
+  #productModal.details-collapsed #modalMeta{
+    display: none;
+  }
+
+  /* Botão "Detalhes" aparece no mobile */
+  .modal-details-toggle{
+    margin-top: 10px;
+  }
+
+  /* Quando o utilizador abre os detalhes */
+  #productModal.details-expanded #modalMeta{
+    display: grid;
+    gap: 8px;
+  }
+
+  /* Trocar texto do botão automaticamente via CSS */
+  #productModal.details-expanded #modalDetailsToggle{
+    opacity: 0.95;
+  }
+}
+@media (max-width: 560px){
+  .nav-prev,
+  .nav-next{
+    display: none !important;
+  }
 }
