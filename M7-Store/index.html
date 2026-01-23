@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Mula Store — Premium Streetwear</title>
+
+	<link rel="icon" type="image/png" href="https://i.postimg.cc/4y5KQy2b/favicon.png">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="ambient-bg" aria-hidden="true"></div>
+
+	<header class="header">
+		<div class="container header-inner">
+			<a class="brand" href="#">
+				<span class="brand-dot"></span>
+				<span class="brand-name">Mula Store</span>
+				<span class="brand-tag">Premium Streetwear</span>
+			</a>
+
+			<!-- Desktop nav -->
+			<nav class="nav" id="desktopNav">
+				<a href="#coleccao" class="nav-link">Colecção</a>
+				<a href="#beneficios" class="nav-link">Benefícios</a>
+				<a href="#faq" class="nav-link">FAQ</a>
+				<a href="#contacto" class="nav-link">Contacto</a>
+			</nav>
+
+			<div class="header-actions" id="desktopActions">
+				<button class="header-btn ghost" id="openInfoTop">Info</button>
+				<button class="header-btn ghost" id="openCartTop">Carrinho <span class="cart-pill" id="cartCountTop">0</span></button>
+				<button class="header-btn primary" id="scrollToCollection">Ver Colecção</button>
+			</div>
+
+			<!-- Mobile hamburger -->
+			<button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false">
+				<span></span><span></span><span></span>
+			</button>
+		</div>
+
+		<!-- Mobile menu panel -->
+		<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+			<div class="mobile-menu-inner">
+				<div class="mobile-menu-top">
+					<strong>Menu</strong>
+					<button class="mobile-menu-close" id="closeMobileMenu" aria-label="Fechar menu">×</button>
+				</div>
+
+				<nav class="mobile-nav">
+					<a href="#coleccao" class="mobile-link">Colecção</a>
+					<a href="#beneficios" class="mobile-link">Benefícios</a>
+					<a href="#faq" class="mobile-link">FAQ</a>
+					<a href="#contacto" class="mobile-link">Contacto</a>
+				</nav>
+
+				<div class="mobile-actions">
+					<button class="btn ghost full" id="openInfoMobile">Info</button>
+					<button class="btn ghost full" id="openCartMobile">Carrinho <span class="cart-pill" id="cartCountMobile">0</span></button>
+					<button class="btn primary full" id="goCollectionMobile">Ver Colecção</button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section class="hero">
+		<div class="container hero-grid">
+			<div class="hero-left reveal">
+				<div class="hero-pill">
+					<span class="pill-dot"></span>
+					<span>Entrega rápida • Quantidade limitada • Estilo premium</span>
+				</div>
+
+				<h1 class="hero-title">
+					Camisetas premium com presença.
+					<span class="hero-title-accent">Feitas para destacar.</span>
+				</h1>
+
+				<p class="hero-subtitle">
+					Escolhe a tua peça, personaliza o tamanho e finaliza em segundos.
+					Experiência de compra rápida, visual premium e entrega eficiente.
+				</p>
+
+				<div class="hero-cta">
+					<button class="btn primary" id="heroCTA">Comprar agora</button>
+					<button class="btn ghost" id="heroExplore">Explorar colecção</button>
+				</div>
+
+				<div class="hero-trust">
+					<div class="trust-item">
+						<div class="trust-icon" aria-hidden="true">
+							<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+								<path d="M12 3l7 4v6c0 5-3 8-7 8s-7-3-7-8V7l7-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+								<path d="M9.5 12l1.8 1.8L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</div>
+						<div>
+							<strong>Qualidade</strong>
+							<span>Materiais selecionados</span>
+						</div>
+					</div>
+
+					<div class="trust-item">
+						<div class="trust-icon" aria-hidden="true">
+							<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+								<path d="M3 7h11v10H3V7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+								<path d="M14 10h4l3 3v4h-7v-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+								<path d="M7 17a2 2 0 104 0" stroke="currentColor" stroke-width="2"/>
+							</svg>
+						</div>
+						<div>
+							<strong>Entrega</strong>
+							<span>Rápida e segura</span>
+						</div>
+					</div>
+
+					<div class="trust-item">
+						<div class="trust-icon" aria-hidden="true">
+							<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+								<path d="M12 3v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+								<path d="M12 12l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/>
+							</svg>
+						</div>
+						<div>
+							<strong>Compra rápida</strong>
+							<span>Sem complicações</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="hero-right reveal">
+				<div class="hero-card">
+					<div class="hero-card-top">
+						<div class="hero-card-badge">Destaque</div>
+						<div class="hero-card-mini">
+							<span class="mini-dot"></span>
+							<span id="miniCollectionName">Colecção</span>
+						</div>
+					</div>
+
+					<div class="hero-card-preview" id="heroPreview" style="background-image:url('https://i.postimg.cc/Gt9Z4j9W/cover.jpg');"></div>
+
+					<div class="hero-card-bottom">
+						<div class="hero-card-price">
+							<div>
+								<div class="price-label">A partir de</div>
+								<div class="price-value"><span id="miniPrice">1250,00 MT</span></div>
+							</div>
+							<button class="btn ghost" id="openCart" aria-label="Abrir carrinho">
+								Carrinho <span class="cart-pill" id="cartCount">0</span>
+							</button>
+						</div>
+
+						<div class="hero-card-actions">
+							<button class="btn ghost full" id="miniOpen">Ver detalhes</button>
+							<button class="btn primary full" id="miniBuy">Adicionar ao carrinho</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" id="beneficios">
+		<div class="container">
+			<div class="section-head reveal">
+				<h2 class="section-title">Experiência de marca grande</h2>
+				<p class="section-subtitle">
+					Design premium, checkout rápido e produto bem apresentado. Sem complicações.
+				</p>
+			</div>
+
+			<div class="features-grid">
+				<div class="feature-card reveal">
+					<div class="feature-icon" aria-hidden="true">
+						<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+							<path d="M6 4h12v16H6V4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+							<path d="M8.5 8h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+							<path d="M8.5 12h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+							<path d="M8.5 16h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+						</svg>
+					</div>
+					<h3>Apresentação premium</h3>
+					<p>Detalhes, tamanhos e preço organizados para vender mais.</p>
+				</div>
+
+				<div class="feature-card reveal">
+					<div class="feature-icon" aria-hidden="true">
+						<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+							<path d="M12 3v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+							<path d="M12 12l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/>
+						</svg>
+					</div>
+					<h3>Compra em segundos</h3>
+					<p>Carrinho rápido e finalização automática do pedido.</p>
+				</div>
+
+				<div class="feature-card reveal">
+					<div class="feature-icon" aria-hidden="true">
+						<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+							<path d="M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+							<path d="M11 17h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+						</svg>
+					</div>
+					<h3>Mobile perfeito</h3>
+					<p>Design adaptado para telas pequenas sem cortar demais as fotos.</p>
+				</div>
+
+				<div class="feature-card reveal">
+					<div class="feature-icon" aria-hidden="true">
+						<svg class="mini-ico" viewBox="0 0 24 24" fill="none">
+							<path d="M20 7l-8 8-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M4 12v7h16v-7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+						</svg>
+					</div>
+					<h3>Processo simples</h3>
+					<p>Escolhe, adiciona ao carrinho e confirma o pedido rapidamente.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-dark" id="coleccao">
+		<div class="container">
+			<div class="section-head reveal">
+				<h2 class="section-title">Colecção</h2>
+				<p class="section-subtitle">Explora as peças e escolhe a tua favorita.</p>
+			</div>
+
+			<div class="slider-app reveal">
+				<div class="slider-topbar">
+					<div class="search-box">
+						<input id="searchInput" type="text" placeholder="Pesquisar peça, cor, tamanho..." autocomplete="off">
+						<button class="search-clear" id="clearSearch" aria-label="Limpar pesquisa">×</button>
+					</div>
+
+					<div class="slider-meta">
+						<div class="results-count" id="resultsCount">Resultados: 0</div>
+						<div class="slide-indicator" id="slideIndicator">01/04</div>
+						<button class="meta-cart" id="openCartTopBtn" style="display:none;"></button>
+					</div>
+				</div>
+
+				<div class="chips-row" id="quickFilters">
+					<button class="filter-chip" data-filter="premium">Premium</button>
+					<button class="filter-chip" data-filter="street">Street</button>
+					<button class="filter-chip" data-filter="classic">Classic</button>
+					<button class="filter-chip" data-filter="limited">Limitada</button>
+					<button class="filter-chip chip-clear" id="clearChips">Limpar</button>
+				</div>
+
+				<div class="search-empty" id="searchEmptyMsg">Nenhum produto encontrado.</div>
+
+				<div class="accordion-slider" id="accordionSlider">
+
+					<!-- SLIDE 01 -->
+					<div class="slide active"
+						data-code="01"
+						data-brand="MODER-FIT"
+						data-name="Moder-Fit Summer edition"
+						data-color="Preto"
+						data-size="M, L, XL"
+						data-price="1250"
+						data-image="https://i.postimg.cc/Yqj6dPzR/MODER-FIT.jpg"
+						data-quality="Tecido 100% algodão"
+						data-neck="Gola careca"
+						data-stock="Limitada"
+						data-delivery="48H"
+						style="background-image: url('https://i.postimg.cc/Yqj6dPzR/MODER-FIT.jpg')">
+
+						<div class="slide-content">
+							<div class="slide-number">01</div>
+							<div class="car-brand">MODER-FIT</div>
+							<div class="car-name">Moder-Fit Summer edition</div>
+							<div class="car-subtitle">Corte moderno, presença garantida</div>
+
+							<div class="car-specs">
+								<div class="spec-row"><span class="spec-label">Qualidade:</span><span class="spec-value">Tecido 100% algodão</span></div>
+								<div class="spec-row"><span class="spec-label">Cor:</span><span class="spec-value">Preto</span></div>
+								<div class="spec-row"><span class="spec-label">Tamanho:</span><span class="spec-value">M, L, XL</span></div>
+								<div class="spec-row"><span class="spec-label">Tipo de gola:</span><span class="spec-value">Careca</span></div>
+							</div>
+
+							<div class="performance-badges">
+								<div class="badge"><div class="badge-icon"></div><span>QNT: Limitada</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Entrega: 48H</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Preço: 1250,00 MT</span></div>
+							</div>
+
+							<div class="cta-row">
+								<button class="secondary-cta open-product">Detalhes</button>
+								<button class="add-cart">+ Carrinho</button>
+							</div>
+						</div>
+					</div>
+
+					<!-- SLIDE 02 -->
+					<div class="slide"
+						data-code="02"
+						data-brand="DRY PRIME"
+						data-name="Dry Prime edition"
+						data-color="Branco"
+						data-size="M, L, XL"
+						data-price="1250"
+						data-image="https://i.postimg.cc/3xX9w6yM/DRY-PRIME.jpg"
+						data-quality="Tecido 100% algodão"
+						data-neck="Gola careca"
+						data-stock="Limitada"
+						data-delivery="48H"
+						style="background-image: url('https://i.postimg.cc/3xX9w6yM/DRY-PRIME.jpg')">
+
+						<div class="slide-content">
+							<div class="slide-number">02</div>
+							<div class="car-brand">DRY PRIME</div>
+							<div class="car-name">Dry Prime edition</div>
+							<div class="car-subtitle">Minimalista e forte</div>
+
+							<div class="car-specs">
+								<div class="spec-row"><span class="spec-label">Qualidade:</span><span class="spec-value">Tecido 100% algodão</span></div>
+								<div class="spec-row"><span class="spec-label">Cor:</span><span class="spec-value">Branco</span></div>
+								<div class="spec-row"><span class="spec-label">Tamanho:</span><span class="spec-value">M, L, XL</span></div>
+								<div class="spec-row"><span class="spec-label">Tipo de gola:</span><span class="spec-value">Careca</span></div>
+							</div>
+
+							<div class="performance-badges">
+								<div class="badge"><div class="badge-icon"></div><span>QNT: Limitada</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Entrega: 48H</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Preço: 1250,00 MT</span></div>
+							</div>
+
+							<div class="cta-row">
+								<button class="secondary-cta open-product">Detalhes</button>
+								<button class="add-cart">+ Carrinho</button>
+							</div>
+						</div>
+					</div>
+
+					<!-- SLIDE 03 -->
+					<div class="slide"
+						data-code="03"
+						data-brand="DARK BLAZE"
+						data-name="Dark Blaze edition"
+						data-color="Preto, Cinza"
+						data-size="M, L, XL"
+						data-price="1250"
+						data-image="https://i.postimg.cc/9f1V8F0t/DARK-BLAZE.jpg"
+						data-quality="Tecido 100% algodão"
+						data-neck="Gola careca"
+						data-stock="Limitada"
+						data-delivery="48H"
+						style="background-image: url('https://i.postimg.cc/9f1V8F0t/DARK-BLAZE.jpg')">
+
+						<div class="slide-content">
+							<div class="slide-number">03</div>
+							<div class="car-brand">DARK BLAZE</div>
+							<div class="car-name">Dark Blaze edition</div>
+							<div class="car-subtitle">Presença e atitude</div>
+
+							<div class="car-specs">
+								<div class="spec-row"><span class="spec-label">Qualidade:</span><span class="spec-value">Tecido 100% algodão</span></div>
+								<div class="spec-row"><span class="spec-label">Cor:</span><span class="spec-value">Preto, Cinza</span></div>
+								<div class="spec-row"><span class="spec-label">Tamanho:</span><span class="spec-value">M, L, XL</span></div>
+								<div class="spec-row"><span class="spec-label">Tipo de gola:</span><span class="spec-value">Careca</span></div>
+							</div>
+
+							<div class="performance-badges">
+								<div class="badge"><div class="badge-icon"></div><span>QNT: Limitada</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Entrega: 48H</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Preço: 1250,00 MT</span></div>
+							</div>
+
+							<div class="cta-row">
+								<button class="secondary-cta open-product">Detalhes</button>
+								<button class="add-cart">+ Carrinho</button>
+							</div>
+						</div>
+					</div>
+
+					<!-- SLIDE 04 -->
+					<div class="slide"
+						data-code="04"
+						data-brand="DRY SAVANA"
+						data-name="Dry Savana edition"
+						data-color="Castanho, Branco"
+						data-size="M, L, XL"
+						data-price="1250"
+						data-image="https://i.postimg.cc/qvsFjgmP/SAVANA.jpg"
+						data-quality="Tecido 100% algodão"
+						data-neck="Gola careca"
+						data-stock="Limitada"
+						data-delivery="48H"
+						style="background-image: url('https://i.postimg.cc/qvsFjgmP/SAVANA.jpg')">
+
+						<div class="slide-content">
+							<div class="slide-number">04</div>
+							<div class="car-brand">DRY SAVANA</div>
+							<div class="car-name">Dry Savana edition</div>
+							<div class="car-subtitle">Ideal para amantes de clima quente</div>
+
+							<div class="car-specs">
+								<div class="spec-row"><span class="spec-label">Qualidade:</span><span class="spec-value">Tecido 100% algodão</span></div>
+								<div class="spec-row"><span class="spec-label">Cor:</span><span class="spec-value">Castanho, Branco</span></div>
+								<div class="spec-row"><span class="spec-label">Tamanho:</span><span class="spec-value">M, L, XL</span></div>
+								<div class="spec-row"><span class="spec-label">Tipo de gola:</span><span class="spec-value">Careca</span></div>
+							</div>
+
+							<div class="performance-badges">
+								<div class="badge"><div class="badge-icon"></div><span>QNT: Limitada</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Entrega: 48H</span></div>
+								<div class="badge"><div class="badge-icon"></div><span>Preço: 1250,00 MT</span></div>
+							</div>
+
+							<div class="cta-row">
+								<button class="secondary-cta open-product">Detalhes</button>
+								<button class="add-cart">+ Carrinho</button>
+							</div>
+						</div>
+					</div>
+
+					<button class="navigation-arrows nav-prev" aria-label="Anterior">‹</button>
+					<button class="navigation-arrows nav-next" aria-label="Seguinte">›</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" id="faq">
+		<div class="container">
+			<div class="section-head reveal">
+				<h2 class="section-title">Perguntas frequentes</h2>
+				<p class="section-subtitle">Tudo o que precisas para comprar com confiança.</p>
+			</div>
+
+			<div class="faq-grid">
+				<div class="faq-item reveal">
+					<button class="faq-q">Como faço o pedido?</button>
+					<div class="faq-a">Escolhe a peça, adiciona ao carrinho e finaliza o pedido com a mensagem automática.</div>
+				</div>
+				<div class="faq-item reveal">
+					<button class="faq-q">Quanto tempo demora a entrega?</button>
+					<div class="faq-a">Normalmente até 48H em Maputo, dependendo da zona e confirmação do pedido.</div>
+				</div>
+				<div class="faq-item reveal">
+					<button class="faq-q">Posso trocar?</button>
+					<div class="faq-a">Sim, desde que a peça esteja intacta e dentro das condições combinadas no acto da compra.</div>
+				</div>
+				<div class="faq-item reveal">
+					<button class="faq-q">Quais são os tamanhos disponíveis?</button>
+					<div class="faq-a">M, L e XL. Confirma sempre no checkout antes de finalizar.</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="cta-final" id="contacto">
+		<div class="container cta-final-inner reveal">
+			<div>
+				<h2>Pronto para vestir a tua próxima peça favorita?</h2>
+				<p>Adiciona ao carrinho, escolhe tamanho e finaliza o pedido em segundos.</p>
+			</div>
+
+			<div class="cta-final-actions">
+				<button class="btn primary" id="finalCTA">Finalizar pedido</button>
+				<button class="btn ghost" id="finalScroll">Ver colecção</button>
+			</div>
+		</div>
+	</section>
+
+	<footer class="footer">
+		<div class="container footer-grid">
+			<div class="footer-brand">
+				<div class="footer-logo">
+					<span class="brand-dot"></span>
+					<strong>Mula Store</strong>
+				</div>
+				<p>Premium Streetwear • Maputo</p>
+				<span class="footer-small">© <span id="year"></span> Mula Store. Todos os direitos reservados.</span>
+			</div>
+
+			<div class="footer-links">
+				<a href="#coleccao">Colecção</a>
+				<a href="#beneficios">Benefícios</a>
+				<a href="#faq">FAQ</a>
+				<a href="#contacto">Contacto</a>
+			</div>
+
+			
+		</div>
+	</footer>
+
+	<!-- Bottom floating bar (GLOBAL / FIXED) -->
+	<div class="bottom-glass-bar-fixed" id="bottomBar">
+		<button class="glass-btn" id="openContact">Contacto</button>
+		<button class="glass-btn" id="openInfo">Info.</button>
+		<button class="glass-btn" id="openCartBottom">Carrinho <span class="cart-pill" id="cartCountBottom">0</span></button>
+	</div>
+
+	<!-- Popups -->
+	<div class="popup-overlay" id="contactPopup" aria-hidden="true">
+		<div class="popup-card" role="dialog" aria-label="Contacto">
+			<button class="popup-close" data-close="contactPopup" aria-label="Fechar">×</button>
+			<h3>Contacto</h3>
+			<p>📞 Telefone: +258 84 000 0000</p>
+			<p>📍 Entregas: Maputo (48H)</p>
+			<p>✉️ Email: contacto@mulastore.com</p>
+		</div>
+	</div>
+
+	<div class="popup-overlay" id="infoPopup" aria-hidden="true">
+		<div class="popup-card" role="dialog" aria-label="Informações">
+			<button class="popup-close" data-close="infoPopup" aria-label="Fechar">×</button>
+			<h3>Informações</h3>
+			<p>✔️ Produtos com quantidade limitada</p>
+			<p>✔️ Confirmação e finalização do pedido</p>
+			<p>✔️ Trocas mediante condições</p>
+		</div>
+	</div>
+
+	<!-- Product Modal (horizontal scroll premium) -->
+	<div class="modal-overlay" id="productModal" aria-hidden="true">
+		<div class="modal-card" role="dialog" aria-label="Detalhes do produto">
+			<button class="modal-close" id="closeProductModal" aria-label="Fechar">×</button>
+
+			<!-- horizontal pages -->
+			<div class="modal-pages" id="modalPages">
+				<!-- PAGE 1 -->
+				<div class="modal-page">
+					<div class="modal-grid">
+						<div class="modal-media">
+							<div class="modal-image" id="modalImage"></div>
+						</div>
+
+						<div class="modal-info">
+							<div class="modal-top">
+								<div class="modal-code" id="modalCode">#01</div>
+								<div class="modal-brand" id="modalBrand">MODER-FIT</div>
+							</div>
+
+							<h3 class="modal-title" id="modalTitle">MODER-FIT Summer edition</h3>
+							<div class="modal-price" id="modalPrice">1250,00 MT</div>
+
+							<div class="modal-meta" id="modalMeta">
+								<div class="meta-line"><span>Qualidade:</span> <strong id="modalQuality">—</strong></div>
+								<div class="meta-line"><span>Cor:</span> <strong id="modalColor">—</strong></div>
+								<div class="meta-line"><span>Gola:</span> <strong id="modalNeck">—</strong></div>
+								<div class="meta-line"><span>Entrega:</span> <strong id="modalDelivery">—</strong></div>
+							</div>
+
+							<button class="btn ghost full modal-details-toggle" id="modalDetailsToggle" type="button">
+								Detalhes
+							</button>
+
+							<div class="modal-note">
+								<span>Desliza para o lado para escolher tamanho e comprar.</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- PAGE 2 -->
+				<div class="modal-page">
+					<div class="modal-buy">
+						<div class="modal-buy-head">
+							<strong>Personalizar pedido</strong>
+							<span class="modal-hint">Escolhe tamanho e quantidade</span>
+						</div>
+
+						<div class="modal-controls">
+							<div class="control">
+								<label>Tamanho</label>
+								<div class="size-row" id="sizeRow"></div>
+							</div>
+
+							<div class="control">
+								<label>Quantidade</label>
+								<div class="qty-row">
+									<button class="qty-btn" id="qtyMinus">−</button>
+									<div class="qty-value" id="qtyValue">1</div>
+									<button class="qty-btn" id="qtyPlus">+</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="modal-actions">
+							<div class="share-toast" id="shareToast">Link copiado!</div>
+						</div>
+
+						<!-- Floating CTA bar (modal) -->
+						<div class="modal-cta-bar" role="group" aria-label="Ações rápidas do produto">
+							<button class="btn ghost modal-cta-mini" id="modalShare" aria-label="Partilhar produto" title="Partilhar" type="button">
+								<svg class="cta-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path d="M16 8a3 3 0 10-2.9-3.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+									<path d="M8 14l8-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+									<path d="M8 10l8 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+									<path d="M6 18a3 3 0 103-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+									<path d="M18 18a3 3 0 10-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+								</svg>
+							</button>
+
+							<button class="btn ghost modal-cta-mini" id="modalAddToCart" aria-label="Adicionar ao carrinho" title="Carrinho" type="button">
+								<svg class="cta-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path d="M6 6h15l-2 8H8L6 6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+									<path d="M6 6L5 3H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+									<path d="M9 20a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/>
+									<path d="M18 20a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/>
+								</svg>
+							</button>
+
+							<button class="btn primary modal-cta-main" id="modalBuyNow" aria-label="Comprar agora" title="Comprar agora" type="button">
+								<svg class="cta-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+									<path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+								</svg>
+								<span class="cta-label">Comprar</span>
+							</button>
+						</div>
+
+						<div class="modal-note">
+							<span>Confirmação rápida após o envio do pedido.</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- dots indicator -->
+			<div class="modal-dots" id="modalDots" aria-hidden="true">
+				<span class="dot active"></span>
+				<span class="dot"></span>
+			</div>
+		</div>
+	</div>
+
+	<!-- CART DRAWER -->
+	<div class="drawer-overlay" id="cartOverlay" aria-hidden="true">
+		<div class="drawer" role="dialog" aria-label="Carrinho">
+			<div class="drawer-head">
+				<h3>Carrinho</h3>
+				<button class="drawer-close" id="closeCart" aria-label="Fechar">×</button>
+			</div>
+
+			<div class="drawer-body">
+				<div class="cart-list" id="cartList"></div>
+
+				<div class="cart-empty" id="cartEmpty">
+					O teu carrinho está vazio.
+				</div>
+
+				<div class="checkout-form" id="checkoutForm">
+					<div class="checkout-title">Dados para entrega</div>
+
+					<div class="field">
+						<label>Nome</label>
+						<input id="clientName" type="text" placeholder="Ex: Edmilson" />
+					</div>
+
+					<div class="field">
+						<label>Telefone</label>
+						<input id="clientPhone" type="tel" placeholder="Ex: 84xxxxxxx" />
+					</div>
+
+					<div class="field">
+						<label>Local / Bairro</label>
+						<input id="clientAddress" type="text" placeholder="Ex: Zimpeto, Benfica." />
+					</div>
+
+					<div class="field">
+						<label>Método de pagamento</label>
+						<select id="clientPayment">
+							<option value="M-Pesa">M-Pesa</option>
+							<option value="Cash">Cash</option>
+							<option value="Transferência">Transferência</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="drawer-foot">
+				<div class="cart-total">
+					<span>Total</span>
+					<strong id="cartTotal">0,00 MT</strong>
+				</div>
+
+				<button class="btn primary full" id="cartCheckout">Finalizar pedido</button>
+				<button class="btn ghost full" id="cartClear">Limpar carrinho</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="main.js"></script>
+</body>
+</html>
