@@ -522,10 +522,10 @@ body{
 .slider-app{
 	margin-top: 18px;
 	border-radius: 26px;
-	border: 1px solid rgba(255,255,255,0.12);
+	border: 1px solid rgba(159,255,107,0.25);
 	background: rgba(255,255,255,0.04);
 	overflow: hidden;
-	box-shadow: 0 26px 90px rgba(0,0,0,0.50);
+	box-shadow: 0 26px 90px rgba(159, 255, 107, 0.11);
 	position: relative;
 }
 
@@ -889,8 +889,8 @@ body{
 	gap: 12px;
 	padding: 10px 12px;
 	border-radius: 18px;
-	background: rgba(255,255,255,0.10);
-	border: 1px solid rgba(255,255,255,0.16);
+	background: rgba(159,255,107,0.18);
+	border: 1px solid rgba(159,255,107,0.25);
 	backdrop-filter: blur(14px);
 	-webkit-backdrop-filter: blur(14px);
 	z-index: 1300;
@@ -899,12 +899,12 @@ body{
 }
 
 .glass-btn{
-	border: none;
+	border: 1px solid rgba(255, 253, 252, 0.25);
 	outline: none;
 	cursor: pointer;
 	padding: 10px 16px;
 	border-radius: 16px;
-	background: rgba(255,255,255,0.10);
+	background: rgba(65, 29, 1, 0.452);
 	color: rgba(255,255,255,0.95);
 	font-weight: 980;
 	font-size: 13px;
