@@ -10,6 +10,7 @@
 (function () {
 	"use strict";
 
+	
 	/* ==========================
 	   Helpers
 	========================== */
@@ -47,6 +48,19 @@
 		if (!el) return;
 		el.scrollIntoView({ behavior: "smooth", block: "start" });
 	};
+
+	function openSuccessPopup() {
+  if (!successPopup) return;
+  successPopup.classList.add("active");
+  successPopup.setAttribute("aria-hidden", "false");
+}
+
+function closeSuccessPopup() {
+  if (!successPopup) return;
+  successPopup.classList.remove("active");
+  successPopup.setAttribute("aria-hidden", "true");
+}
+
 
 	/* ==========================
 	   Config (Telegram via Apps Script)
@@ -157,6 +171,8 @@ function flashButtonAdded(btn) {
 
 	const modalShare = $("#modalShare");
 	const shareToast = $("#shareToast");
+	const successPopup = $("#successPopup");
+	const successCloseBtn = $("#successCloseBtn");
 
 	// Cart drawer
 	const cartOverlay = $("#cartOverlay");
@@ -344,28 +360,58 @@ function flashButtonAdded(btn) {
 	}
 
 	function getProductShareLink(code) {
-		const base = window.location.origin + window.location.pathname;
-		return `${base}#p=${encodeURIComponent(code)}`;
-	}
+  const cleanCode = String(code || "").trim();
+  if (!cleanCode) return window.location.href;
 
+  // Ex: "01" -> "p01.html"
+  const page = `p${cleanCode}.html`;
+
+  // Link absoluto (funciona em qualquer host)
+  return new URL(page, window.location.href).href;
+}
 	async function copyShareLink(code) {
-		if (!code) return;
+  if (!code) return;
 
-		const link = getProductShareLink(code);
+  const link = getProductShareLink(code);
 
-		try {
-			await navigator.clipboard.writeText(link);
-			showShareToast();
-		} catch {
-			const temp = document.createElement("input");
-			temp.value = link;
-			document.body.appendChild(temp);
-			temp.select();
-			document.execCommand("copy");
-			document.body.removeChild(temp);
-			showShareToast();
-		}
-	}
+  // Se existir partilha nativa (telemóveis), usa primeiro
+  if (navigator.share) {
+    try {
+      // tenta buscar nome/descrição do produto activo
+      const title = modalProduct?.name ? `${modalProduct.name} (#${modalProduct.code})` : "Produto — Mula Store";
+      const text = modalProduct?.price
+        ? `${modalProduct.name} — ${formatMT(modalProduct.price)}`
+        : "Vê este produto na Mula Store";
+
+      await navigator.share({
+        title,
+        text,
+        url: link,
+      });
+
+      // opcional: feedback ao utilizador
+      showToast("Partilhado com sucesso.", "success");
+      return;
+    } catch (err) {
+      // Se o user cancelar ou falhar, cai para copiar link
+    }
+  }
+
+  // Fallback: copiar link (desktop + browsers sem share)
+  try {
+    await navigator.clipboard.writeText(link);
+    showShareToast();
+  } catch {
+    const temp = document.createElement("input");
+    temp.value = link;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+    showShareToast();
+  }
+}
+
 
 	function showShareToast() {
 		if (!shareToast) return;
@@ -422,84 +468,99 @@ function flashButtonAdded(btn) {
 	   Modal open/close
 	========================== */
 	function openModal(product) {
-		if (!productModal || !product) return;
+        if (!productModal || !product) return;
 
-		modalProduct = product;
-		selectedSize = "M";
-		selectedQty = 1;
+        modalProduct = product;
+        selectedSize = "M";
+        selectedQty = 1;
 
-		if (modalImage) modalImage.style.backgroundImage = `url('${product.image}')`;
-		if (modalCode) modalCode.textContent = `#${product.code}`;
-		if (modalBrand) modalBrand.textContent = product.brand;
-		if (modalTitle) modalTitle.textContent = product.name;
-		if (modalPrice) modalPrice.textContent = formatMT(product.price);
+        if (modalImage) modalImage.style.backgroundImage = `url('${product.image}')`;
+        if (modalCode) modalCode.textContent = `#${product.code}`;
+        if (modalBrand) modalBrand.textContent = product.brand;
+        if (modalTitle) modalTitle.textContent = product.name;
+        if (modalPrice) modalPrice.textContent = formatMT(product.price);
 
-		if (modalQuality) modalQuality.textContent = product.quality || "—";
-		if (modalColor) modalColor.textContent = product.color || "—";
-		if (modalNeck) modalNeck.textContent = product.neck || "—";
-		if (modalDelivery) modalDelivery.textContent = product.delivery || "—";
+        if (modalQuality) modalQuality.textContent = product.quality || "—";
+        if (modalColor) modalColor.textContent = product.color || "—";
+        if (modalNeck) modalNeck.textContent = product.neck || "—";
+        if (modalDelivery) modalDelivery.textContent = product.delivery || "—";
 
-		// sizes
-		const sizes = (product.size || "M, L, XL")
-			.split(",")
-			.map((s) => s.trim())
-			.filter(Boolean);
+        // sizes
+        const sizes = (product.size || "M, L, XL")
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
 
-		if (sizeRow) {
-			sizeRow.innerHTML = "";
-			sizes.forEach((s, i) => {
-				const btn = document.createElement("button");
-				btn.className = "size-btn" + (i === 0 ? " active" : "");
-				btn.setAttribute("data-size", s);
-				btn.textContent = s;
+        if (sizeRow) {
+            sizeRow.innerHTML = "";
+            sizes.forEach((s, i) => {
+                const btn = document.createElement("button");
+                btn.className = "size-btn" + (i === 0 ? " active" : "");
+                btn.setAttribute("data-size", s);
+                btn.textContent = s;
 
-				btn.addEventListener("click", () => {
-					$$(".size-btn", sizeRow).forEach((b) => b.classList.remove("active"));
-					btn.classList.add("active");
-					selectedSize = s;
-				});
+                btn.addEventListener("click", () => {
+                    $$(".size-btn", sizeRow).forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    selectedSize = s;
+                });
 
-				sizeRow.appendChild(btn);
-			});
-			selectedSize = sizes[0] || "M";
-		}
+                sizeRow.appendChild(btn);
+            });
+            selectedSize = sizes[0] || "M";
+        }
 
-		if (qtyValue) qtyValue.textContent = String(selectedQty);
+        if (qtyValue) qtyValue.textContent = String(selectedQty);
 
-		productModal.classList.add("active");
-		productModal.setAttribute("aria-hidden", "false");
-		lockScroll(true);
+        // --- CORREÇÃO DA ANIMAÇÃO AQUI ---
+        // 1. Primeiro garantimos o display flex
+        productModal.style.display = "flex"; 
+        
+        // 2. Usamos um pequeno timeout para o navegador processar o display antes da animação
+        setTimeout(() => {
+            productModal.classList.add("active");
+            productModal.setAttribute("aria-hidden", "false");
+            lockScroll(true);
 
-		// Mobile: começar com detalhes escondidos
-		productModal.classList.remove("details-expanded");
-		productModal.classList.add("details-collapsed");
-		if (modalDetailsToggle) modalDetailsToggle.textContent = "Detalhes";
+            // Mobile: começar com detalhes escondidos
+            productModal.classList.remove("details-expanded");
+            productModal.classList.add("details-collapsed");
+            if (modalDetailsToggle) modalDetailsToggle.textContent = "Detalhes";
 
-		// modal always opens on page 0
-		if (modalPages) modalPages.scrollLeft = 0;
-		updateModalDots();
+            // modal always opens on page 0
+            if (modalPages) modalPages.scrollLeft = 0;
+            updateModalDots();
+        }, 10); 
+        // --------------------------------
 
-		setHashProduct(product.code);
+        setHashProduct(product.code);
 
-		track("ViewContent", {
-			content_name: product.name,
-			content_ids: [product.code],
-			content_type: "product",
-			value: product.price,
-			currency: "MZN",
-		});
-	}
+        track("ViewContent", {
+            content_name: product.name,
+            content_ids: [product.code],
+            content_type: "product",
+            value: product.price,
+            currency: "MZN",
+        });
+    }
 
 	function closeModal() {
-		if (!productModal) return;
-		productModal.classList.remove("active");
-		productModal.setAttribute("aria-hidden", "true");
-		lockScroll(false);
+        if (!productModal) return;
+        productModal.classList.remove("active");
+        productModal.setAttribute("aria-hidden", "true");
+        lockScroll(false);
 
-		if (window.location.hash.startsWith("#p=")) {
-			history.replaceState(null, "", window.location.pathname + window.location.search);
-		}
-	}
+        // Esconde o display após a animação de saída (400ms conforme seu CSS)
+        setTimeout(() => {
+            if (!productModal.classList.contains('active')) {
+                productModal.style.display = "none";
+            }
+        }, 400);
+
+        if (window.location.hash.startsWith("#p=")) {
+            history.replaceState(null, "", window.location.pathname + window.location.search);
+        }
+    }
 
 	/* ==========================
 	   Cart
@@ -768,13 +829,54 @@ function setButtonLoading(btn, isLoading, loadingText = "A enviar...") {
   }
 }
 
+function getBuyerData() {
+  const name = (clientName?.value || "").trim();
+  const phone = (clientPhone?.value || "").trim();
+  const address = (clientAddress?.value || "").trim();
+  const payment = (clientPayment?.value || "").trim();
+
+  return { name, phone, address, payment };
+}
+
+function buyerFieldsAreValid() {
+  const { name, phone, address, payment } = getBuyerData();
+
+  if (!name || !phone || !address || !payment) return false;
+
+  // validação mínima do telefone (podes ajustar)
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length < 8) return false;
+
+  return true;
+}
+
+function requireBuyerFieldsOrBlock() {
+  if (buyerFieldsAreValid()) return true;
+
+  // abre carrinho para o utilizador preencher
+  openCartDrawer();
+
+  showToast("Preenche todos os dados do comprador para finalizar o pedido.", "error");
+
+  // opcional: focar no primeiro campo vazio
+  const { name, phone, address, payment } = getBuyerData();
+  if (!name && clientName) clientName.focus();
+  else if (!phone && clientPhone) clientPhone.focus();
+  else if (!address && clientAddress) clientAddress.focus();
+  else if (!payment && clientPayment) clientPayment.focus();
+
+  return false;
+}
+
 	async function checkoutSend() {
   if (cart.length === 0) {
     openCartDrawer();
     showToast("O carrinho está vazio.", "error");
     return;
   }
-
+// 🔒 BLOQUEIO: não finaliza sem dados do comprador
+  if (!requireBuyerFieldsOrBlock()) return;
+  
   track("InitiateCheckout", {
     num_items: cart.reduce((sum, i) => sum + Number(i.qty), 0),
     value: cartTotalValue(),
@@ -791,13 +893,12 @@ function setButtonLoading(btn, isLoading, loadingText = "A enviar...") {
   setButtonLoading(cartCheckout, false);
 
   if (result.ok) {
-    showToast("Pedido enviado com sucesso. Vamos confirmar contigo em breve.", "success");
-    clearCart();
-    closeCartDrawer();
-  } else {
-    showToast("Não foi possível enviar agora. Tenta novamente.", "error");
-  }
+  clearCart();
+  closeCartDrawer();
+  openSuccessPopup();
 }
+}
+
 
 
 	/* ==========================
@@ -1029,6 +1130,7 @@ function setButtonLoading(btn, isLoading, loadingText = "A enviar...") {
 		if (modalBuyNow) {
 			modalBuyNow.addEventListener("click", async () => {
 				if (!modalProduct) return;
+				if (!requireBuyerFieldsOrBlock()) return;
 
 				track("InitiateCheckout", {
 					num_items: selectedQty,
@@ -1048,10 +1150,8 @@ function setButtonLoading(btn, isLoading, loadingText = "A enviar...") {
 				const result = await sendOrderToTelegram(msg);
 
 				if (result.ok) {
-					alert("Pedido enviado com sucesso. Vamos confirmar contigo em breve.");
 					closeModal();
-				} else {
-					alert("Não foi possível enviar o pedido agora. Tenta novamente.");
+					openSuccessPopup();
 				}
 			});
 		}
@@ -1063,6 +1163,15 @@ function setButtonLoading(btn, isLoading, loadingText = "A enviar...") {
 			});
 		}
 
+		if (successCloseBtn) {
+  successCloseBtn.addEventListener("click", closeSuccessPopup);
+}
+
+if (successPopup) {
+  successPopup.addEventListener("click", (e) => {
+    if (e.target === successPopup) closeSuccessPopup();
+  });
+}
 		// cart open
 		const openCart = $("#openCart");
 		if (openCart) openCart.addEventListener("click", openCartDrawer);
