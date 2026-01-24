@@ -200,8 +200,8 @@ body{
 	width: 44px;
 	height: 44px;
 	border-radius: 16px;
-	border: 1px solid rgba(255,255,255,0.14);
-	background: rgba(255,255,255,0.06);
+	border: 1px solid rgba(159,255,107,0.25);
+	background: rgba(57, 92, 38, 0.212);
 	cursor: pointer;
 	position: relative;
 }
@@ -252,8 +252,8 @@ body{
 	width: 42px;
 	height: 42px;
 	border-radius: 16px;
-	border: 1px solid rgba(255,255,255,0.14);
-	background: rgba(255,255,255,0.08);
+	border: 1px solid rgba(159,255,107,0.25);
+	background: rgba(57, 92, 38, 0.212);
 	color: #fff;
 	cursor: pointer;
 	font-size: 20px;
@@ -515,15 +515,48 @@ body{
 }
 
 /* ================================
+   Section Head Alignment FIX
+================================ */
+.section-head{
+	display: grid;
+	gap: 10px;
+	text-align: left;
+	margin-bottom: 18px;
+}
+
+.section-title{
+	margin: 0;
+	line-height: 1.15;
+	max-width: 820px;
+}
+
+.section-subtitle{
+	margin: 0;
+	max-width: 720px;
+}
+
+/* Mobile: mais compacto e alinhado */
+@media (max-width: 720px){
+	.section-title{
+		font-size: 22px;
+	}
+
+	.section-subtitle{
+		font-size: 13px;
+		line-height: 1.55;
+	}
+}
+
+/* ================================
    Slider App Wrapper
 ================================ */
 .slider-app{
 	margin-top: 18px;
 	border-radius: 26px;
-	border: 1px solid rgba(255,255,255,0.12);
+	border: 1px solid rgba(159,255,107,0.25);
 	background: rgba(255,255,255,0.04);
 	overflow: hidden;
-	box-shadow: 0 26px 90px rgba(45, 158, 121, 0.5);
+	box-shadow: 0 26px 90px rgba(159, 255, 107, 0.075);
 	position: relative;
 }
 
@@ -880,8 +913,8 @@ body{
 	gap: 12px;
 	padding: 10px 12px;
 	border-radius: 18px;
-	background: rgba(31, 196, 105, 0.205);
-	border: 1px solid rgba(255,255,255,0.16);
+	background: rgba(159, 255, 107, 0.151);
+	border: 1px solid rgba(159,255,107,0.25);
 	backdrop-filter: blur(14px);
 	-webkit-backdrop-filter: blur(14px);
 	z-index: 1300;
@@ -895,7 +928,7 @@ body{
 	cursor: pointer;
 	padding: 10px 16px;
 	border-radius: 16px;
-	background: rgba(48, 177, 65, 0.199);
+	background: rgba(212, 212, 212, 0.199);
 	color: rgba(255,255,255,0.95);
 	font-weight: 980;
 	font-size: 13px;
@@ -1040,7 +1073,7 @@ body{
 .popup-overlay{
 	position: fixed;
 	inset: 0;
-	background: rgba(0,0,0,0.60);
+	background: rgba(57, 92, 38, 0.212);
 	align-items: center;
 	justify-content: center;
 	z-index: 1400;
@@ -1102,6 +1135,11 @@ body{
 	justify-content: center;
 	z-index: 1500;
 	padding: 18px;
+	display: flex;
+	pointer-events: none;
+}
+.modal-overlay.active{
+	pointer-events: auto;
 }
 
 
@@ -1129,8 +1167,8 @@ body{
 	width: 42px;
 	height: 42px;
 	border-radius: 16px;
-	border: 1px solid rgba(255,255,255,0.14);
-	background: rgba(255,255,255,0.08);
+	border: 1px solid rgba(159,255,107,0.25);
+	background: rgba(57, 92, 38, 0.212);
 	color: #fff;
 	cursor: pointer;
 	font-size: 20px;
@@ -1344,12 +1382,12 @@ body{
 .modal-dots{
 	display: flex;
 	justify-content: center;
-	gap: 8px;
-	padding: 12px 0 16px;
+	gap: 15px;
+	padding: 16px 0 20px;
 }
 .modal-dots .dot{
-	width: 8px;
-	height: 8px;
+	width: 15px;
+	height: 15px;
 	border-radius: 50%;
 	background: rgba(255,255,255,0.25);
 	border: 1px solid rgba(255,255,255,0.22);
@@ -2161,4 +2199,188 @@ button:active,
 .drawer-overlay,
 .mobile-menu{
   display: flex;
+}
+
+/* ================================
+   Scroll Animations (Titles vs Subtitles)
+   - Subtil
+   - Até 1s
+================================ */
+
+/* ================================
+   Scroll Animations (Titles vs Subtitles)
+   (LIMITADO às secções normais)
+================================ */
+
+/* Só animar quando estiver dentro de .section ou .section-dark */
+.section .section-head .section-title,
+.section-dark .section-head .section-title,
+.section .section-head .section-subtitle,
+.section-dark .section-head .section-subtitle{
+	will-change: transform, opacity, filter;
+}
+
+/* TITULOS: slide-up + fade */
+.section .section-head .section-title,
+.section-dark .section-head .section-title{
+	opacity: 0;
+	transform: translateY(18px);
+	transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+/* SUBTITULOS: fade + blur + micro slide */
+.section .section-head .section-subtitle,
+.section-dark .section-head .section-subtitle{
+	opacity: 0;
+	transform: translateY(10px);
+	filter: blur(6px);
+	transition: opacity 1s ease, transform 1s ease, filter 1s ease;
+	transition-delay: 0.12s;
+}
+
+/* Quando entra no ecrã */
+.section .section-head.in-view .section-title,
+.section-dark .section-head.in-view .section-title{
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.section .section-head.in-view .section-subtitle,
+.section-dark .section-head.in-view .section-subtitle{
+	opacity: 1;
+	transform: translateY(0);
+	filter: blur(0);
+}
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce){
+	.section .section-head .section-title,
+	.section-dark .section-head .section-title,
+	.section .section-head .section-subtitle,
+	.section-dark .section-head .section-subtitle{
+		opacity: 1 !important;
+		transform: none !important;
+		filter: none !important;
+		transition: none !important;
+	}
+}
+/* Quando entra no ecrã */
+.section-head.in-view .section-title{
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.section-head.in-view .section-subtitle{
+	opacity: 1;
+	transform: translateY(0);
+	filter: blur(0);
+}
+
+/* Acessibilidade: reduzir movimento */
+@media (prefers-reduced-motion: reduce){
+	.section-head .section-title,
+	.section-head .section-subtitle{
+		opacity: 1 !important;
+		transform: none !important;
+		filter: none !important;
+		transition: none !important;
+	}
+}
+/* =========================================
+   MODAL PREMIUM — animação suave (como no CSS antigo)
+   Desktop + Mobile
+========================================= */
+
+/* Estado inicial (fechado) */
+.modal-overlay{
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+/* Modal fechado: card preparado para entrar */
+.modal-card{
+	opacity: 0;
+	transform: translateY(18px) scale(0.98);
+	transition: transform 0.55s var(--ease), opacity 0.35s ease;
+	will-change: transform, opacity;
+}
+
+/* Quando abre */
+.modal-overlay.active{
+	opacity: 1;
+	visibility: visible;
+}
+
+/* Card aparece com “zoom + subida suave” */
+.modal-overlay.active .modal-card{
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+/* ==========================
+   Animação dos elementos internos (premium)
+========================== */
+.modal-title,
+.modal-price,
+.modal-meta,
+.modal-controls,
+.modal-actions,
+.modal-note{
+	opacity: 0;
+	transform: translateY(10px);
+	transition: opacity 0.45s ease, transform 0.55s var(--ease);
+}
+
+/* Quando modal abre, entra tudo com delays suaves */
+.modal-overlay.active .modal-title{
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.08s;
+}
+
+.modal-overlay.active .modal-price{
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.12s;
+}
+
+.modal-overlay.active .modal-meta{
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.16s;
+}
+
+.modal-overlay.active .modal-controls{
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.20s;
+}
+
+.modal-overlay.active .modal-actions{
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.24s;
+}
+
+.modal-overlay.active .modal-note{
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.28s;
+}
+
+/* Acessibilidade: reduzir movimento */
+@media (prefers-reduced-motion: reduce){
+	.modal-overlay,
+	.modal-card,
+	.modal-title,
+	.modal-price,
+	.modal-meta,
+	.modal-controls,
+	.modal-actions,
+	.modal-note{
+		transition: none !important;
+		transform: none !important;
+		opacity: 1 !important;
+	}
 }

@@ -1190,4 +1190,29 @@ function setButtonLoading(btn, isLoading, loadingText = "A enviar...") {
 
 	// Start
 	document.addEventListener("DOMContentLoaded", init);
+	/* ==========================
+   Scroll reveal for titles/subtitles
+========================== */
+(function initSectionHeadReveal() {
+	const heads = document.querySelectorAll(".section-head");
+
+	if (!heads.length) return;
+
+	const io = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add("in-view");
+				}
+			});
+		},
+		{
+			root: null,
+			threshold: 0.25,
+			rootMargin: "0px 0px -10% 0px",
+		}
+	);
+
+	heads.forEach((h) => io.observe(h));
+})();
 })();
