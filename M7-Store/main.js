@@ -212,6 +212,9 @@ function flashButtonAdded(btn) {
 	const openCartMobile = $("#openCartMobile");
 	const goCollectionMobile = $("#goCollectionMobile");
 
+	const brandDot = $(".brand-dot");
+
+
 	/* ==========================
 	   State
 	========================== */
@@ -1292,6 +1295,16 @@ if (successPopup) {
 				closePopup(infoPopup);
 			}
 		});
+
+		window.addEventListener("load", () => {
+  const loader = document.getElementById("pageLoader");
+  if (!loader) return;
+
+  // mantém visível um curto momento para não “piscar”
+  setTimeout(() => {
+    loader.classList.add("hidden");
+  }, 1800);
+});
 
 		// open product from hash
 		openFromHash();
