@@ -1215,13 +1215,21 @@ if (successPopup) {
 		if (footerCTA) footerCTA.addEventListener("click", openCartDrawer);
 
 		// hero mini
-		if (miniOpen) miniOpen.addEventListener("click", () => openModal(slideToProduct(getActiveSlide())));
-		if (miniBuy) miniBuy.addEventListener("click", () => {
-			const p = slideToProduct(getActiveSlide());
-			addToCart(p, "M", 1);
-			openCartDrawer();
-		});
+if (miniOpen) {
+  miniOpen.addEventListener("click", () => {
+    const p = slideToProduct(getActiveSlide());
+    if (!p || !p.code) return;
 
+    // abre a página individual do produto (p01.html, p02.html, ...)
+    window.location.href = getProductShareLink(p.code);
+  });
+}
+
+if (miniBuy) miniBuy.addEventListener("click", () => {
+  const p = slideToProduct(getActiveSlide());
+  addToCart(p, "M", 1);
+  openCartDrawer();
+});
 		// search
 		if (searchInput) searchInput.addEventListener("input", filterSlides);
 		if (clearSearch) clearSearch.addEventListener("click", () => {
@@ -1351,5 +1359,4 @@ if (successPopup) {
 	heads.forEach((h) => io.observe(h));
 })();
 })();
-
 
