@@ -277,6 +277,13 @@
 </head>
 
 <body>
+  <!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader" aria-hidden="false">
+  <div class="loader-core">
+    <div class="loader-dot"></div>
+  </div>
+</div>
+
   <div class="ambient-bg" aria-hidden="true"></div>
 
   <!-- Header (mesma linguagem do index) -->
@@ -554,5 +561,16 @@
       els.forEach(el=>io.observe(el));
     })();
   </script>
+  <script>
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("pageLoader");
+    if (!loader) return;
+
+    setTimeout(() => {
+      loader.classList.add("hidden");
+      loader.setAttribute("aria-hidden", "true");
+    }, 150);
+  });
+</script>
 </body>
 </html>
