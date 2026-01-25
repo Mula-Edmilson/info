@@ -1033,14 +1033,27 @@ function requireBuyerFieldsOrBlock() {
 		if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); nextSlide(); });
 		if (prevBtn) prevBtn.addEventListener("click", (e) => { e.stopPropagation(); prevSlide(); });
 
-		// open product modal
-		$$(".open-product").forEach((btn) => {
-			btn.addEventListener("click", (e) => {
-				e.stopPropagation();
-				const slide = btn.closest(".slide");
-				openModal(slideToProduct(slide));
-			});
-		});
+		// CTA "Detalhes" -> abrir página individual do produto (p01.html, p02.html...)
+$$(".open-product").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    const slide = btn.closest(".slide");
+    if (!slide) return;
+
+    const p = slideToProduct(slide);
+    if (!p || !p.code) return;
+
+    // abre a página individual
+    const url = getProductShareLink(p.code);
+
+    // se quiser abrir na mesma aba:
+    window.location.href = url;
+
+    // se quiser abrir em nova aba (alternativa):
+    // window.open(url, "_blank");
+  });
+});
 
 		// add cart
 		$$(".add-cart").forEach((btn) => {
@@ -1338,4 +1351,5 @@ if (successPopup) {
 	heads.forEach((h) => io.observe(h));
 })();
 })();
+
 
