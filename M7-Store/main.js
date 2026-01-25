@@ -1338,3 +1338,33 @@ if (successPopup) {
 	heads.forEach((h) => io.observe(h));
 })();
 })();
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Verifica se existe um parâmetro de produto na URL (ex: #p=02)
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#p=')) {
+        const productId = hash.split('=')[1];
+        
+        // Procura o slide correspondente no teu accordionSlider
+        const targetSlide = document.querySelector(`.slide[data-code="${productId}"]`);
+        
+        if (targetSlide) {
+            // Simula o clique para abrir o modal (ajusta o nome da tua função se for diferente)
+            // Assumindo que tens uma função que preenche e abre o modal:
+            openProductModal(targetSlide); 
+        }
+    }
+});
+
+// Exemplo da função de abertura (baseada nos teus atributos data-*)
+function openProductModal(slide) {
+    const modal = document.getElementById('productModal');
+    // Preenche os dados do modal usando os data-attributes do slide
+    document.getElementById('modalTitle').innerText = slide.dataset.name;
+    document.getElementById('modalPrice').innerText = slide.dataset.price + ",00 MT";
+    document.getElementById('modalImage').style.backgroundImage = `url('${slide.dataset.image}')`;
+    
+    // Mostra o modal
+    modal.classList.add('active'); 
+    modal.setAttribute('aria-hidden', 'false');
+}
