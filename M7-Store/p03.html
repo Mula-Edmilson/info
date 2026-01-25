@@ -4,30 +4,553 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-  <title>Dark Blaze edition — 1500,00 MT | Mula Store</title>
+  <title>Dark Blaze edition — Detalhes Premium | Mula Store</title>
+  <meta name="description" content="Explora os detalhes premium da Dark Blaze edition: gola reforçada, barra inferior resistente, branding traseiro nítido e estampa frontal DTF de alto impacto." />
 
-  <meta name="description" content="Dark Blaze edition: Atitude e presença com estampa DTF nítida em tecido 100% algodão." />
-
-  <!-- Open Graph -->
+  <!-- Open Graph (partilha premium) -->
   <meta property="og:type" content="product" />
   <meta property="og:site_name" content="Mula Store" />
-  <meta property="og:title" content="Dark Blaze edition — Presença & Atitude" />
-  <meta property="og:description" content="1500,00 MT • DTF de alta definição • Preto Intenso • Entrega rápida." />
+  <meta property="og:title" content="Dark Blaze edition — Detalhes Premium" />
+  <meta property="og:description" content="Gola premium • Barra resistente • Branding forte • DTF hiper detalhado" />
   <meta property="og:image" content="https://i.postimg.cc/vmB9JL1b/DTF_BLACK.jpg" />
   <meta property="og:image:secure_url" content="https://i.postimg.cc/vmB9JL1b/DTF_BLACK.jpg" />
   <meta property="product:price:amount" content="1500.00" />
   <meta property="product:price:currency" content="MZN" />
-  <meta property="product:availability" content="Limitado" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Dark Blaze edition — 1500,00 MT" />
-  <meta name="twitter:description" content="Presença e atitude • Entrega 48H • Quantidade limitada." />
+  <meta name="twitter:title" content="Dark Blaze edition — Detalhes Premium" />
+  <meta name="twitter:description" content="Explora a qualidade premium em close-up." />
   <meta name="twitter:image" content="https://i.postimg.cc/vmB9JL1b/DTF_BLACK.jpg" />
 
-  <!-- Redireccionamento para abrir directamente o produto -->
-  <meta http-equiv="refresh" content="0; url=index.html#p=03" />
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/mkrtHdBm/fav-icon.png">
 
-  <link rel="icon" type="image/png" href="https://i.postimg.cc/mkrtHdBm/fav-icon.png" />
+  <!-- Usa o MESMO CSS do site principal -->
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ================================
+       Product Single Page — Premium
+       (Extensão do teu style.css)
+    ================================ */
+
+    .product-hero{
+      padding: 80px 0 34px;
+    }
+
+    .product-hero-grid{
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .product-breadcrumb{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.82);
+      font-weight: 900;
+      font-size: 12px;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .product-breadcrumb:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.10);
+    }
+
+    .product-title{
+      margin-top: 14px;
+      font-size: clamp(32px, 3.8vw, 52px);
+      line-height: 1.05;
+      font-weight: 990;
+      letter-spacing: -0.7px;
+    }
+
+    .product-subtitle{
+      margin-top: 14px;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.65;
+      font-size: 15px;
+      max-width: 620px;
+    }
+
+    .product-meta-row{
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .meta-chip{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.88);
+      font-weight: 950;
+      font-size: 12px;
+    }
+
+    .product-actions{
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .product-card{
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+
+    .product-card-preview{
+      height: 420px;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.08);
+      position: relative;
+    }
+
+    .product-card-preview::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.05) 10%, rgba(0,0,0,0.78) 100%);
+    }
+
+    .product-card-bottom{
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .product-price{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .product-price .label{
+      color: rgba(255,255,255,0.70);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .product-price .value{
+      font-size: 20px;
+      font-weight: 990;
+      color: rgba(255,255,255,0.95);
+    }
+
+    .product-quality-grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .quality-card{
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      overflow: hidden;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .quality-card:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .quality-grid{
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 0;
+      min-height: 280px;
+    }
+
+    .quality-image{
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      min-height: 280px;
+    }
+    .quality-image::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(800px 380px at 30% 25%, rgba(255,255,255,0.10), transparent 55%),
+                  linear-gradient(90deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.45) 100%);
+    }
+
+    .quality-content{
+      padding: 18px;
+      display: grid;
+      align-content: center;
+      gap: 10px;
+    }
+
+    .quality-tag{
+      display: inline-flex;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(159,255,107,0.30);
+      background: rgba(159,255,107,0.16);
+      font-weight: 980;
+      font-size: 12px;
+      color: rgba(255,255,255,0.95);
+    }
+
+    .quality-title{
+      font-size: 18px;
+      font-weight: 990;
+      letter-spacing: -0.2px;
+    }
+
+    .quality-desc{
+      color: rgba(255,255,255,0.76);
+      line-height: 1.65;
+      font-size: 13.5px;
+      max-width: 560px;
+    }
+
+    .quality-mini{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .quality-mini span{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      font-weight: 950;
+      font-size: 12px;
+      color: rgba(255,255,255,0.90);
+    }
+
+    /* Reveal animations iguais ao Index */
+    .reveal{
+      opacity: 0;
+      transform: translateY(18px);
+      transition: all 0.8s var(--ease);
+    }
+    .reveal.show{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Mobile */
+    @media (max-width: 980px){
+      .product-hero-grid{
+        grid-template-columns: 1fr;
+      }
+      .product-card-preview{
+        height: 360px;
+      }
+      .quality-grid{
+        grid-template-columns: 1fr;
+      }
+      .quality-image{
+        min-height: 260px;
+      }
+    }
+  </style>
 </head>
+
+<body>
+  <div class="ambient-bg" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-dot"></span>
+        <span class="brand-name">Mula Store</span>
+        <span class="brand-tag">Premium Streetwear</span>
+      </a>
+
+      <nav class="nav" id="desktopNav">
+        <a href="index.html#coleccao" class="nav-link">Colecção</a>
+        <a href="#detalhes" class="nav-link">Detalhes</a>
+        <a href="#qualidade" class="nav-link">Qualidade</a>
+      </nav>
+
+      <div class="header-actions" id="desktopActions">
+        <a class="header-btn ghost" href="index.html#coleccao">Voltar</a>
+        <a class="header-btn primary" href="index.html#p=03">Comprar agora</a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-menu-inner">
+        <div class="mobile-menu-top">
+          <strong>Menu</strong>
+          <button class="mobile-menu-close" id="closeMobileMenu" aria-label="Fechar menu">×</button>
+        </div>
+
+        <nav class="mobile-nav">
+          <a href="index.html#coleccao" class="mobile-link">Colecção</a>
+          <a href="#detalhes" class="mobile-link">Detalhes</a>
+          <a href="#qualidade" class="mobile-link">Qualidade</a>
+        </nav>
+
+        <div class="mobile-actions">
+          <a class="btn ghost full" href="index.html#coleccao">Voltar</a>
+          <a class="btn primary full" href="index.html#p=03">Comprar agora</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="product-hero">
+    <div class="container product-hero-grid">
+      <div class="reveal">
+        <a class="product-breadcrumb" href="index.html#coleccao">
+          <span class="pill-dot"></span>
+          <span>Voltar à colecção</span>
+        </a>
+
+        <h1 class="product-title">
+          Dark Blaze edition
+          <span class="hero-title-accent">Premium</span>
+        </h1>
+
+        <p class="product-subtitle">
+          Uma peça com impacto imediato: preto intenso, contraste forte e energia visual.
+          Aqui vais ver os detalhes premium em close-up, com acabamento sólido e presença de marca.
+        </p>
+
+        <div class="product-meta-row">
+          <div class="meta-chip">DTF alta definição</div>
+          <div class="meta-chip">Preto intenso</div>
+          <div class="meta-chip">Entrega 48H</div>
+          <div class="meta-chip">M, L, XL</div>
+        </div>
+
+        <div class="product-actions">
+          <a class="btn primary" href="index.html#p=03">Adicionar ao carrinho</a>
+          <a class="btn ghost" href="#qualidade">Ver qualidade</a>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="product-card">
+          <div class="product-card-preview" style="background-image:url('https://i.postimg.cc/vmB9JL1b/DTF_BLACK.jpg');"></div>
+
+          <div class="product-card-bottom" id="detalhes">
+            <div class="product-price">
+              <div>
+                <div class="label">Preço</div>
+                <div class="value">1500,00 MT</div>
+              </div>
+              <a class="btn ghost" href="index.html#p=03">Abrir produto</a>
+            </div>
+
+            <div class="quality-mini">
+              <span>Gola premium</span>
+              <span>Branding forte</span>
+              <span>DTF hiper detalhado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUALIDADE -->
+  <section class="section" id="qualidade">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 class="section-title">Qualidade em <span class="hero-title-accent">close-up</span></h2>
+        <p class="section-subtitle">
+          Detalhes que fazem a peça parecer premium e manter o visual “novo” por muito mais tempo.
+        </p>
+      </div>
+
+      <div class="product-quality-grid">
+
+        <!-- GOLA -->
+        <article class="quality-card reveal">
+          <div class="quality-grid">
+            <div class="quality-image" style="background-image:url('https://i.postimg.cc/ydCDhqFk/Gola_p3.jpg');"></div>
+            <div class="quality-content">
+              <div class="quality-tag">Gola</div>
+              <div class="quality-title">Reforçada e com acabamento premium</div>
+              <p class="quality-desc">
+                Gola em ribana bem firme e estruturada, com costuras alinhadas e acabamento limpo.
+                Mantém o formato por muito mais tempo, oferece conforto no pescoço e reforça o aspeto premium da peça.
+              </p>
+              <div class="quality-mini">
+                <span>Ribana firme</span>
+                <span>Acabamento limpo</span>
+                <span>Conforto premium</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PARTE INFERIOR -->
+        <article class="quality-card reveal">
+          <div class="quality-grid">
+            <div class="quality-image" style="background-image:url('https://i.postimg.cc/tTGsd0h7/Manga_p3.jpg');"></div>
+            <div class="quality-content">
+              <div class="quality-tag">Parte inferior</div>
+              <div class="quality-title">Barra resistente e bem finalizada</div>
+              <p class="quality-desc">
+                A barra inferior tem dobragem sólida e costura dupla, garantindo maior durabilidade e estabilidade no caimento.
+                O acabamento é limpo, sem ondulações, e ajuda a T-shirt a manter o visual “novo” por mais tempo.
+              </p>
+              <div class="quality-mini">
+                <span>Costura dupla</span>
+                <span>Caimento estável</span>
+                <span>Durabilidade</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- COSTAS / BRANDING -->
+        <article class="quality-card reveal">
+          <div class="quality-grid">
+            <div class="quality-image" style="background-image:url('https://i.postimg.cc/mDWP3xQP/Tr%C3%A1s_p3.jpg');"></div>
+            <div class="quality-content">
+              <div class="quality-tag">Costas</div>
+              <div class="quality-title">Impressão nítida e presença de marca</div>
+              <p class="quality-desc">
+                A estampa traseira tem alto contraste e boa leitura, com cores fortes e acabamento consistente.
+                O design fica com presença no tecido, transmitindo identidade e reforçando o conceito de marca com um toque moderno e profissional.
+              </p>
+              <div class="quality-mini">
+                <span>Alto contraste</span>
+                <span>Boa leitura</span>
+                <span>Marca presente</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- FRENTE / DTF -->
+        <article class="quality-card reveal">
+          <div class="quality-grid">
+            <div class="quality-image" style="background-image:url('https://i.postimg.cc/j5YD6VzW/Centro_p3.jpg');"></div>
+            <div class="quality-content">
+              <div class="quality-tag">Frente</div>
+              <div class="quality-title">Alta definição e impacto visual forte</div>
+              <p class="quality-desc">
+                A estampa frontal entrega efeito premium e hiper detalhado, com cores intensas e um visual energético (azul eléctrico) que destaca muito no preto.
+                O resultado é uma peça com impacto visual imediato e acabamento de nível profissional.
+              </p>
+              <div class="quality-mini">
+                <span>Hiper detalhado</span>
+                <span>Azul eléctrico</span>
+                <span>Impacto imediato</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="section-dark">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 class="section-title">Pronto para <span class="hero-title-accent">entrar em modo presença</span>?</h2>
+        <p class="section-subtitle">
+          Abre o produto no modo premium e finaliza o pedido em segundos.
+        </p>
+      </div>
+
+      <div class="reveal" style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="btn primary" href="index.html#p=03">Comprar agora</a>
+        <a class="btn ghost" href="index.html#coleccao">Voltar à colecção</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Hamburger menu
+    (function(){
+      const hamburgerBtn = document.getElementById("hamburgerBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const closeMobileMenu = document.getElementById("closeMobileMenu");
+
+      function openMenu(){
+        if(!mobileMenu || !hamburgerBtn) return;
+        hamburgerBtn.classList.add("active");
+        hamburgerBtn.setAttribute("aria-expanded","true");
+        mobileMenu.classList.add("active");
+        mobileMenu.setAttribute("aria-hidden","false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeMenu(){
+        if(!mobileMenu || !hamburgerBtn) return;
+        hamburgerBtn.classList.remove("active");
+        hamburgerBtn.setAttribute("aria-expanded","false");
+        mobileMenu.classList.remove("active");
+        mobileMenu.setAttribute("aria-hidden","true");
+        document.body.style.overflow = "";
+      }
+
+      hamburgerBtn && hamburgerBtn.addEventListener("click", ()=>{
+        if(mobileMenu.classList.contains("active")) closeMenu();
+        else openMenu();
+      });
+
+      closeMobileMenu && closeMobileMenu.addEventListener("click", closeMenu);
+
+      mobileMenu && mobileMenu.addEventListener("click", (e)=>{
+        if(e.target === mobileMenu) closeMenu();
+      });
+
+      document.querySelectorAll(".mobile-link").forEach(a=>{
+        a.addEventListener("click", closeMenu);
+      });
+    })();
+
+    // Reveal animation premium
+    (function(){
+      const els = Array.from(document.querySelectorAll(".reveal"));
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(ent=>{
+          if(ent.isIntersecting){
+            ent.target.classList.add("show");
+            io.unobserve(ent.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      els.forEach(el=>io.observe(el));
+    })();
+  </script>
+</body>
 </html>
