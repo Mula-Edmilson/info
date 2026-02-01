@@ -1360,3 +1360,1056 @@ if (miniBuy) miniBuy.addEventListener("click", () => {
 })();
 })();
 
+// Adicione esta função no seu main.js, na seção de eventos de inicialização
+function setupPopupLinks() {
+    // Adiciona comportamento suave para links nos popups
+    const telegramLinks = document.querySelectorAll('.telegram-link');
+    telegramLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita fechar o popup ao clicar no link
+            
+            // Track no Facebook Pixel (se existir)
+            try {
+                if (typeof window.fbq === 'function') {
+                    window.fbq('track', 'Contact', {
+                        method: 'telegram',
+                        link: 't.me/Ed_Mula'
+                    });
+                }
+            } catch {}
+        });
+    });
+}
+
+// Chame esta função na sua função init():
+function init() {
+    // ... código existente ...
+    setupPopupLinks();
+    // ... código existente ...
+}
+
+/* ================================
+   Toast Notification System
+========================== */
+const Toast = {
+    container: null,
+    
+    init() {
+        // Create toast container if it doesn't exist
+        if (!document.querySelector('.toast-container')) {
+            this.container = document.createElement('div');
+            this.container.className = 'toast-container';
+            document.body.appendChild(this.container);
+        } else {
+            this.container = document.querySelector('.toast-container');
+        }
+    },
+    
+    show(options) {
+        const {
+            title = '',
+            message = '',
+            type = 'info', // success, error, warning, info, cart
+            duration = 4000,
+            action = null
+        } = options;
+        
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        // Progress bar for auto-dismiss
+        const progressBar = document.createElement('div');
+        progressBar.className = 'toast-progress';
+        const progress = document.createElement('div');
+        progress.className = 'toast-progress-bar';
+        progress.style.animationDuration = `${duration}ms`;
+        progressBar.appendChild(progress);
+        
+        // Close button
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'toast-close';
+        closeBtn.innerHTML = '×';
+        closeBtn.setAttribute('aria-label', 'Fechar notificação');
+        
+        // Content
+        const content = document.createElement('div');
+        content.className = 'toast-content';
+        
+        if (title) {
+            const titleEl = document.createElement('div');
+            titleEl.className = 'toast-title';
+            titleEl.textContent = title;
+            content.appendChild(titleEl);
+        }
+        
+        if (message) {
+            const messageEl = document.createElement('div');
+            messageEl.className = 'toast-message';
+            messageEl.textContent = message;
+            content.appendChild(messageEl);
+        }
+        
+        // Action button
+        if (action) {
+            const actionBtn = document.createElement('button');
+            actionBtn.className = 'toast-action btn ghost mini';
+            actionBtn.textContent = action.label;
+            actionBtn.style.marginTop = '8px';
+            actionBtn.style.fontSize = '12px';
+            actionBtn.style.padding = '6px 10px';
+            actionBtn.addEventListener('click', () => {
+                action.handler();
+                this.dismiss(toast);
+            });
+            content.appendChild(actionBtn);
+        }
+        
+        // Assemble toast
+        toast.appendChild(closeBtn);
+        toast.appendChild(content);
+        toast.appendChild(progressBar);
+        
+        // Add to container
+        this.container.appendChild(toast);
+        
+        // Show with animation
+        setTimeout(() => toast.classList.add('show'), 10);
+        
+        // Auto-dismiss
+        let dismissTimeout = setTimeout(() => this.dismiss(toast), duration);
+        
+        // Close button event
+        closeBtn.addEventListener('click', () => {
+            clearTimeout(dismissTimeout);
+            this.dismiss(toast);
+        });
+        
+        // Hover pause
+        toast.addEventListener('mouseenter', () => {
+            clearTimeout(dismissTimeout);
+            progress.style.animationPlayState = 'paused';
+        });
+        
+        toast.addEventListener('mouseleave', () => {
+            dismissTimeout = setTimeout(() => this.dismiss(toast), 1000);
+            progress.style.animationPlayState = 'running';
+        });
+        
+        return toast;
+    },
+    
+    dismiss(toast) {
+        if (!toast) return;
+        
+        toast.classList.remove('show');
+        toast.classList.add('hiding');
+        
+        // Remove from DOM after animation
+        setTimeout(() => {
+            if (toast.parentNode === this.container) {
+                this.container.removeChild(toast);
+            }
+        }, 500);
+    },
+    
+    // Helper methods for common toasts
+    success(message, title = 'Sucesso!') {
+        return this.show({ title, message, type: 'success' });
+    },
+    
+    error(message, title = 'Erro!') {
+        return this.show({ title, message, type: 'error' });
+    },
+    
+    info(message, title = 'Informação') {
+        return this.show({ title, message, type: 'info' });
+    },
+    
+    cart(message, title = 'Carrinho atualizado') {
+        return this.show({ 
+            title, 
+            message, 
+            type: 'cart-toast',
+            action: {
+                label: 'Ver carrinho',
+                handler: () => openCartDrawer()
+            }
+        });
+    }
+};
+
+// Initialize toast system on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+    Toast.init();
+});
+
+/* ================================
+   Advanced Analytics System
+========================== */
+const Analytics = {
+    SESSION_KEY: 'mula_session_id',
+    USER_KEY: 'mula_user_id',
+    
+    init() {
+        this.setupSession();
+        this.setupUserTracking();
+        this.trackPageView();
+        this.setupEventListeners();
+    },
+    
+    setupSession() {
+        // Generate session ID if not exists
+        let sessionId = localStorage.getItem(this.SESSION_KEY);
+        if (!sessionId) {
+            sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem(this.SESSION_KEY, sessionId);
+        }
+        this.sessionId = sessionId;
+        
+        // Track session start
+        this.logEvent('session', 'start', {
+            session_id: sessionId,
+            referrer: document.referrer || 'direct',
+            landing_page: window.location.pathname
+        });
+    },
+    
+    setupUserTracking() {
+        // Generate anonymous user ID if not exists
+        let userId = localStorage.getItem(this.USER_KEY);
+        if (!userId) {
+            userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem(this.USER_KEY, userId);
+        }
+        this.userId = userId;
+    },
+    
+    trackPageView() {
+        const pageData = {
+            page_title: document.title,
+            page_url: window.location.href,
+            page_path: window.location.pathname,
+            user_id: this.userId,
+            session_id: this.sessionId,
+            timestamp: new Date().toISOString()
+        };
+        
+        this.logEvent('page', 'view', pageData);
+        
+        // Also track time on page
+        this.pageLoadTime = Date.now();
+        window.addEventListener('beforeunload', () => {
+            const timeOnPage = Date.now() - this.pageLoadTime;
+            this.logEvent('page', 'unload', {
+                time_on_page: timeOnPage,
+                page_url: window.location.href
+            });
+        });
+    },
+    
+    setupEventListeners() {
+        // Track clicks on important CTAs
+        const ctaSelectors = [
+            '#heroCTA', '#finalCTA', '.add-cart', '.modal-buy-now',
+            '#cartCheckout', '.open-product', '#scrollToCollection'
+        ];
+        
+        ctaSelectors.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const label = el.textContent.trim() || selector;
+                    this.trackCTA(label, window.location.pathname);
+                });
+            });
+        });
+        
+        // Track form interactions
+        const formFields = ['#clientName', '#clientPhone', '#clientAddress', '#clientPayment'];
+        formFields.forEach(selector => {
+            const field = document.querySelector(selector);
+            if (field) {
+                field.addEventListener('focus', () => {
+                    this.trackFormInteraction(selector.replace('#', ''), 'focus');
+                });
+                
+                field.addEventListener('blur', () => {
+                    if (field.value.trim()) {
+                        this.trackFormInteraction(selector.replace('#', ''), 'completed');
+                    }
+                });
+            }
+        });
+        
+        // Track product views in slider
+        const slides = document.querySelectorAll('.slide');
+        slides.forEach((slide, index) => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const productCode = slide.dataset.code;
+                        const productName = slide.dataset.name;
+                        this.trackProductView(productCode, productName, index + 1);
+                        observer.unobserve(slide); // Track only once per session
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(slide);
+        });
+    },
+    
+    // Event tracking methods
+    logEvent(category, action, data = {}) {
+        const event = {
+            timestamp: new Date().toISOString(),
+            category,
+            action,
+            data: {
+                ...data,
+                user_id: this.userId,
+                session_id: this.sessionId,
+                url: window.location.href,
+                user_agent: navigator.userAgent,
+                screen_resolution: `${window.screen.width}x${window.screen.height}`,
+                language: navigator.language
+            }
+        };
+        
+        // Save to localStorage (circular buffer)
+        this.saveEvent(event);
+        
+        // Send to external analytics if configured
+        this.sendToExternalAnalytics(event);
+        
+        // Facebook Pixel
+        this.sendToFacebookPixel(category, action, data);
+        
+        console.log('[Analytics]', category, action, data);
+    },
+    
+    saveEvent(event) {
+        try {
+            const events = JSON.parse(localStorage.getItem('mula_analytics_events') || '[]');
+            events.push(event);
+            
+            // Keep only last 1000 events
+            if (events.length > 1000) {
+                events.splice(0, events.length - 1000);
+            }
+            
+            localStorage.setItem('mula_analytics_events', JSON.stringify(events));
+        } catch (e) {
+            console.error('[Analytics] Error saving event:', e);
+        }
+    },
+    
+    sendToExternalAnalytics(event) {
+        // Example: Send to your backend or Google Analytics
+        // if (window.gtag) {
+        //     gtag('event', event.action, {
+        //         event_category: event.category,
+        //         event_label: JSON.stringify(event.data),
+        //         value: 1
+        //     });
+        // }
+    },
+    
+    sendToFacebookPixel(category, action, data) {
+        try {
+            if (typeof window.fbq === 'function') {
+                // Map custom events to Facebook Pixel standard events
+                const fbEventMap = {
+                    'product_view': 'ViewContent',
+                    'add_to_cart': 'AddToCart',
+                    'initiate_checkout': 'InitiateCheckout',
+                    'purchase': 'Purchase',
+                    'lead': 'Lead'
+                };
+                
+                const fbEvent = fbEventMap[action] || action;
+                
+                fbq('track', fbEvent, {
+                    content_category: category,
+                    content_name: data.product_name || data.content_name,
+                    content_ids: data.product_code ? [data.product_code] : [],
+                    content_type: 'product',
+                    value: data.value || 0,
+                    currency: data.currency || 'MZN',
+                    ...data
+                });
+            }
+        } catch (e) {
+            console.error('[Analytics] Facebook Pixel error:', e);
+        }
+    },
+    
+    // Helper methods for common events
+    trackCTA(label, location) {
+        this.logEvent('engagement', 'cta_click', {
+            cta_label: label,
+            location,
+            timestamp: Date.now()
+        });
+    },
+    
+    trackProductView(code, name, position) {
+        this.logEvent('product', 'view', {
+            product_code: code,
+            product_name: name,
+            position,
+            currency: 'MZN'
+        });
+    },
+    
+    trackAddToCart(product, quantity = 1) {
+        this.logEvent('ecommerce', 'add_to_cart', {
+            product_code: product.code,
+            product_name: product.name,
+            quantity,
+            price: product.price,
+            value: product.price * quantity,
+            currency: 'MZN'
+        });
+    },
+    
+    trackCheckout(cart, step = 'initiate') {
+        const items = cart.map(item => ({
+            id: item.code,
+            name: item.name,
+            quantity: item.qty,
+            price: item.price
+        }));
+        
+        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        
+        this.logEvent('ecommerce', 'checkout', {
+            step,
+            items,
+            item_count: items.length,
+            total_value: total,
+            currency: 'MZN'
+        });
+    },
+    
+    trackPurchase(orderData) {
+        this.logEvent('ecommerce', 'purchase', {
+            transaction_id: 'order_' + Date.now(),
+            value: orderData.total,
+            tax: 0,
+            shipping: 0,
+            currency: 'MZN',
+            items: orderData.items,
+            payment_method: orderData.payment_method
+        });
+    },
+    
+    trackFormInteraction(field, action) {
+        this.logEvent('form', action, {
+            field,
+            form_type: 'checkout'
+        });
+    },
+    
+    trackError(error, context) {
+        this.logEvent('error', 'occurred', {
+            error_message: error.message || error,
+            error_stack: error.stack,
+            context,
+            url: window.location.href
+        });
+    },
+    
+    // Export data for analysis
+    exportData(format = 'json') {
+        try {
+            const events = JSON.parse(localStorage.getItem('mula_analytics_events') || '[]');
+            
+            if (format === 'csv') {
+                let csv = 'Timestamp,Category,Action,Data\n';
+                events.forEach(event => {
+                    csv += `"${event.timestamp}","${event.category}","${event.action}","${JSON.stringify(event.data).replace(/"/g, '""')}"\n`;
+                });
+                
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `mula_analytics_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                
+                return `Exported ${events.length} events as CSV`;
+            }
+            
+            return events;
+        } catch (e) {
+            this.trackError(e, 'export_data');
+            return null;
+        }
+    },
+    
+    // Get analytics dashboard data
+    getDashboardData() {
+        const events = JSON.parse(localStorage.getItem('mula_analytics_events') || '[]');
+        
+        // Filter events from last 30 days
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        const recentEvents = events.filter(e => new Date(e.timestamp) > thirtyDaysAgo);
+        
+        return {
+            total_sessions: this.getUniqueSessions(),
+            total_users: this.getUniqueUsers(),
+            total_events: events.length,
+            recent_events: recentEvents.length,
+            
+            popular_products: this.getPopularProducts(events),
+            conversion_rate: this.getConversionRate(events),
+            
+            events_by_category: this.groupByCategory(events),
+            events_by_hour: this.groupByHour(events),
+            
+            cta_clicks: events.filter(e => e.action === 'cta_click').length,
+            add_to_cart: events.filter(e => e.action === 'add_to_cart').length,
+            checkouts: events.filter(e => e.action === 'checkout').length
+        };
+    },
+    
+    // Helper methods for data analysis
+    getUniqueSessions() {
+        const events = JSON.parse(localStorage.getItem('mula_analytics_events') || '[]');
+        const sessions = new Set(events.map(e => e.data.session_id));
+        return sessions.size;
+    },
+    
+    getUniqueUsers() {
+        const events = JSON.parse(localStorage.getItem('mula_analytics_events') || '[]');
+        const users = new Set(events.map(e => e.data.user_id));
+        return users.size;
+    },
+    
+    getPopularProducts(events) {
+        const productViews = events
+            .filter(e => e.action === 'view' && e.category === 'product')
+            .reduce((acc, e) => {
+                const code = e.data.product_code;
+                acc[code] = (acc[code] || 0) + 1;
+                return acc;
+            }, {});
+        
+        return Object.entries(productViews)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([code, views]) => ({ code, views }));
+    },
+    
+    getConversionRate(events) {
+        const views = events.filter(e => e.action === 'view' && e.category === 'product').length;
+        const purchases = events.filter(e => e.action === 'purchase').length;
+        
+        return views > 0 ? ((purchases / views) * 100).toFixed(2) + '%' : '0%';
+    },
+    
+    groupByCategory(events) {
+        return events.reduce((acc, e) => {
+            acc[e.category] = (acc[e.category] || 0) + 1;
+            return acc;
+        }, {});
+    },
+    
+    groupByHour(events) {
+        const hours = Array(24).fill(0);
+        events.forEach(e => {
+            const hour = new Date(e.timestamp).getHours();
+            hours[hour]++;
+        });
+        return hours;
+    }
+};
+
+// Initialize analytics
+document.addEventListener('DOMContentLoaded', () => {
+    Analytics.init();
+    
+    // Add analytics methods to window for debugging
+    window.MulaAnalytics = Analytics;
+});
+
+/* ================================
+   Parallax Effects System
+========================== */
+const Parallax = {
+    heroCard: null,
+    isMobile: window.innerWidth <= 768,
+    
+    init() {
+        if (this.isMobile) return; // Disable on mobile
+        
+        this.heroCard = document.querySelector('.hero-card');
+        if (!this.heroCard) return;
+        
+        // Add data attribute for CSS
+        this.heroCard.setAttribute('data-tilt', 'true');
+        
+        // Create inner wrapper if it doesn't exist
+        if (!this.heroCard.querySelector('.hero-card-inner')) {
+            const inner = document.createElement('div');
+            inner.className = 'hero-card-inner';
+            inner.innerHTML = this.heroCard.innerHTML;
+            this.heroCard.innerHTML = '';
+            this.heroCard.appendChild(inner);
+        }
+        
+        this.setupMouseMove();
+        this.setupScrollParallax();
+    },
+    
+    setupMouseMove() {
+        this.heroCard.addEventListener('mousemove', (e) => {
+            if (this.isMobile) return;
+            
+            const rect = this.heroCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateY = ((x - centerX) / centerX) * 3; // Max 3 degrees
+            const rotateX = ((centerY - y) / centerY) * 3; // Max 3 degrees
+            
+            this.heroCard.style.transform = `
+                perspective(1000px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                translateZ(20px)
+            `;
+            
+            // Parallax for preview image
+            const preview = this.heroCard.querySelector('.hero-card-preview');
+            if (preview) {
+                const moveX = ((x - centerX) / centerX) * 10;
+                const moveY = ((y - centerY) / centerY) * 10;
+                preview.style.transform = `translateX(${moveX}px) translateY(${moveY}px)`;
+            }
+            
+            // Subtle parallax for text elements
+            const titleAccent = document.querySelector('.hero-title-accent');
+            if (titleAccent) {
+                titleAccent.style.transform = `translateX(${rotateY * 2}px)`;
+            }
+        });
+        
+        this.heroCard.addEventListener('mouseleave', () => {
+            if (this.isMobile) return;
+            
+            this.heroCard.style.transform = `
+                perspective(1000px)
+                rotateX(0deg)
+                rotateY(0deg)
+                translateZ(0)
+            `;
+            
+            const preview = this.heroCard.querySelector('.hero-card-preview');
+            if (preview) {
+                preview.style.transform = 'translateX(0) translateY(0)';
+            }
+            
+            const titleAccent = document.querySelector('.hero-title-accent');
+            if (titleAccent) {
+                titleAccent.style.transform = 'translateX(0)';
+            }
+        });
+    },
+    
+    setupScrollParallax() {
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+            if (this.isMobile) return;
+            
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    this.updateScrollParallax();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+        
+        // Initial update
+        this.updateScrollParallax();
+    },
+    
+    updateScrollParallax() {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        // Hero section parallax
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            hero.style.transform = `translateY(${rate * 0.2}px)`;
+        }
+        
+        // Hero card scroll effect
+        if (this.heroCard) {
+            const cardRate = scrolled * -0.3;
+            this.heroCard.style.transform = `translateY(${cardRate}px)`;
+        }
+        
+        // Trust items staggered parallax
+        const trustItems = document.querySelectorAll('.trust-item');
+        trustItems.forEach((item, index) => {
+            const itemRate = scrolled * -0.1 * (index + 1);
+            item.style.transform = `translateY(${itemRate}px)`;
+        });
+        
+        // Section titles parallax
+        const sectionTitles = document.querySelectorAll('.section-title');
+        sectionTitles.forEach(title => {
+            const titleRect = title.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            
+            if (titleRect.top < viewportHeight && titleRect.bottom > 0) {
+                const distanceFromCenter = (titleRect.top + titleRect.height / 2) - (viewportHeight / 2);
+                const titleRate = distanceFromCenter * 0.1;
+                title.style.transform = `translateY(${titleRate}px)`;
+            }
+        });
+    },
+    
+    // 3D card tilt for product slides
+    initCardTilts() {
+        if (this.isMobile) return;
+        
+        const slides = document.querySelectorAll('.slide');
+        slides.forEach(slide => {
+            slide.addEventListener('mousemove', (e) => {
+                const rect = slide.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateY = ((x - centerX) / centerX) * 2;
+                const rotateX = ((centerY - y) / centerY) * 2;
+                
+                slide.style.transform = `
+                    perspective(800px)
+                    rotateX(${rotateX}deg)
+                    rotateY(${rotateY}deg)
+                    scale(1.02)
+                `;
+                
+                // Parallax for content
+                const content = slide.querySelector('.slide-content');
+                if (content) {
+                    const moveX = ((x - centerX) / centerX) * 15;
+                    const moveY = ((y - centerY) / centerY) * 15;
+                    content.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                }
+            });
+            
+            slide.addEventListener('mouseleave', () => {
+                slide.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale(1)';
+                
+                const content = slide.querySelector('.slide-content');
+                if (content) {
+                    content.style.transform = 'translate(0, 0)';
+                }
+            });
+        });
+    }
+};
+
+// Initialize parallax on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+    Parallax.init();
+    
+    // Initialize card tilts after a delay
+    setTimeout(() => {
+        Parallax.initCardTilts();
+    }, 1000);
+});
+
+// Re-initialize on resize
+window.addEventListener('resize', () => {
+    Parallax.isMobile = window.innerWidth <= 768;
+});
+
+/* ================================
+   Scroll Animations System
+========================== */
+const ScrollAnimations = {
+    observer: null,
+    progressBar: null,
+    
+    init() {
+        this.createProgressBar();
+        this.setupIntersectionObserver();
+        this.setupScrollProgress();
+        this.setupSmoothScrolling();
+        this.animateHeroElements();
+    },
+    
+    createProgressBar() {
+        this.progressBar = document.createElement('div');
+        this.progressBar.className = 'scroll-progress';
+        document.body.appendChild(this.progressBar);
+    },
+    
+    setupIntersectionObserver() {
+        const options = {
+            root: null,
+            rootMargin: '0px 0px -10% 0px',
+            threshold: 0.1
+        };
+        
+        this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animateElement(entry.target);
+                    this.observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+        
+        // Observe all reveal elements
+        document.querySelectorAll('.reveal').forEach(el => {
+            this.observer.observe(el);
+        });
+        
+        // Observe staggered containers
+        document.querySelectorAll('.reveal-stagger').forEach(el => {
+            this.observer.observe(el);
+        });
+        
+        // Observe other animation types
+        document.querySelectorAll('.reveal-left, .reveal-right, .reveal-scale, .reveal-rotate, .scroll-fade-in').forEach(el => {
+            this.observer.observe(el);
+        });
+    },
+    
+    animateElement(element) {
+        element.classList.add('animate-in');
+        
+        // If it's a staggered container, animate children
+        if (element.classList.contains('reveal-stagger')) {
+            const children = element.children;
+            Array.from(children).forEach((child, index) => {
+                child.style.transitionDelay = `${0.1 * index}s`;
+            });
+        }
+        
+        // Special animations for specific elements
+        if (element.classList.contains('trust-item')) {
+            this.animateTrustItem(element);
+        }
+        
+        if (element.classList.contains('review-card')) {
+            this.animateReviewCard(element);
+        }
+        
+        if (element.classList.contains('feature-card')) {
+            this.animateFeatureCard(element);
+        }
+    },
+    
+    setupScrollProgress() {
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            
+            if (this.progressBar) {
+                this.progressBar.style.transform = `scaleX(${scrolled / 100})`;
+            }
+            
+            // Trigger scroll-based animations
+            this.triggerScrollAnimations();
+        });
+    },
+    
+    setupSmoothScrolling() {
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const targetId = anchor.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    this.scrollToElement(targetElement);
+                }
+            });
+        });
+        
+        // Add smooth scroll behavior to buttons
+        const scrollButtons = [
+            '#scrollToCollection',
+            '#heroExplore',
+            '#finalScroll',
+            '#goCollectionMobile'
+        ];
+        
+        scrollButtons.forEach(selector => {
+            const button = document.querySelector(selector);
+            if (button) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = document.querySelector('#coleccao');
+                    if (target) this.scrollToElement(target);
+                });
+            }
+        });
+    },
+    
+    scrollToElement(element, offset = 80) {
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    },
+    
+    triggerScrollAnimations() {
+        // Animate elements based on scroll position
+        const scrollPosition = window.pageYOffset + window.innerHeight;
+        
+        document.querySelectorAll('.scroll-fade-in').forEach(el => {
+            const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+            
+            if (scrollPosition > elementPosition + 100) {
+                el.classList.add('visible');
+            }
+        });
+    },
+    
+    animateHeroElements() {
+        // Animate hero elements on load
+        setTimeout(() => {
+            const heroTitle = document.querySelector('.hero-title');
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            const heroCta = document.querySelector('.hero-cta');
+            const heroTrust = document.querySelector('.hero-trust');
+            
+            if (heroTitle) heroTitle.classList.add('animate-in');
+            if (heroSubtitle) setTimeout(() => heroSubtitle.classList.add('animate-in'), 300);
+            if (heroCta) setTimeout(() => heroCta.classList.add('animate-in'), 600);
+            if (heroTrust) setTimeout(() => heroTrust.classList.add('animate-in'), 900);
+        }, 500);
+    },
+    
+    animateTrustItem(item) {
+        // Add floating animation with delay
+        const index = Array.from(item.parentNode.children).indexOf(item);
+        item.style.animationDelay = `${index * 0.3}s`;
+    },
+    
+    animateReviewCard(card) {
+        // Add subtle scale animation
+        card.style.transform = 'scale(0.95)';
+        card.style.opacity = '0';
+        
+        setTimeout(() => {
+            card.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease';
+            card.style.transform = 'scale(1)';
+            card.style.opacity = '1';
+        }, 100);
+    },
+    
+    animateFeatureCard(card) {
+        // Add icon animation
+        const icon = card.querySelector('.feature-icon');
+        if (icon) {
+            icon.style.transform = 'scale(0) rotate(-180deg)';
+            
+            setTimeout(() => {
+                icon.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                icon.style.transform = 'scale(1) rotate(0deg)';
+            }, 200);
+        }
+    },
+    
+    // Dynamic counter animation
+    animateCounter(element, targetValue, duration = 2000) {
+        let startValue = 0;
+        const increment = targetValue / (duration / 16); // 60fps
+        
+        const updateCounter = () => {
+            startValue += increment;
+            if (startValue < targetValue) {
+                element.textContent = Math.floor(startValue).toLocaleString();
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = targetValue.toLocaleString();
+            }
+        };
+        
+        element.classList.add('animating');
+        updateCounter();
+        
+        setTimeout(() => {
+            element.classList.remove('animating');
+        }, duration);
+    },
+    
+    // Initialize counters if they exist
+    initCounters() {
+        const counters = document.querySelectorAll('[data-counter]');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-counter'));
+            if (!isNaN(target)) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.animateCounter(counter, target);
+                            observer.unobserve(counter);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(counter);
+            }
+        });
+    },
+    
+    // Add wave divider to sections
+    addWaveDividers() {
+        const sections = document.querySelectorAll('.section-dark, .section:nth-of-type(even)');
+        sections.forEach(section => {
+            const divider = document.createElement('div');
+            divider.className = 'wave-divider';
+            section.parentNode.insertBefore(divider, section);
+        });
+    },
+    
+    // Re-initialize on resize
+    handleResize() {
+        // Recalculate animations if needed
+        this.observer.disconnect();
+        this.setupIntersectionObserver();
+    }
+};
+
+// Initialize scroll animations
+document.addEventListener('DOMContentLoaded', () => {
+    ScrollAnimations.init();
+    ScrollAnimations.initCounters();
+    ScrollAnimations.addWaveDividers();
+    
+    // Reinitialize on resize
+    window.addEventListener('resize', () => {
+        ScrollAnimations.handleResize();
+    });
+});
+
+// Export for debugging
+window.ScrollAnimations = ScrollAnimations;
