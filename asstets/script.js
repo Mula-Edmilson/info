@@ -117,61 +117,6 @@ for (let i = 0; i < filterBtn.length; i++) {
   });
 }
 
-// ========== PROTEÇÃO PARA VÍDEOS ==========
-
-// Prevenir clique direito em vídeos e containers
-document.querySelectorAll('.video-container, video, iframe').forEach(element => {
-  if (element) {
-    element.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      return false;
-    });
-  }
-});
-
-// Desabilitar atalhos de teclado para download
-document.addEventListener('keydown', (e) => {
-  // Prevenir Ctrl+S (salvar página)
-  if (e.ctrlKey && e.key === 's') {
-    e.preventDefault();
-    return false;
-  }
-  
-  // Prevenir Ctrl+Shift+S (salvar como)
-  if (e.ctrlKey && e.shiftKey && e.key === 'S') {
-    e.preventDefault();
-    return false;
-  }
-  
-  // Prevenir F12 (DevTools)
-  if (e.key === 'F12') {
-    e.preventDefault();
-    return false;
-  }
-  
-  // Prevenir Ctrl+Shift+I (DevTools)
-  if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-    e.preventDefault();
-    return false;
-  }
-  
-  // Prevenir Ctrl+U (ver código fonte)
-  if (e.ctrlKey && e.key === 'u') {
-    e.preventDefault();
-    return false;
-  }
-});
-
-// Desabilitar arrastar de imagens e vídeos
-document.querySelectorAll('img, video').forEach(element => {
-  if (element) {
-    element.addEventListener('dragstart', (e) => {
-      e.preventDefault();
-      return false;
-    });
-  }
-});
-
 // ========== FUNCIONALIDADE DO FORMULÁRIO DE CONTACTO ==========
 
 // Função para mostrar mensagens de feedback
