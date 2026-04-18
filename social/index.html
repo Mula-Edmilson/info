@@ -383,6 +383,10 @@
             .insta-track > .insta-slide:nth-child(3n + 3) {
                 width: min(54vw, 210px) !important;
             }
+            .featured-card,
+            #latest-video-link {
+                width: 100%;
+            }
         }
         @media (max-width: 380px) {
             main.page-shell {
@@ -425,12 +429,303 @@
             cursor: default;
         }
 
+
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        body {
+            min-height: 100dvh;
+        }
+        main.page-shell {
+            padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
+        }
+        #floating-nav {
+            bottom: max(1rem, calc(env(safe-area-inset-bottom, 0px) + 1rem));
+        }
+        .ratio-box {
+            position: relative;
+            overflow: hidden;
+        }
+        .ratio-box::before {
+            content: '';
+            display: block;
+            width: 100%;
+        }
+        .ratio-18-10::before {
+            padding-top: 55.5556%;
+        }
+        .ratio-4-5::before {
+            padding-top: 125%;
+        }
+        .ratio-square::before {
+            padding-top: 100%;
+        }
+        .ratio-191-100::before {
+            padding-top: 52.356%;
+        }
+        .ratio-box > img,
+        .ratio-box > .video-inline-player,
+        .ratio-box > iframe,
+        .ratio-box > video {
+            position: absolute !important;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .featured-card,
+        #latest-video-link,
+        .insta-slide {
+            min-height: 0;
+        }
+        .featured-card img,
+        #latest-video-link img,
+        .insta-slide img {
+            object-fit: cover;
+        }
+        .video-inline-player {
+            border-radius: inherit;
+        }
+        .video-inline-player video,
+        .video-inline-player iframe {
+            object-fit: cover;
+        }
+        @supports (aspect-ratio: 1 / 1) {
+            .ratio-box::before {
+                display: none;
+            }
+            .ratio-18-10 {
+                aspect-ratio: 1.8 / 1;
+            }
+            .ratio-4-5 {
+                aspect-ratio: 4 / 5;
+            }
+            .ratio-square {
+                aspect-ratio: 1 / 1;
+            }
+            .ratio-191-100 {
+                aspect-ratio: 1.91 / 1;
+            }
+        }
+
+
+        /* SHARPE / COMPACT OVERRIDES */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.16;
+            background-image: radial-gradient(rgba(255,255,255,0.9) 0.7px, transparent 0.8px);
+            background-size: 24px 24px;
+            mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.75) 12%, rgba(0,0,0,0.9) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.75) 12%, rgba(0,0,0,0.9) 100%);
+        }
+
+        main.page-shell > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 1rem !important;
+        }
+
+        #home-section > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.55rem !important;
+        }
+
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.5rem !important;
+        }
+
+        .card-shell,
+        .link-card,
+        .detail-card,
+        .surface-button,
+        .surface-input,
+        .insta-slide,
+        .social-pill,
+        #floating-nav,
+        .nav-link,
+        #newsletter-form,
+        #latest-video-link,
+        .video-inline-player,
+        .toast-notice,
+        #show-more-tech {
+            border-radius: 0 !important;
+        }
+
+        .card-shell {
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.045), 0 18px 34px rgba(0,0,0,0.24);
+        }
+
+        .card-shell::before {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 18%, transparent 100%);
+        }
+
+        .social-pill {
+            padding: 0.45rem 0.8rem !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 8px 16px rgba(0,0,0,0.18);
+        }
+
+        .link-card,
+        .detail-card,
+        #video-section,
+        #instagram-section,
+        #contact-section,
+        #newsletter-section,
+        #software-section {
+            padding: 1rem !important;
+        }
+
+        #video-section h3,
+        #instagram-section h3,
+        #contact-section h3,
+        #newsletter-section h3,
+        #software-section h3 {
+            letter-spacing: -0.02em;
+        }
+
+        #newsletter-form {
+            padding: 0.25rem !important;
+        }
+
+        .surface-input {
+            min-height: 44px;
+        }
+
+        .icon-chip {
+            border-radius: 0 !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 8px 14px rgba(0,0,0,0.16);
+        }
+
+        #floating-nav {
+            gap: 0.35rem !important;
+            padding: 0.35rem !important;
+            width: min(calc(100vw - 24px), 250px);
+            backdrop-filter: blur(18px);
+        }
+
+        #floating-nav .nav-link {
+            width: 2.7rem !important;
+            height: 2.7rem !important;
+        }
+
+        .surface-button,
+        .nav-link,
+        .social-pill,
+        a.card-shell:hover,
+        a.card-shell:focus-visible {
+            transform: none !important;
+        }
+
+        @media (max-width: 420px) {
+            main.page-shell {
+                padding-left: 0.9rem !important;
+                padding-right: 0.9rem !important;
+                padding-top: 2rem !important;
+            }
+
+            .social-pill {
+                padding: 0.42rem 0.7rem !important;
+            }
+
+            .link-card,
+            .detail-card,
+            #video-section,
+            #instagram-section,
+            #contact-section,
+            #newsletter-section,
+            #software-section {
+                padding: 0.9rem !important;
+            }
+
+            #floating-nav {
+                width: calc(100vw - 20px) !important;
+            }
+        }
+
+
+
+        /* SCROLL INTERACTION */
+        html.js-ready .reveal-block {
+            opacity: 0;
+            transform: translate3d(0, 34px, 0) scale(0.985);
+            filter: blur(10px);
+            transition:
+                opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+            transition-delay: var(--reveal-delay, 0ms);
+            will-change: transform, opacity, filter;
+        }
+
+        html.js-ready .reveal-block.is-visible {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+            filter: blur(0);
+        }
+
+        body::before,
+        body::after {
+            transition:
+                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.5s ease,
+                filter 0.5s ease;
+        }
+
+        body.has-scrolled::before {
+            transform: translate3d(0, -10px, 0) scale(1.02);
+            filter: saturate(1.08);
+        }
+
+        body.is-scrolling::after {
+            opacity: 0.22;
+        }
+
+        #floating-nav {
+            transition:
+                backdrop-filter 0.35s ease,
+                background 0.35s ease,
+                box-shadow 0.35s ease,
+                border-color 0.35s ease,
+                opacity 0.35s ease;
+        }
+
+        body.has-scrolled #floating-nav {
+            background: linear-gradient(180deg, rgba(18,18,18,0.9) 0%, rgba(11,11,11,0.92) 100%) !important;
+            box-shadow: 0 18px 34px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.12);
+            backdrop-filter: blur(24px) saturate(140%);
+        }
+
+        body.is-scrolling .card-shell,
+        body.is-scrolling .social-pill {
+            border-color: rgba(255,255,255,0.08) !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html.js-ready .reveal-block {
+                opacity: 1 !important;
+                transform: none !important;
+                filter: none !important;
+                transition: none !important;
+            }
+
+            body::before,
+            body::after,
+            #floating-nav {
+                transition: none !important;
+            }
+        }
+
 </style>
-<meta content="Portfólio pessoal de Edmilson Mula, Web Designer, Designer Gráfico e Especialista SEO em Maputo, Moçambique." name="description"/><meta content="#0c0c0c" name="theme-color"/><meta content="Edmilson Mula | Web Designer &amp; Designer Gráfico" property="og:title"/><meta content="Portfólio pessoal de Edmilson Mula com links, contacto, software utilizado e presença digital." property="og:description"/><meta content="website" property="og:type"/><meta content="https://edmilsonmula.info" property="og:url"/></head>
+<meta content="Portfólio pessoal de Edmilson Mula, Web Designer, Designer Gráfico e Especialista SEO em Maputo, Moçambique." name="description"/><meta content="#0c0c0c" name="theme-color"/><meta content="Edmilson Mula | Web Designer &amp; Designer Gráfico" property="og:title"/><meta content="Portfólio pessoal de Edmilson Mula com links, contacto, software utilizado e presença digital." property="og:description"/><meta content="website" property="og:type"/><meta content="https://edmilsonmula.info" property="og:url"/><script>document.documentElement.classList.add('js-ready');</script>
+</head>
 <body class="text-on-surface antialiased font-body selection:bg-tertiary/30">
 <main class="max-w-[390px] mx-auto px-5 pt-12 pb-24 space-y-6 page-shell">
 <!-- Profile Section -->
-<section class="flex flex-col items-center text-center space-y-3 section-block profile-section nav-section" id="home-section">
+<section class="flex flex-col items-center text-center space-y-3 section-block profile-section nav-section reveal-block" id="home-section" data-reveal-delay="0ms">
 <div class="relative profile-avatar-wrap">
 <img alt="Edmilson Mula" class="w-20 h-20 rounded-full object-cover border-2 border-[#1a1a1a] profile-avatar" decoding="async" fetchpriority="high" loading="eager" src="https://i.postimg.cc/BnjpYJYL/636704391-18447625723106405-3566330460748389755-n.jpg"/>
 </div>
@@ -459,7 +754,7 @@
 </div>
 </section>
 <!-- Digital Agency Featured Card -->
-<a class="block relative group overflow-hidden rounded-2xl aspect-[1.8/1] bg-surface-container border border-white/5 card-shell featured-card" href="https://edmilsonmula.info" rel="noopener noreferrer" target="_blank">
+<a class="block relative group overflow-hidden rounded-2xl aspect-[1.8/1] bg-surface-container border border-white/5 card-shell featured-card ratio-box ratio-18-10 reveal-block" data-reveal-delay="40ms" href="https://edmilsonmula.info" rel="noopener noreferrer" target="_blank">
 <img alt="Digital Agency" class="absolute inset-0 w-full h-full object-cover opacity-60" decoding="async" loading="lazy" src="https://i.postimg.cc/KzTvJ3L0/Captura-de-tela-2026-04-18-032645.png"/>
 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 <div class="absolute bottom-5 left-5 right-5 space-y-0.5">
@@ -469,7 +764,7 @@
 </a>
 <!-- Stacked Links -->
 <div class="space-y-2">
-<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] border border-white/5 hover:bg-[#222] transition-colors group card-shell link-card" href="https://edmilsonmula.info" id="personal-website-link" rel="noopener noreferrer" target="_blank">
+<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] border border-white/5 hover:bg-[#222] transition-colors group card-shell link-card reveal-block" data-reveal-delay="70ms" href="https://edmilsonmula.info" id="personal-website-link" rel="noopener noreferrer" target="_blank">
 <div class="relative">
 <div class="w-10 h-10 rounded-full bg-[#262626] flex items-center justify-center border border-white/5 icon-chip">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">link</span>
@@ -480,7 +775,7 @@
 <p class="text-[11px] text-on-surface-variant">edmilsonmula.info</p>
 </div>
 </a>
-<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] hover:bg-[#222] transition-colors group card-shell link-card" href="mailto:mula.edmilson0@gmail.com" id="email-card-link">
+<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] hover:bg-[#222] transition-colors group card-shell link-card reveal-block" data-reveal-delay="95ms" href="mailto:mula.edmilson0@gmail.com" id="email-card-link">
 <div class="w-10 h-10 rounded-full bg-[#262626] flex items-center justify-center border border-white/5 icon-chip">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">mail</span>
 </div>
@@ -489,7 +784,7 @@
 <p class="text-[11px] text-on-surface-variant">mula.edmilson0@gmail.com</p>
 </div>
 </a>
-<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] border border-white/5 hover:bg-[#222] transition-colors group card-shell link-card" href="https://www.instagram.com/edmilson_mula/" id="instagram-card-link" rel="noopener noreferrer" target="_blank">
+<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] border border-white/5 hover:bg-[#222] transition-colors group card-shell link-card reveal-block" data-reveal-delay="120ms" href="https://www.instagram.com/edmilson_mula/" id="instagram-card-link" rel="noopener noreferrer" target="_blank">
 <div class="w-10 h-10 rounded-full bg-[#262626] flex items-center justify-center border border-white/5 icon-chip">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">drafts</span>
 </div>
@@ -498,7 +793,7 @@
 <p class="text-[11px] text-on-surface-variant">@edmilson_mula</p>
 </div>
 </a>
-<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] border border-white/5 hover:bg-[#222] transition-colors group card-shell link-card" href="https://wa.me/258846342251" id="whatsapp-card-link" rel="noopener noreferrer" target="_blank">
+<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] border border-white/5 hover:bg-[#222] transition-colors group card-shell link-card reveal-block" data-reveal-delay="145ms" href="https://wa.me/258846342251" id="whatsapp-card-link" rel="noopener noreferrer" target="_blank">
 <div class="w-10 h-10 rounded-full bg-[#262626] flex items-center justify-center border border-white/5 icon-chip">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">forum</span>
 </div>
@@ -509,12 +804,12 @@
 </a>
 </div>
 <!-- Latest Video Section -->
-<section class="bg-[#181818] rounded-2xl p-5 space-y-4 border border-white/5 card-shell section-block video-card nav-section" id="video-section">
+<section class="bg-[#181818] rounded-2xl p-5 space-y-4 border border-white/5 card-shell section-block video-card nav-section reveal-block" id="video-section" data-reveal-delay="170ms">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">play_circle</span>
 <h3 class="text-[13px] font-bold tracking-tight">Latest Video</h3>
 </div>
-<a aria-label="Latest video" class="relative rounded-xl overflow-hidden aspect-[1.8/1] bg-black block cursor-pointer video-surface" href="#"  id="latest-video-link">
+<a aria-label="Latest video" class="relative rounded-xl overflow-hidden aspect-[1.8/1] bg-black block cursor-pointer video-surface ratio-box ratio-18-10" href="#"  id="latest-video-link">
 <img alt="Latest video thumbnail" class="w-full h-full object-cover opacity-80" decoding="async" loading="lazy" src="https://i.postimg.cc/1310HDq6/joy.jpg"/>
 <div class="absolute inset-0 flex items-center justify-center">
 <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
@@ -528,7 +823,7 @@
 </section>
 <!-- Coffee Setup -->
 <!-- Instagram Feed -->
-<section class="bg-[#181818] rounded-2xl p-5 space-y-4 border border-white/5 card-shell section-block instagram-card nav-section" id="instagram-section">
+<section class="bg-[#181818] rounded-2xl p-5 space-y-4 border border-white/5 card-shell section-block instagram-card nav-section reveal-block" id="instagram-section" data-reveal-delay="195ms">
 <div class="flex justify-between items-center">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">camera_alt</span>
@@ -536,22 +831,22 @@
 </div>
 <a aria-label="Abrir Instagram" href="https://www.instagram.com/edmilson_mula/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-on-surface-variant text-[18px]">open_in_new</span></a>
 </div>
-<div class="insta-marquee"><a aria-label="Ver Instagram de Edmilson Mula" class="insta-track" href="https://www.instagram.com/edmilson_mula/" rel="noopener noreferrer" target="_blank"><div class="insta-slide aspect-[4/5] w-[152px]">
+<div class="insta-marquee"><a aria-label="Ver Instagram de Edmilson Mula" class="insta-track" href="https://www.instagram.com/edmilson_mula/" rel="noopener noreferrer" target="_blank"><div class="insta-slide aspect-[4/5] w-[152px] ratio-box ratio-4-5">
 <img alt="Instagram post 1" decoding="async" loading="lazy" src="https://i.postimg.cc/44tm1qbj/Captura-de-tela-2026-04-18-032437.png"/>
-</div><div class="insta-slide aspect-square w-[132px]">
+</div><div class="insta-slide aspect-square w-[132px] ratio-box ratio-square">
 <img alt="Instagram post 2" decoding="async" loading="lazy" src="https://i.postimg.cc/3N771S3Q/Captura-de-tela-2026-04-18-032900.png"/>
-</div><div class="insta-slide aspect-[1.91/1] w-[210px]">
+</div><div class="insta-slide aspect-[1.91/1] w-[210px] ratio-box ratio-191-100">
 <img alt="Instagram post 3" decoding="async" loading="lazy" src="https://i.postimg.cc/Wzjj8WsP/Captura-de-tela-2026-04-18-032931.png"/>
-</div><div class="insta-slide aspect-[4/5] w-[152px]">
+</div><div class="insta-slide aspect-[4/5] w-[152px] ratio-box ratio-4-5">
 <img alt="Instagram post 1" decoding="async" loading="lazy" src="https://i.postimg.cc/44tm1qbj/Captura-de-tela-2026-04-18-032437.png"/>
-</div><div class="insta-slide aspect-square w-[132px]">
+</div><div class="insta-slide aspect-square w-[132px] ratio-box ratio-square">
 <img alt="Instagram post 2" decoding="async" loading="lazy" src="https://i.postimg.cc/3N771S3Q/Captura-de-tela-2026-04-18-032900.png"/>
-</div><div class="insta-slide aspect-[1.91/1] w-[210px]">
+</div><div class="insta-slide aspect-[1.91/1] w-[210px] ratio-box ratio-191-100">
 <img alt="Instagram post 3" decoding="async" loading="lazy" src="https://i.postimg.cc/Wzjj8WsP/Captura-de-tela-2026-04-18-032931.png"/>
 </div></a></div>
 </section>
 <!-- Drop a line -->
-<section class="bg-[#181818] rounded-2xl p-5 space-y-5 border border-white/5 card-shell section-block contact-card nav-section" id="contact-section">
+<section class="bg-[#181818] rounded-2xl p-5 space-y-5 border border-white/5 card-shell section-block contact-card nav-section reveal-block" id="contact-section" data-reveal-delay="220ms">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">chat_bubble_outline</span>
 <h3 class="text-[13px] font-bold tracking-tight">Drop a line</h3>
@@ -568,7 +863,7 @@
 </form>
 </section>
 <!-- Personal Newsletter -->
-<section class="bg-[#181818] rounded-2xl p-6 text-center space-y-4 border border-white/5 card-shell section-block newsletter-card nav-section" id="newsletter-section">
+<section class="bg-[#181818] rounded-2xl p-6 text-center space-y-4 border border-white/5 card-shell section-block newsletter-card nav-section reveal-block" id="newsletter-section" data-reveal-delay="245ms">
 <div class="space-y-1">
 <h3 class="text-[15px] font-extrabold font-headline">Personal Newsletter</h3>
 <p class="text-[11px] text-on-surface-variant leading-relaxed max-w-[240px] mx-auto">Sharing thoughts, ideas, updates of my stack once per month.</p>
@@ -579,7 +874,7 @@
 </form>
 </section>
 <!-- Software I use -->
-<section class="bg-[#181818] rounded-2xl p-5 space-y-5 border border-white/5 card-shell section-block software-card nav-section" id="software-section">
+<section class="bg-[#181818] rounded-2xl p-5 space-y-5 border border-white/5 card-shell section-block software-card nav-section reveal-block" id="software-section" data-reveal-delay="270ms">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">widgets</span>
 <h3 class="text-[13px] font-bold tracking-tight">Software I use</h3>
@@ -715,7 +1010,7 @@
             </button>
 </section>
 <!-- Location/Info Cards -->
-<div class="space-y-2 nav-section" id="details-section">
+<div class="space-y-2 nav-section reveal-block" id="details-section" data-reveal-delay="295ms">
 <a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] border border-white/5 hover:bg-[#222] transition-colors card-shell detail-card" href="https://maps.google.com/?q=Maputo%2C%20Mozambique" id="location-card-link" rel="noopener noreferrer" target="_blank">
 <div class="w-10 h-10 rounded-full bg-[#262626] flex items-center justify-center border border-white/5 icon-chip">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">location_on</span>
@@ -737,7 +1032,7 @@
 </a>
 </div>
 <!-- Footer -->
-<footer class="pt-8 text-center space-y-2 pb-12">
+<footer class="pt-8 text-center space-y-2 pb-12 reveal-block" data-reveal-delay="320ms">
 <p class="text-[10px] font-medium tracking-wide text-on-surface-variant uppercase">Edmilson Mula © 2026</p>
 </footer>
 </main>
@@ -993,4 +1288,46 @@ if (instaTrack && !prefersReducedMotion.matches) {
     }
   });
 });
+
+
+/* Scroll reveal + scroll state */
+const revealBlocks = Array.from(document.querySelectorAll('.reveal-block'));
+const revealWithMotionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const markVisible = (element) => {
+  if (!element) return;
+  element.classList.add('is-visible');
+};
+
+if (!revealWithMotionAllowed) {
+  revealBlocks.forEach(markVisible);
+} else {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      markVisible(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, {
+    rootMargin: '0px 0px -12% 0px',
+    threshold: 0.14
+  });
+
+  revealBlocks.forEach((block) => revealObserver.observe(block));
+}
+
+let scrollStateTimer;
+const syncScrollState = () => {
+  const offsetY = window.scrollY || window.pageYOffset || 0;
+  document.body.classList.toggle('has-scrolled', offsetY > 10);
+  document.body.classList.add('is-scrolling');
+  window.clearTimeout(scrollStateTimer);
+  scrollStateTimer = window.setTimeout(() => {
+    document.body.classList.remove('is-scrolling');
+  }, 130);
+};
+
+syncScrollState();
+window.addEventListener('scroll', syncScrollState, { passive: true });
+
 </script></body></html>
