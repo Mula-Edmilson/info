@@ -36,9 +36,11 @@
         }
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
         body {
             background-color: #0c0c0c;
+            overflow-x: hidden;
         }
         .tertiary-glow-border {
             box-shadow: 0 0 0 1px rgba(143, 96, 250, 0.5);
@@ -358,6 +360,71 @@
                 animation-duration: 34s;
             }
         }
+
+        .page-shell {
+            width: min(100%, 390px);
+        }
+        #floating-nav {
+            width: min(calc(100vw - 32px), 260px);
+        }
+        @media (max-width: 420px) {
+            .page-shell {
+                width: 100%;
+            }
+            .insta-track {
+                gap: 0.4rem;
+            }
+            .insta-track > .insta-slide:nth-child(3n + 1) {
+                width: min(39vw, 152px) !important;
+            }
+            .insta-track > .insta-slide:nth-child(3n + 2) {
+                width: min(34vw, 132px) !important;
+            }
+            .insta-track > .insta-slide:nth-child(3n + 3) {
+                width: min(54vw, 210px) !important;
+            }
+        }
+        @media (max-width: 380px) {
+            main.page-shell {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                padding-top: 2.5rem !important;
+            }
+            #contact-form > div:first-child {
+                grid-template-columns: 1fr !important;
+            }
+            #newsletter-form {
+                flex-direction: column;
+            }
+            #newsletter-form button {
+                width: 100%;
+            }
+            #floating-nav {
+                bottom: 1rem;
+            }
+        }
+
+
+        .video-inline-player {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: inherit;
+            overflow: hidden;
+        }
+        .video-inline-player video,
+        .video-inline-player iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: 0;
+            background: #000;
+        }
+        #latest-video-link.is-playing {
+            cursor: default;
+        }
+
 </style>
 <meta content="Portfólio pessoal de Edmilson Mula, Web Designer, Designer Gráfico e Especialista SEO em Maputo, Moçambique." name="description"/><meta content="#0c0c0c" name="theme-color"/><meta content="Edmilson Mula | Web Designer &amp; Designer Gráfico" property="og:title"/><meta content="Portfólio pessoal de Edmilson Mula com links, contacto, software utilizado e presença digital." property="og:description"/><meta content="website" property="og:type"/><meta content="https://edmilsonmula.info" property="og:url"/></head>
 <body class="text-on-surface antialiased font-body selection:bg-tertiary/30">
@@ -431,6 +498,15 @@
 <p class="text-[11px] text-on-surface-variant">@edmilson_mula</p>
 </div>
 </a>
+<a class="flex items-center gap-4 p-4 rounded-xl bg-[#181818] border border-white/5 hover:bg-[#222] transition-colors group card-shell link-card" href="https://wa.me/258846342251" id="whatsapp-card-link" rel="noopener noreferrer" target="_blank">
+<div class="w-10 h-10 rounded-full bg-[#262626] flex items-center justify-center border border-white/5 icon-chip">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">forum</span>
+</div>
+<div class="flex-1">
+<p class="text-[14px] font-bold">WhatsApp</p>
+<p class="text-[11px] text-on-surface-variant">+258 846342251</p>
+</div>
+</a>
 </div>
 <!-- Latest Video Section -->
 <section class="bg-[#181818] rounded-2xl p-5 space-y-4 border border-white/5 card-shell section-block video-card nav-section" id="video-section">
@@ -438,7 +514,7 @@
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">play_circle</span>
 <h3 class="text-[13px] font-bold tracking-tight">Latest Video</h3>
 </div>
-<a aria-label="Latest video" class="relative rounded-xl overflow-hidden aspect-[1.8/1] bg-black block cursor-pointer video-surface" href="https://video.wixstatic.com/video/819ea0_f7e1edb0f739417c979fcfff2e2cc931/720p/mp4/file.mp4" id="latest-video-link">
+<a aria-label="Latest video" class="relative rounded-xl overflow-hidden aspect-[1.8/1] bg-black block cursor-pointer video-surface" href="#"  id="latest-video-link">
 <img alt="Latest video thumbnail" class="w-full h-full object-cover opacity-80" decoding="async" loading="lazy" src="https://i.postimg.cc/1310HDq6/joy.jpg"/>
 <div class="absolute inset-0 flex items-center justify-center">
 <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20">
@@ -680,8 +756,9 @@
 <span class="material-symbols-outlined text-[22px]">person</span>
 </a>
 </nav>
-<script>const CONFIG = {
-  latestVideoUrl: '', // Cola aqui a URL do teu vídeo
+<script>// CONFIGURAÇÃO RÁPIDA — cola a URL do teu vídeo aqui em `latestVideoUrl`
+const CONFIG = {
+  latestVideoUrl: 'https://video.wixstatic.com/video/819ea0_f7e1edb0f739417c979fcfff2e2cc931/720p/mp4/file.mp4', // Cola aqui a URL do teu vídeo
   contactEmail: 'mula.edmilson0@gmail.com',
   websiteUrl: 'https://edmilsonmula.info',
   instagramUrl: 'https://www.instagram.com/edmilson_mula/',
@@ -713,6 +790,7 @@ const applyLink = (id, href) => {
 };
 applyLink('personal-website-link', CONFIG.websiteUrl);
 applyLink('instagram-card-link', CONFIG.instagramUrl);
+applyLink('whatsapp-card-link', CONFIG.whatsappUrl);
 applyLink('location-card-link', CONFIG.locationUrl);
 applyLink('contact-card-link', CONFIG.whatsappUrl);
 
@@ -728,17 +806,80 @@ if (showMoreTechBtn && techExtra) {
 
 const latestVideoLink = document.getElementById('latest-video-link');
 if (latestVideoLink) {
-  if (CONFIG.latestVideoUrl.trim()) {
-    latestVideoLink.href = CONFIG.latestVideoUrl.trim();
-    latestVideoLink.target = '_blank';
-    latestVideoLink.rel = 'noopener noreferrer';
-  } else {
-    latestVideoLink.addEventListener('click', (event) => {
-      event.preventDefault();
+  const latestVideoPoster = latestVideoLink.querySelector('img')?.getAttribute('src') || '';
+  const latestVideoInitialMarkup = latestVideoLink.innerHTML;
+
+  const getYouTubeEmbedUrl = (url) => {
+    try {
+      const parsed = new URL(url);
+      const host = parsed.hostname.replace('www.', '');
+      if (host === 'youtu.be') {
+        return `https://www.youtube.com/embed/${parsed.pathname.slice(1)}?autoplay=1&rel=0`;
+      }
+      if (host.includes('youtube.com')) {
+        const id = parsed.searchParams.get('v');
+        if (id) return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+        const parts = parsed.pathname.split('/').filter(Boolean);
+        const embedId = parts[1] && ['embed', 'shorts'].includes(parts[0]) ? parts[1] : '';
+        if (embedId) return `https://www.youtube.com/embed/${embedId}?autoplay=1&rel=0`;
+      }
+    } catch (_) {}
+    return '';
+  };
+
+  const getVimeoEmbedUrl = (url) => {
+    try {
+      const parsed = new URL(url);
+      const host = parsed.hostname.replace('www.', '');
+      if (host.includes('vimeo.com')) {
+        const id = parsed.pathname.split('/').filter(Boolean).pop();
+        if (id) return `https://player.vimeo.com/video/${id}?autoplay=1`;
+      }
+    } catch (_) {}
+    return '';
+  };
+
+  const getInlinePlayerMarkup = (url) => {
+    const cleanUrl = url.trim();
+    if (!cleanUrl) return '';
+
+    const youtubeEmbed = getYouTubeEmbedUrl(cleanUrl);
+    if (youtubeEmbed) {
+      return `<div class="video-inline-player"><iframe src="${youtubeEmbed}" title="Latest video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>`;
+    }
+
+    const vimeoEmbed = getVimeoEmbedUrl(cleanUrl);
+    if (vimeoEmbed) {
+      return `<div class="video-inline-player"><iframe src="${vimeoEmbed}" title="Latest video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+    }
+
+    return `<div class="video-inline-player"><video controls autoplay playsinline preload="metadata" poster="${latestVideoPoster}"><source src="${cleanUrl}"></video></div>`;
+  };
+
+  latestVideoLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    const url = CONFIG.latestVideoUrl.trim();
+    if (!url) {
       showToast('Adiciona a URL do vídeo no código para activar este bloco.');
-    });
-  }
+      return;
+    }
+
+    if (latestVideoLink.classList.contains('is-playing')) return;
+
+    const playerMarkup = getInlinePlayerMarkup(url);
+    if (!playerMarkup) {
+      showToast('Formato de vídeo não suportado para reprodução inline.');
+      return;
+    }
+
+    latestVideoLink.classList.add('is-playing');
+    latestVideoLink.removeAttribute('href');
+    latestVideoLink.removeAttribute('target');
+    latestVideoLink.removeAttribute('rel');
+    latestVideoLink.innerHTML = playerMarkup;
+  });
 }
+
 
 const newsletterForm = document.getElementById('newsletter-form');
 const newsletterEmailInput = document.getElementById('newsletter-email');
