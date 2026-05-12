@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates · cv.info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center cursor-pointer" onclick="window.location.href='index.html'">
+                <i class="fas fa-file-alt text-2xl text-[#222a35] mr-2"></i>
+                <span class="text-2xl font-bold text-[#222a35]">cv.info</span>
+            </div>
+            <a href="dashboard.html" class="text-gray-600 hover:text-[#222a35]">
+                <i class="fas fa-arrow-left mr-2"></i>Voltar
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-[#222a35] mb-4">Templates Profissionais</h1>
+        <p class="text-gray-600 mb-8">Escolha um template para começar</p>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white shadow-lg hover:shadow-xl transition cursor-pointer" onclick="selectTemplate('professional')">
+                <div class="aspect-[3/4] bg-gradient-to-br from-[#222a35] to-[#2a3442] p-6 flex flex-col text-white">
+                    <div class="flex-1">
+                        <i class="fas fa-user-tie text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Professional</h3>
+                        <p class="text-sm opacity-80">Design elegante com barra lateral escura. Ideal para cargos corporativos e jurídicos.</p>
+                    </div>
+                    <div class="text-xs opacity-60">Template Premium</div>
+                </div>
+                <div class="p-4">
+                    <button class="w-full bg-[#827a65] text-white py-2 hover:bg-[#6e6553] transition">
+                        Usar Template <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-white shadow-lg opacity-60">
+                <div class="aspect-[3/4] bg-gradient-to-br from-gray-400 to-gray-600 p-6 flex flex-col text-white">
+                    <div class="flex-1">
+                        <i class="fas fa-palette text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Creative</h3>
+                        <p class="text-sm opacity-80">Design moderno e criativo. Perfeito para designers e artistas.</p>
+                    </div>
+                    <div class="text-xs opacity-60">Em breve</div>
+                </div>
+                <div class="p-4">
+                    <button class="w-full bg-gray-400 text-white py-2 cursor-not-allowed" disabled>
+                        Em breve
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-white shadow-lg opacity-60">
+                <div class="aspect-[3/4] bg-gradient-to-br from-gray-500 to-gray-700 p-6 flex flex-col text-white">
+                    <div class="flex-1">
+                        <i class="fas fa-briefcase text-4xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Executive</h3>
+                        <p class="text-sm opacity-80">Layout executivo para cargos de liderança e gestão.</p>
+                    </div>
+                    <div class="text-xs opacity-60">Em breve</div>
+                </div>
+                <div class="p-4">
+                    <button class="w-full bg-gray-400 text-white py-2 cursor-not-allowed" disabled>
+                        Em breve
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function selectTemplate(template) {
+            const newResume = {
+                id: Date.now().toString(),
+                lastEdited: new Date().toLocaleDateString('pt-BR'),
+                template: template,
+                personal: { fullName: '', title: '', email: '', phone: '' },
+                about: '',
+                experience: [],
+                education: [],
+                skills: [],
+                personality: ['Criativo', 'Autónomo', 'Responsável', 'Pontual'],
+                languages: [
+                    { name: 'Português', level: 'Nativo', percentage: 100 },
+                    { name: 'Inglês', level: 'Avançado', percentage: 80 },
+                    { name: 'Changana', level: 'Fluente', percentage: 90 }
+                ],
+                reference: { name: '', institution: '', phone: '', email: '' }
+            };
+            
+            const resumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+            resumes.push(newResume);
+            localStorage.setItem('cv_resumes', JSON.stringify(resumes));
+            localStorage.setItem('current_resume_id', newResume.id);
+            window.location.href = 'editor.html';
+        }
+    </script>
+</body>
+</html>

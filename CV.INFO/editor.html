@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor · cv.info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        .cv-preview {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid #b8b2a8;
+            border-radius: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .preview-left {
+            width: 35%;
+            color: #ffffff;
+            padding: 2rem 1.5rem;
+        }
+        
+        .preview-right {
+            width: 65%;
+            background: #ffffff;
+            padding: 2rem 1.8rem;
+        }
+        
+        .preview-name {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 8px;
+        }
+        
+        .preview-title {
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            padding-bottom: 12px;
+        }
+        
+        .preview-heading-left {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: 1rem;
+            padding-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .preview-heading-right {
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            padding-bottom: 6px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            width: 100%;
+            border-radius: 0;
+        }
+        
+        .progress-level {
+            height: 6px;
+            width: 0%;
+            border-radius: 0;
+        }
+        
+        .tag-preview {
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            border-radius: 0;
+        }
+        
+        .entry-date-preview {
+            padding: 2px 8px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            border-radius: 0;
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .tab-button.active {
+            background: #222a35;
+            color: white;
+        }
+        
+        .tab-content.hidden {
+            display: none;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 1024px) {
+            .cv-preview {
+                transform: scale(0.8);
+                transform-origin: top left;
+                width: 125%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cv-preview {
+                transform: scale(0.6);
+                width: 166%;
+            }
+        }
+
+        #preview-wrapper {
+            overflow-x: auto;
+            overflow-y: visible;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-4">
+                    <i class="fas fa-file-alt text-2xl text-[#222a35] mr-2"></i>
+                    <span class="text-xl font-bold text-[#222a35]">Editor de Currículo</span>
+                    <select id="template-selector" class="ml-4 border-2 border-gray-300 p-2">
+                        <option value="professional">Template Professional</option>
+                        <option value="modern">Template Modern</option>
+                        <option value="elegant">Template Elegant</option>
+                        <option value="minimal">Template Minimal</option>
+                        <option value="bold">Template Bold</option>
+                    </select>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="window.location.href='dashboard.html'" class="text-gray-600 hover:text-[#222a35] px-4 py-2">
+                        <i class="fas fa-arrow-left mr-2"></i>Voltar
+                    </button>
+                    <button onclick="saveResume()" class="text-gray-600 hover:text-[#222a35] px-4 py-2">
+                        <i class="fas fa-save mr-2"></i>Salvar
+                    </button>
+                    <button onclick="exportPDF()" class="bg-[#827a65] text-white px-6 py-2 hover:bg-[#6e6553] transition">
+                        <i class="fas fa-download mr-2"></i>Exportar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-[1600px] mx-auto px-4 py-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+            <div class="lg:w-1/2 bg-white p-6 shadow-lg overflow-y-auto max-h-[calc(100vh-120px)]">
+                <div class="flex border-b mb-6 flex-wrap">
+                    <button class="tab-button active" data-tab="personal">Dados Pessoais</button>
+                    <button class="tab-button" data-tab="experience">Experiência</button>
+                    <button class="tab-button" data-tab="education">Formação</button>
+                    <button class="tab-button" data-tab="skills">Competências</button>
+                    <button class="tab-button" data-tab="languages">Línguas</button>
+                </div>
+                
+                <!-- Tab Personal -->
+                <div id="tab-personal" class="tab-content">
+                    <h3 class="text-xl font-bold text-[#222a35] mb-4">Informações Pessoais</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                            <input type="text" id="fullName" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Título Profissional</label>
+                            <input type="text" id="profTitle" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                            <input type="text" id="phone" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Morada</label>
+                            <input type="text" id="address" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none" placeholder="Ex: Maputo, Moçambique">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Sobre Mim</label>
+                            <textarea id="about" rows="4" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none"></textarea>
+                        </div>
+                        
+                        <h4 class="font-bold text-[#222a35] mt-6 mb-3">Referência Profissional</h4>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                            <input type="text" id="refName" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Instituição</label>
+                            <input type="text" id="refInstitution" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                            <input type="text" id="refPhone" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="refEmail" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tab Experience -->
+                <div id="tab-experience" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-[#222a35]">Experiência Profissional</h3>
+                        <button onclick="editor.addExperience()" class="bg-[#827a65] text-white px-4 py-2 hover:bg-[#6e6553]">
+                            <i class="fas fa-plus mr-2"></i>Adicionar
+                        </button>
+                    </div>
+                    <div id="experience-list" class="space-y-4"></div>
+                </div>
+                
+                <!-- Tab Education -->
+                <div id="tab-education" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-[#222a35]">Formação Acadêmica</h3>
+                        <button onclick="editor.addEducation()" class="bg-[#827a65] text-white px-4 py-2 hover:bg-[#6e6553]">
+                            <i class="fas fa-plus mr-2"></i>Adicionar
+                        </button>
+                    </div>
+                    <div id="education-list" class="space-y-4"></div>
+                </div>
+                
+                <!-- Tab Skills -->
+                <div id="tab-skills" class="tab-content hidden">
+                    <h3 class="text-xl font-bold text-[#222a35] mb-4">Competências</h3>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Competências (uma por linha)</label>
+                        <textarea id="skills" rows="6" class="w-full border-2 border-gray-300 p-3 focus:border-[#827a65] outline-none"></textarea>
+                    </div>
+                    
+                    <h4 class="font-bold text-[#222a35] mt-6 mb-3">Personalidade</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center"><input type="checkbox" class="personality-check mr-2" value="Criativo"> Criativo</label>
+                        <label class="flex items-center"><input type="checkbox" class="personality-check mr-2" value="Autónomo"> Autónomo</label>
+                        <label class="flex items-center"><input type="checkbox" class="personality-check mr-2" value="Responsável"> Responsável</label>
+                        <label class="flex items-center"><input type="checkbox" class="personality-check mr-2" value="Pontual"> Pontual</label>
+                        <label class="flex items-center"><input type="checkbox" class="personality-check mr-2" value="Proativo"> Proativo</label>
+                        <label class="flex items-center"><input type="checkbox" class="personality-check mr-2" value="Organizado"> Organizado</label>
+                        <label class="flex items-center"><input type="checkbox" class="personality-check mr-2" value="Comunicativo"> Comunicativo</label>
+                        <label class="flex items-center"><input type="checkbox" class="personality-check mr-2" value="Líder"> Líder</label>
+                    </div>
+                </div>
+                
+                <!-- Tab Languages -->
+                <div id="tab-languages" class="tab-content hidden">
+                    <h3 class="text-xl font-bold text-[#222a35] mb-4">Línguas</h3>
+                    <div id="languages-list" class="space-y-4"></div>
+                    <button onclick="editor.addLanguage()" class="mt-4 bg-[#827a65] text-white px-4 py-2 hover:bg-[#6e6553]">
+                        <i class="fas fa-plus mr-2"></i>Adicionar Língua
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Preview -->
+            <div class="lg:w-1/2">
+                <h3 class="text-lg font-bold text-[#222a35] mb-3">Preview em Tempo Real</h3>
+                <div id="preview-wrapper">
+                    <div id="live-preview" class="cv-preview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const templates = {
+            professional: {
+                leftBg: '#222a35',
+                titleColor: '#b7b0a4',
+                titleBorder: '#827a65',
+                headingColor: '#c5bfb4',
+                headingBorder: '#827a65',
+                rightHeadingColor: '#222a35',
+                rightHeadingBorder: '#827a65',
+                progressBg: '#3a4352',
+                progressFill: '#827a65',
+                tagBg: '#2f3845',
+                tagBorder: '#827a65',
+                dateBg: '#f0ede8',
+                dateBorder: '#827a65',
+                bulletColor: '#827a65'
+            },
+            modern: {
+                leftBg: '#1a1a2e',
+                titleColor: '#e0e0e0',
+                titleBorder: '#e94560',
+                headingColor: '#e0e0e0',
+                headingBorder: '#e94560',
+                rightHeadingColor: '#1a1a2e',
+                rightHeadingBorder: '#e94560',
+                progressBg: '#16213e',
+                progressFill: '#e94560',
+                tagBg: '#0f3460',
+                tagBorder: '#e94560',
+                dateBg: '#f0f0f0',
+                dateBorder: '#e94560',
+                bulletColor: '#e94560'
+            },
+            elegant: {
+                leftBg: '#2c3e50',
+                titleColor: '#ecf0f1',
+                titleBorder: '#e67e22',
+                headingColor: '#ecf0f1',
+                headingBorder: '#e67e22',
+                rightHeadingColor: '#2c3e50',
+                rightHeadingBorder: '#e67e22',
+                progressBg: '#34495e',
+                progressFill: '#e67e22',
+                tagBg: '#34495e',
+                tagBorder: '#e67e22',
+                dateBg: '#f5f5f5',
+                dateBorder: '#e67e22',
+                bulletColor: '#e67e22'
+            },
+            minimal: {
+                leftBg: '#f8f9fa',
+                titleColor: '#495057',
+                titleBorder: '#6c757d',
+                headingColor: '#495057',
+                headingBorder: '#6c757d',
+                rightHeadingColor: '#212529',
+                rightHeadingBorder: '#6c757d',
+                progressBg: '#dee2e6',
+                progressFill: '#6c757d',
+                tagBg: '#e9ecef',
+                tagBorder: '#6c757d',
+                tagText: '#495057',
+                dateBg: '#e9ecef',
+                dateBorder: '#6c757d',
+                bulletColor: '#6c757d',
+                textDark: true
+            },
+            bold: {
+                leftBg: '#0a192f',
+                titleColor: '#64ffda',
+                titleBorder: '#64ffda',
+                headingColor: '#ccd6f6',
+                headingBorder: '#64ffda',
+                rightHeadingColor: '#0a192f',
+                rightHeadingBorder: '#64ffda',
+                progressBg: '#112240',
+                progressFill: '#64ffda',
+                tagBg: '#112240',
+                tagBorder: '#64ffda',
+                dateBg: '#e6f1ff',
+                dateBorder: '#64ffda',
+                bulletColor: '#64ffda'
+            }
+        };
+
+        class CVEditor {
+            constructor() {
+                this.resumeId = localStorage.getItem('current_resume_id');
+                this.currentTemplate = 'professional';
+                this.loadResume();
+                this.setupEventListeners();
+                this.setupTabs();
+                this.setupTemplateSelector();
+                this.renderPreview();
+            }
+            
+            loadResume() {
+                const resumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+                this.resume = resumes.find(r => r.id === this.resumeId);
+                
+                if (!this.resume) {
+                    alert('Currículo não encontrado!');
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+                
+                this.currentTemplate = this.resume.template || 'professional';
+                document.getElementById('template-selector').value = this.currentTemplate;
+                this.populateForm();
+            }
+            
+            populateForm() {
+                document.getElementById('fullName').value = this.resume.personal?.fullName || '';
+                document.getElementById('profTitle').value = this.resume.personal?.title || '';
+                document.getElementById('email').value = this.resume.personal?.email || '';
+                document.getElementById('phone').value = this.resume.personal?.phone || '';
+                document.getElementById('address').value = this.resume.personal?.address || '';
+                document.getElementById('about').value = this.resume.about || '';
+                document.getElementById('refName').value = this.resume.reference?.name || '';
+                document.getElementById('refInstitution').value = this.resume.reference?.institution || '';
+                document.getElementById('refPhone').value = this.resume.reference?.phone || '';
+                document.getElementById('refEmail').value = this.resume.reference?.email || '';
+                document.getElementById('skills').value = this.resume.skills?.join('\n') || '';
+                
+                document.querySelectorAll('.personality-check').forEach(cb => {
+                    cb.checked = this.resume.personality?.includes(cb.value) || false;
+                });
+                
+                this.renderExperienceList();
+                this.renderEducationList();
+                this.renderLanguagesList();
+            }
+            
+            setupEventListeners() {
+                const inputs = ['fullName', 'profTitle', 'email', 'phone', 'address', 'about', 'refName', 'refInstitution', 'refPhone', 'refEmail', 'skills'];
+                inputs.forEach(id => {
+                    document.getElementById(id).addEventListener('input', () => {
+                        this.updateResumeFromForm();
+                        this.renderPreview();
+                    });
+                });
+                
+                document.querySelectorAll('.personality-check').forEach(cb => {
+                    cb.addEventListener('change', () => {
+                        this.updateResumeFromForm();
+                        this.renderPreview();
+                    });
+                });
+            }
+            
+            setupTabs() {
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const tab = e.target.dataset.tab;
+                        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+                        document.getElementById(`tab-${tab}`).classList.remove('hidden');
+                        
+                        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
+                });
+            }
+            
+            setupTemplateSelector() {
+                document.getElementById('template-selector').addEventListener('change', (e) => {
+                    this.currentTemplate = e.target.value;
+                    this.resume.template = this.currentTemplate;
+                    this.updateResumeFromForm();
+                    this.renderPreview();
+                });
+            }
+            
+            updateResumeFromForm() {
+                this.resume.personal = {
+                    fullName: document.getElementById('fullName').value,
+                    title: document.getElementById('profTitle').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value
+                };
+                this.resume.about = document.getElementById('about').value;
+                this.resume.reference = {
+                    name: document.getElementById('refName').value,
+                    institution: document.getElementById('refInstitution').value,
+                    phone: document.getElementById('refPhone').value,
+                    email: document.getElementById('refEmail').value
+                };
+                this.resume.skills = document.getElementById('skills').value.split('\n').filter(s => s.trim());
+                this.resume.personality = Array.from(document.querySelectorAll('.personality-check:checked')).map(cb => cb.value);
+                this.resume.lastEdited = new Date().toLocaleDateString('pt-BR');
+                this.resume.template = this.currentTemplate;
+                
+                this.saveToLocalStorage();
+            }
+            
+            saveToLocalStorage() {
+                const resumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+                const index = resumes.findIndex(r => r.id === this.resume.id);
+                if (index >= 0) {
+                    resumes[index] = this.resume;
+                }
+                localStorage.setItem('cv_resumes', JSON.stringify(resumes));
+            }
+            
+            renderPreview() {
+                const preview = document.getElementById('live-preview');
+                const r = this.resume;
+                const t = templates[this.currentTemplate];
+                
+                const leftTextColor = t.textDark ? '#333' : 'white';
+                const leftHeadingColor = t.textDark ? '#495057' : t.headingColor;
+                
+                preview.innerHTML = `
+                    <div class="preview-left" style="background: ${t.leftBg};">
+                        <div style="margin-bottom: 2rem;">
+                            <div class="preview-name" style="color: ${leftTextColor};">${r.personal?.fullName || 'SEU NOME'}</div>
+                            <div class="preview-title" style="color: ${t.titleColor}; border-bottom-color: ${t.titleBorder};">${r.personal?.title || 'CARGO'}</div>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <div class="preview-heading-left" style="color: ${leftHeadingColor}; border-bottom-color: ${t.headingBorder};">
+                                <i class="fas fa-address-card"></i> CONTACTO
+                            </div>
+                            <div style="display: flex; margin-bottom: 12px;">
+                                <i class="fas fa-envelope" style="width: 20px; color: ${t.textDark ? '#6c757d' : '#a39b8f'};"></i>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 0.65rem; opacity: 0.8; color: ${leftTextColor};">Email</div>
+                                    <div style="font-weight: 500; font-size: 0.8rem; word-break: break-all; color: ${leftTextColor};">${r.personal?.email || '—'}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; margin-bottom: 12px;">
+                                <i class="fas fa-phone-alt" style="width: 20px; color: ${t.textDark ? '#6c757d' : '#a39b8f'};"></i>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 0.65rem; opacity: 0.8; color: ${leftTextColor};">Telefone</div>
+                                    <div style="font-weight: 500; font-size: 0.8rem; color: ${leftTextColor};">${r.personal?.phone || '—'}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <i class="fas fa-map-marker-alt" style="width: 20px; color: ${t.textDark ? '#6c757d' : '#a39b8f'};"></i>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 0.65rem; opacity: 0.8; color: ${leftTextColor};">Morada</div>
+                                    <div style="font-weight: 500; font-size: 0.8rem; color: ${leftTextColor};">${r.personal?.address || '—'}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <div class="preview-heading-left" style="color: ${leftHeadingColor}; border-bottom-color: ${t.headingBorder};">
+                                <i class="fas fa-globe"></i> LÍNGUAS
+                            </div>
+                            ${r.languages?.length ? r.languages.map(lang => `
+                                <div style="margin-bottom: 14px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.8rem; color: ${leftTextColor};">
+                                        <span>${lang.name}</span>
+                                        <span>${lang.level}</span>
+                                    </div>
+                                    <div class="progress-bar" style="background: ${t.progressBg};">
+                                        <div class="progress-level" style="width: ${lang.percentage}%; background: ${t.progressFill};"></div>
+                                    </div>
+                                </div>
+                            `).join('') : '<p style="color: #999; font-size: 0.8rem;">—</p>'}
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <div class="preview-heading-left" style="color: ${leftHeadingColor}; border-bottom-color: ${t.headingBorder};">
+                                <i class="fas fa-user-check"></i> PERSONALIDADE
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                                ${r.personality?.length ? r.personality.map(p => `
+                                    <span class="tag-preview" style="background: ${t.tagBg}; border-color: ${t.tagBorder}; color: ${t.tagText || 'white'};">${p}</span>
+                                `).join('') : '<span style="color: #999; font-size: 0.8rem;">—</span>'}
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="preview-heading-left" style="color: ${leftHeadingColor}; border-bottom-color: ${t.headingBorder};">
+                                <i class="fas fa-user-tie"></i> REFERÊNCIA
+                            </div>
+                            <div style="font-weight: 700; margin-bottom: 4px; font-size: 0.9rem; color: ${leftTextColor};">${r.reference?.name || '—'}</div>
+                            <div style="font-size: 0.75rem; opacity: 0.9; margin-bottom: 8px; color: ${leftTextColor};">${r.reference?.institution || '—'}</div>
+                            <div style="font-size: 0.75rem; color: ${leftTextColor};">
+                                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                                    <i class="fas fa-phone" style="width: 14px;"></i> ${r.reference?.phone || '—'}
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-envelope" style="width: 14px;"></i> ${r.reference?.email || '—'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-right">
+                        <section style="margin-bottom: 1.5rem;">
+                            <div class="preview-heading-right" style="color: ${t.rightHeadingColor}; border-bottom-color: ${t.rightHeadingBorder};">
+                                <i class="fas fa-user"></i> SOBRE MIM
+                            </div>
+                            <div style="font-size: 0.8rem; line-height: 1.5; color: #2a2e35;">${r.about || '—'}</div>
+                        </section>
+                        
+                        <section style="margin-bottom: 1.5rem;">
+                            <div class="preview-heading-right" style="color: ${t.rightHeadingColor}; border-bottom-color: ${t.rightHeadingBorder};">
+                                <i class="fas fa-briefcase"></i> EXPERIÊNCIA PROFISSIONAL
+                            </div>
+                            ${r.experience?.length ? r.experience.map(exp => `
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px;">
+                                        <span style="font-weight: 700; text-transform: uppercase; color: ${t.rightHeadingColor}; font-size: 0.8rem;">${exp.title}</span>
+                                        <span class="entry-date-preview" style="background: ${t.dateBg}; border-color: ${t.dateBorder};">${exp.date}</span>
+                                    </div>
+                                    ${exp.subtitle ? `<div style="font-weight: 600; color: #5a554a; font-size: 0.75rem; margin: 2px 0 4px;">${exp.subtitle}</div>` : ''}
+                                    <div style="font-size: 0.75rem; color: #3a4048; line-height: 1.4;">${exp.description}</div>
+                                </div>
+                            `).join('') : '<p style="color: #999; font-size: 0.8rem;">—</p>'}
+                        </section>
+                        
+                        <section style="margin-bottom: 1.5rem;">
+                            <div class="preview-heading-right" style="color: ${t.rightHeadingColor}; border-bottom-color: ${t.rightHeadingBorder};">
+                                <i class="fas fa-graduation-cap"></i> FORMAÇÃO ACADÊMICA
+                            </div>
+                            ${r.education?.length ? r.education.map(edu => `
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                        <span style="font-weight: 700; text-transform: uppercase; color: ${t.rightHeadingColor}; font-size: 0.8rem;">${edu.degree}</span>
+                                        <span class="entry-date-preview" style="background: ${t.dateBg}; border-color: ${t.dateBorder};">${edu.date}</span>
+                                    </div>
+                                    <div style="font-weight: 600; color: #5a554a; font-size: 0.75rem; margin: 2px 0 4px;">${edu.institution}</div>
+                                    ${edu.description ? `<div style="font-size: 0.75rem; color: #3a4048;">${edu.description}</div>` : ''}
+                                </div>
+                            `).join('') : '<p style="color: #999; font-size: 0.8rem;">—</p>'}
+                        </section>
+                        
+                        <section>
+                            <div class="preview-heading-right" style="color: ${t.rightHeadingColor}; border-bottom-color: ${t.rightHeadingBorder};">
+                                <i class="fas fa-cogs"></i> COMPETÊNCIAS
+                            </div>
+                            <ul style="list-style: none; padding: 0;">
+                                ${r.skills?.length ? r.skills.map(skill => `
+                                    <li style="position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 0.75rem; color: #2a3038;">
+                                        <span style="position: absolute; left: 0; color: ${t.bulletColor};">■</span>
+                                        ${skill}
+                                    </li>
+                                `).join('') : '<li style="color: #999; font-size: 0.8rem;">—</li>'}
+                            </ul>
+                        </section>
+                    </div>
+                `;
+            }
+            
+            renderExperienceList() {
+                const container = document.getElementById('experience-list');
+                container.innerHTML = '';
+                
+                if (!this.resume.experience?.length) {
+                    container.innerHTML = '<p class="text-gray-400 text-center py-4">Nenhuma experiência adicionada</p>';
+                    return;
+                }
+                
+                this.resume.experience.forEach((exp, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'border-2 border-gray-200 p-4 bg-gray-50';
+                    div.innerHTML = `
+                        <div class="flex justify-end mb-2">
+                            <button class="remove-exp text-red-500 hover:text-red-700" data-index="${index}">
+                                <i class="fas fa-trash"></i> Remover
+                            </button>
+                        </div>
+                        <input type="text" data-index="${index}" data-field="title" class="w-full border p-2 mb-2" placeholder="Título do cargo" value="${exp.title || ''}">
+                        <input type="text" data-index="${index}" data-field="subtitle" class="w-full border p-2 mb-2" placeholder="Subtítulo (ex: Estagiária · Departamento)" value="${exp.subtitle || ''}">
+                        <input type="text" data-index="${index}" data-field="date" class="w-full border p-2 mb-2" placeholder="Período (ex: 2024 – Presente)" value="${exp.date || ''}">
+                        <textarea data-index="${index}" data-field="description" class="w-full border p-2" placeholder="Descrição das atividades" rows="3">${exp.description || ''}</textarea>
+                    `;
+                    
+                    div.querySelectorAll('input, textarea').forEach(input => {
+                        input.addEventListener('input', (e) => {
+                            this.resume.experience[index][e.target.dataset.field] = e.target.value;
+                            this.updateResumeFromForm();
+                            this.renderPreview();
+                        });
+                    });
+                    
+                    div.querySelector('.remove-exp').addEventListener('click', () => {
+                        this.removeExperience(index);
+                    });
+                    
+                    container.appendChild(div);
+                });
+            }
+            
+            addExperience() {
+                if (!this.resume.experience) this.resume.experience = [];
+                this.resume.experience.push({ title: '', subtitle: '', date: '', description: '' });
+                this.renderExperienceList();
+                this.updateResumeFromForm();
+                this.renderPreview();
+            }
+            
+            removeExperience(index) {
+                this.resume.experience.splice(index, 1);
+                this.renderExperienceList();
+                this.updateResumeFromForm();
+                this.renderPreview();
+            }
+            
+            renderEducationList() {
+                const container = document.getElementById('education-list');
+                container.innerHTML = '';
+                
+                if (!this.resume.education?.length) {
+                    container.innerHTML = '<p class="text-gray-400 text-center py-4">Nenhuma formação adicionada</p>';
+                    return;
+                }
+                
+                this.resume.education.forEach((edu, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'border-2 border-gray-200 p-4 bg-gray-50';
+                    div.innerHTML = `
+                        <div class="flex justify-end mb-2">
+                            <button class="remove-edu text-red-500 hover:text-red-700" data-index="${index}">
+                                <i class="fas fa-trash"></i> Remover
+                            </button>
+                        </div>
+                        <input type="text" data-index="${index}" data-field="degree" class="w-full border p-2 mb-2" placeholder="Curso / Grau" value="${edu.degree || ''}">
+                        <input type="text" data-index="${index}" data-field="institution" class="w-full border p-2 mb-2" placeholder="Instituição" value="${edu.institution || ''}">
+                        <input type="text" data-index="${index}" data-field="date" class="w-full border p-2 mb-2" placeholder="Ano / Período" value="${edu.date || ''}">
+                        <textarea data-index="${index}" data-field="description" class="w-full border p-2" placeholder="Descrição adicional (opcional)" rows="2">${edu.description || ''}</textarea>
+                    `;
+                    
+                    div.querySelectorAll('input, textarea').forEach(input => {
+                        input.addEventListener('input', (e) => {
+                            this.resume.education[index][e.target.dataset.field] = e.target.value;
+                            this.updateResumeFromForm();
+                            this.renderPreview();
+                        });
+                    });
+                    
+                    div.querySelector('.remove-edu').addEventListener('click', () => {
+                        this.removeEducation(index);
+                    });
+                    
+                    container.appendChild(div);
+                });
+            }
+            
+            addEducation() {
+                if (!this.resume.education) this.resume.education = [];
+                this.resume.education.push({ degree: '', institution: '', date: '', description: '' });
+                this.renderEducationList();
+                this.updateResumeFromForm();
+                this.renderPreview();
+            }
+            
+            removeEducation(index) {
+                this.resume.education.splice(index, 1);
+                this.renderEducationList();
+                this.updateResumeFromForm();
+                this.renderPreview();
+            }
+            
+            renderLanguagesList() {
+                const container = document.getElementById('languages-list');
+                container.innerHTML = '';
+                
+                if (!this.resume.languages) {
+                    this.resume.languages = [
+                        { name: 'Português', level: 'Nativo', percentage: 100 },
+                        { name: 'Inglês', level: 'Avançado', percentage: 80 }
+                    ];
+                }
+                
+                this.resume.languages.forEach((lang, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'border-2 border-gray-200 p-4 bg-gray-50';
+                    div.innerHTML = `
+                        <div class="flex justify-end mb-2">
+                            <button class="remove-lang text-red-500 hover:text-red-700" data-index="${index}">
+                                <i class="fas fa-trash"></i> Remover
+                            </button>
+                        </div>
+                        <input type="text" data-index="${index}" data-field="name" class="w-full border p-2 mb-2" placeholder="Língua" value="${lang.name || ''}">
+                        <input type="text" data-index="${index}" data-field="level" class="w-full border p-2 mb-2" placeholder="Nível (ex: Nativo, Avançado)" value="${lang.level || ''}">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nível (${lang.percentage}%)</label>
+                        <input type="range" data-index="${index}" data-field="percentage" class="w-full" min="0" max="100" value="${lang.percentage || 0}">
+                    `;
+                    
+                    div.querySelectorAll('input').forEach(input => {
+                        input.addEventListener('input', (e) => {
+                            if (e.target.type === 'range') {
+                                this.resume.languages[index].percentage = parseInt(e.target.value);
+                                const label = e.target.previousElementSibling;
+                                label.textContent = `Nível (${e.target.value}%)`;
+                            } else {
+                                this.resume.languages[index][e.target.dataset.field] = e.target.value;
+                            }
+                            this.updateResumeFromForm();
+                            this.renderPreview();
+                        });
+                    });
+                    
+                    div.querySelector('.remove-lang').addEventListener('click', () => {
+                        this.removeLanguage(index);
+                    });
+                    
+                    container.appendChild(div);
+                });
+            }
+            
+            addLanguage() {
+                if (!this.resume.languages) this.resume.languages = [];
+                this.resume.languages.push({ name: '', level: '', percentage: 50 });
+                this.renderLanguagesList();
+                this.updateResumeFromForm();
+                this.renderPreview();
+            }
+            
+            removeLanguage(index) {
+                this.resume.languages.splice(index, 1);
+                this.renderLanguagesList();
+                this.updateResumeFromForm();
+                this.renderPreview();
+            }
+        }
+        
+        let editor;
+        window.onload = () => {
+            editor = new CVEditor();
+        };
+        
+        function saveResume() {
+            editor.updateResumeFromForm();
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 shadow-lg z-50';
+            toast.innerHTML = '<i class="fas fa-check mr-2"></i>Currículo salvo com sucesso!';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        async function exportPDF() {
+            const preview = document.getElementById('live-preview');
+            const originalTransform = preview.style.transform;
+            const originalWidth = preview.style.width;
+            
+            // Reset transform for PDF export
+            preview.style.transform = 'scale(1)';
+            preview.style.width = '100%';
+            
+            try {
+                const canvas = await html2canvas(preview, { 
+                    scale: 3,
+                    backgroundColor: '#ffffff'
+                });
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`curriculo-${editor.resume.personal?.fullName || 'profissional'}.pdf`);
+            } catch (error) {
+                alert('Erro ao gerar PDF. Tente novamente.');
+                console.error(error);
+            } finally {
+                // Restore transform for mobile preview
+                preview.style.transform = originalTransform;
+                preview.style.width = originalWidth;
+            }
+        }
+    </script>
+</body>
+</html>

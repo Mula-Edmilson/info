@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cv.info | Currículos Profissionais</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.8s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center cursor-pointer" onclick="window.location.href='index.html'">
+                    <i class="fas fa-file-alt text-2xl text-[#222a35] mr-2"></i>
+                    <span class="text-2xl font-bold text-[#222a35]">cv.info</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="templates.html" class="text-gray-700 hover:text-[#222a35] font-medium">Templates</a>
+                    <a href="dashboard.html" class="text-gray-700 hover:text-[#222a35] font-medium">Meus Currículos</a>
+                </div>
+                <button onclick="createNewCV()" class="bg-[#222a35] text-white px-6 py-2 hover:bg-[#2a3442] transition font-medium">
+                    Criar Currículo
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="fade-in">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl md:text-6xl font-bold text-[#222a35] mb-6 leading-tight">
+                        Crie seu currículo <span class="text-[#827a65]">profissional</span> em minutos
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Design elegante e profissional que destaca suas qualificações. 
+                        Exporte em PDF com um clique.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="createNewCV()" class="bg-[#222a35] text-white px-8 py-4 font-semibold text-lg hover:bg-[#2a3442] transition">
+                            Começar Agora
+                        </button>
+                        <button onclick="window.location.href='templates.html'" class="border-2 border-[#827a65] text-[#827a65] px-8 py-4 font-semibold text-lg hover:bg-[#827a65] hover:text-white transition">
+                            Ver Templates
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white p-4 shadow-2xl">
+                    <div class="aspect-[3/4] bg-gradient-to-br from-[#222a35] to-[#2a3442] flex items-center justify-center text-white">
+                        <i class="fas fa-file-alt text-6xl opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white py-16 mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-[#222a35] mb-12">Por que escolher o cv.info?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-[#222a35] text-white flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-pen-fancy text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#222a35] mb-3">Design Profissional</h3>
+                        <p class="text-gray-600">Layout limpo e elegante que impressiona recrutadores.</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-[#827a65] text-white flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-file-pdf text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#222a35] mb-3">Exportação PDF</h3>
+                        <p class="text-gray-600">Baixe seu currículo em PDF de alta qualidade com um clique.</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-[#222a35] text-white flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-mobile-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#222a35] mb-3">100% Responsivo</h3>
+                        <p class="text-gray-600">Perfeito para visualização em qualquer dispositivo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Inicializar localStorage
+        if (!localStorage.getItem('cv_resumes')) {
+            const sampleResume = {
+                id: 'sample1',
+                title: 'Exemplo - Shelsea Hambucane',
+                lastEdited: new Date().toLocaleDateString('pt-BR'),
+                personal: { 
+                    fullName: 'SHELSEA HAMBUCANE', 
+                    title: 'Jurista', 
+                    email: 'hambucaneshelsea@gmail.com', 
+                    phone: '+258 84 556 6515 / 87 390 8847' 
+                },
+                about: 'Chamo-me Shelsea Elisa Hambucane, de 24 anos de idade, recém-formada em Direito pela Universidade São Tomás de Moçambique. Estou em busca de uma oportunidade para aplicar os meus conhecimentos acadêmicos, aprender e contribuir ativamente para o crescimento da empresa.',
+                reference: {
+                    name: 'Msc. Issufa Diawara',
+                    institution: 'Universidade São Tomás de Moçambique, Maputo',
+                    phone: '+258 87 338 3181',
+                    email: 'issufadiawara@gmail.com'
+                },
+                experience: [
+                    {
+                        title: 'Princípios voluntários sobre Segurança e Direitos Humanos',
+                        subtitle: '',
+                        date: '2025',
+                        description: 'Participou com sucesso do workshop sobre Direitos Humanos e Princípios Voluntários sobre segurança e Direitos Humanos.'
+                    },
+                    {
+                        title: 'Instituto Nacional de Segurança Social (INSS)',
+                        subtitle: 'Estagiária · Repartição de Auditoria e Contencioso (RAC)',
+                        date: '2024',
+                        description: 'Estagiária no INSS por um período de 6 meses na repartição de auditoria e contencioso.'
+                    },
+                    {
+                        title: 'Tsakissa',
+                        subtitle: 'Suporte administrativo e comercial',
+                        date: '2024 – Presente',
+                        description: 'Atualmente com experiência em suporte administrativo e comercial. Possuo competências em gestão de agenda, organização de processos, atendimento ao cliente e controlo de entradas e saídas.'
+                    }
+                ],
+                education: [
+                    {
+                        degree: 'Licenciatura em Direito',
+                        institution: 'Universidade São Tomás de Moçambique, Maputo (USTM)',
+                        date: '2024',
+                        description: 'Conclusão do curso de Licenciatura em Direito.'
+                    },
+                    {
+                        degree: 'Inglês Avançado',
+                        institution: 'Instituto de Línguas',
+                        date: 'Atualmente',
+                        description: 'Actualmente frequenta o curso de Inglês Avançado no Instituto de Línguas, estando no 4º nível.'
+                    }
+                ],
+                skills: [
+                    'Capacidade de executar e materializar objectivos obedecendo os princípios organizacionais',
+                    'Espírito de equipa',
+                    'Alto sentido de responsabilidade e vontade de aprender',
+                    'Facilidade de adaptação a qualquer ambiente de trabalho',
+                    'Disponibilidade imediata'
+                ],
+                personality: ['Criativo', 'Autónomo', 'Responsável', 'Pontual'],
+                languages: [
+                    { name: 'Português', level: 'Nativo', percentage: 100 },
+                    { name: 'Inglês', level: 'Avançado', percentage: 80 },
+                    { name: 'Changana', level: 'Fluente', percentage: 90 }
+                ]
+            };
+            localStorage.setItem('cv_resumes', JSON.stringify([sampleResume]));
+        }
+
+        function createNewCV() {
+            const newResume = {
+                id: Date.now().toString(),
+                title: 'Novo Currículo',
+                createdAt: new Date().toISOString(),
+                lastEdited: new Date().toLocaleDateString('pt-BR'),
+                template: 'professional',
+                personal: { fullName: '', title: '', email: '', phone: '' },
+                languages: [
+                    { name: 'Português', level: 'Nativo', percentage: 100 },
+                    { name: 'Inglês', level: 'Avançado', percentage: 80 },
+                    { name: 'Changana', level: 'Fluente', percentage: 90 }
+                ],
+                personality: [],
+                reference: { name: '', institution: '', phone: '', email: '' },
+                about: '',
+                experience: [],
+                education: [],
+                skills: []
+            };
+            
+            const resumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+            resumes.push(newResume);
+            localStorage.setItem('cv_resumes', JSON.stringify(resumes));
+            localStorage.setItem('current_resume_id', newResume.id);
+            window.location.href = 'editor.html';
+        }
+    </script>
+</body>
+</html>

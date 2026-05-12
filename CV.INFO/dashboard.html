@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Currículos · cv.info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center cursor-pointer" onclick="window.location.href='index.html'">
+                        <i class="fas fa-file-alt text-2xl text-[#222a35] mr-2"></i>
+                        <span class="text-2xl font-bold text-[#222a35]">cv.info</span>
+                    </div>
+                    <div class="hidden md:flex items-center gap-2 ml-8">
+                        <input type="text" id="search-input" placeholder="Buscar currículos..." class="border-2 border-gray-300 p-2 w-64">
+                        <button onclick="searchResumes()" class="bg-gray-200 px-4 py-2 hover:bg-gray-300">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="exportAllData()" class="text-gray-600 hover:text-[#222a35] px-4 py-2" title="Exportar todos os dados">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button onclick="importData()" class="text-gray-600 hover:text-[#222a35] px-4 py-2" title="Importar dados">
+                        <i class="fas fa-upload"></i>
+                    </button>
+                    <button onclick="createNewCV()" class="bg-[#222a35] text-white px-6 py-2 hover:bg-[#2a3442] transition">
+                        <i class="fas fa-plus mr-2"></i>Novo Currículo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-[#222a35]">Meus Currículos</h1>
+            <div class="flex gap-2">
+                <select id="sort-select" class="border-2 border-gray-300 p-2" onchange="sortResumes()">
+                    <option value="date">Mais recentes</option>
+                    <option value="name">Ordem alfabética</option>
+                    <option value="modified">Última modificação</option>
+                </select>
+                <select id="filter-template" class="border-2 border-gray-300 p-2" onchange="filterResumes()">
+                    <option value="all">Todos os templates</option>
+                    <option value="professional">Professional</option>
+                    <option value="modern">Modern</option>
+                    <option value="elegant">Elegant</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="bold">Bold</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-4 shadow">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Total de currículos</span>
+                    <span class="text-2xl font-bold text-[#222a35]" id="total-count">0</span>
+                </div>
+            </div>
+            <div class="bg-white p-4 shadow">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Última atividade</span>
+                    <span class="text-sm text-gray-500" id="last-activity">-</span>
+                </div>
+            </div>
+            <div class="bg-white p-4 shadow">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Templates usados</span>
+                    <span class="text-sm text-gray-500" id="templates-count">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="resumes-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="empty-state" class="hidden text-center py-20">
+            <i class="fas fa-file-alt text-6xl text-gray-400 mb-4"></i>
+            <h3 class="text-2xl font-bold text-gray-600 mb-2">Nenhum currículo ainda</h3>
+            <p class="text-gray-500 mb-6">Crie seu primeiro currículo profissional agora</p>
+            <button onclick="createNewCV()" class="bg-[#827a65] text-white px-8 py-3 hover:bg-[#6e6553] transition">
+                Criar Currículo
+            </button>
+        </div>
+    </main>
+
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+
+    <script>
+        let allResumes = [];
+        let filteredResumes = [];
+        
+        function loadResumes() {
+            allResumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+            filteredResumes = [...allResumes];
+            updateStats();
+            applyFilters();
+        }
+        
+        function updateStats() {
+            document.getElementById('total-count').textContent = allResumes.length;
+            
+            if (allResumes.length > 0) {
+                const sorted = [...allResumes].sort((a, b) => {
+                    return new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0);
+                });
+                document.getElementById('last-activity').textContent = sorted[0]?.lastEdited || '-';
+                
+                const templates = new Set(allResumes.map(r => r.template).filter(Boolean));
+                document.getElementById('templates-count').textContent = templates.size;
+            } else {
+                document.getElementById('last-activity').textContent = '-';
+                document.getElementById('templates-count').textContent = '0';
+            }
+        }
+        
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-input')?.value.toLowerCase() || '';
+            const templateFilter = document.getElementById('filter-template')?.value || 'all';
+            
+            filteredResumes = allResumes.filter(resume => {
+                const nameMatch = !searchTerm || 
+                    (resume.personal?.fullName || '').toLowerCase().includes(searchTerm) ||
+                    (resume.personal?.title || '').toLowerCase().includes(searchTerm);
+                const templateMatch = templateFilter === 'all' || resume.template === templateFilter;
+                return nameMatch && templateMatch;
+            });
+            
+            sortResumes();
+        }
+        
+        function sortResumes() {
+            const sortBy = document.getElementById('sort-select')?.value || 'date';
+            
+            filteredResumes.sort((a, b) => {
+                if (sortBy === 'name') {
+                    return (a.personal?.fullName || '').localeCompare(b.personal?.fullName || '');
+                } else if (sortBy === 'modified') {
+                    return new Date(b.lastEdited || 0) - new Date(a.lastEdited || 0);
+                } else {
+                    return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+                }
+            });
+            
+            renderGrid();
+        }
+        
+        function searchResumes() {
+            applyFilters();
+        }
+        
+        function filterResumes() {
+            applyFilters();
+        }
+        
+        function renderGrid() {
+            const grid = document.getElementById('resumes-grid');
+            const emptyState = document.getElementById('empty-state');
+            
+            if (filteredResumes.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            grid.innerHTML = '';
+            
+            filteredResumes.forEach(resume => {
+                const card = document.createElement('div');
+                card.className = 'bg-white shadow-lg hover:shadow-xl transition cursor-pointer';
+                
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'aspect-[3/4] bg-gradient-to-br from-[#222a35] to-[#2a3442] p-6 flex flex-col text-white';
+                previewDiv.innerHTML = `
+                    <div class="flex-1">
+                        <h3 class="font-bold text-xl mb-1">${resume.personal?.fullName || 'Sem título'}</h3>
+                        <p class="text-sm opacity-80 mb-3">${resume.personal?.title || 'Sem cargo'}</p>
+                        ${resume.skills?.slice(0, 3).map(s => `<span class="inline-block bg-white/20 px-2 py-1 text-xs mr-1 mb-1">${s}</span>`).join('') || ''}
+                        ${resume.template ? `<span class="inline-block bg-white/20 px-2 py-1 text-xs mt-2">${resume.template}</span>` : ''}
+                    </div>
+                    <div class="text-xs opacity-60 mt-4">
+                        <i class="far fa-clock mr-1"></i> ${resume.lastEdited || 'Hoje'}
+                    </div>
+                `;
+                
+                previewDiv.onclick = () => editResume(resume.id);
+                card.appendChild(previewDiv);
+                
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'p-4 flex gap-2';
+                actionsDiv.innerHTML = `
+                    <button onclick="event.stopPropagation(); editResume('${resume.id}')" class="flex-1 bg-[#222a35] text-white py-2 hover:bg-[#2a3442] transition text-sm">
+                        <i class="fas fa-edit mr-1"></i>Editar
+                    </button>
+                    <button onclick="event.stopPropagation(); downloadResumePDF('${resume.id}')" class="px-3 border border-blue-300 text-blue-500 hover:bg-blue-50 transition" title="Download PDF">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                    <button onclick="event.stopPropagation(); duplicateResume('${resume.id}')" class="px-3 border border-gray-300 text-gray-600 hover:bg-gray-100 transition" title="Duplicar">
+                        <i class="far fa-copy"></i>
+                    </button>
+                    <button onclick="event.stopPropagation(); deleteResume('${resume.id}')" class="px-3 border border-red-300 text-red-500 hover:bg-red-50 transition" title="Excluir">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                card.appendChild(actionsDiv);
+                
+                grid.appendChild(card);
+            });
+        }
+        
+        function createNewCV() {
+            const newResume = {
+                id: Date.now().toString(),
+                createdAt: new Date().toISOString(),
+                lastEdited: new Date().toLocaleDateString('pt-BR'),
+                template: 'professional',
+                personal: { fullName: '', title: '', email: '', phone: '', address: '' },
+                about: '',
+                experience: [],
+                education: [],
+                skills: [],
+                personality: [],
+                languages: [
+                    { name: 'Português', level: 'Nativo', percentage: 100 },
+                    { name: 'Inglês', level: 'Avançado', percentage: 80 }
+                ],
+                reference: { name: '', institution: '', phone: '', email: '' }
+            };
+            
+            const resumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+            resumes.push(newResume);
+            localStorage.setItem('cv_resumes', JSON.stringify(resumes));
+            localStorage.setItem('current_resume_id', newResume.id);
+            window.location.href = 'editor.html';
+        }
+        
+        function editResume(id) {
+            localStorage.setItem('current_resume_id', id);
+            window.location.href = 'editor.html';
+        }
+        
+        function duplicateResume(id) {
+            const resumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+            const original = resumes.find(r => r.id === id);
+            if (original) {
+                const duplicate = JSON.parse(JSON.stringify(original));
+                duplicate.id = Date.now().toString();
+                duplicate.createdAt = new Date().toISOString();
+                duplicate.lastEdited = new Date().toLocaleDateString('pt-BR');
+                if (duplicate.personal?.fullName) {
+                    duplicate.personal.fullName += ' (Cópia)';
+                }
+                resumes.push(duplicate);
+                localStorage.setItem('cv_resumes', JSON.stringify(resumes));
+                loadResumes();
+            }
+        }
+        
+        async function downloadResumePDF(id) {
+            const resumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+            const resume = resumes.find(r => r.id === id);
+            if (!resume) return;
+            
+            // Create temporary preview for PDF
+            const tempDiv = document.createElement('div');
+            tempDiv.style.cssText = 'position: absolute; left: -9999px; top: 0; width: 1000px;';
+            tempDiv.innerHTML = '<div>Gerando PDF...</div>';
+            document.body.appendChild(tempDiv);
+            
+            try {
+                // Here you would render the resume preview
+                // For now, we'll create a simple PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+                pdf.setFontSize(20);
+                pdf.text(resume.personal?.fullName || 'Currículo', 20, 20);
+                pdf.setFontSize(12);
+                pdf.text(resume.personal?.title || '', 20, 30);
+                pdf.save(`${resume.personal?.fullName || 'curriculo'}.pdf`);
+            } catch (error) {
+                alert('Erro ao gerar PDF');
+            } finally {
+                document.body.removeChild(tempDiv);
+            }
+        }
+        
+        function deleteResume(id) {
+            if (confirm('Tem certeza que deseja excluir este currículo?')) {
+                const resumes = JSON.parse(localStorage.getItem('cv_resumes')) || [];
+                const filtered = resumes.filter(r => r.id !== id);
+                localStorage.setItem('cv_resumes', JSON.stringify(filtered));
+                loadResumes();
+            }
+        }
+        
+        function exportAllData() {
+            const data = localStorage.getItem('cv_resumes') || '[]';
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cv-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function importData() {
+            const input = document.getElementById('import-file');
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        localStorage.setItem('cv_resumes', JSON.stringify(data));
+                        loadResumes();
+                        alert('Dados importados com sucesso!');
+                    } catch (error) {
+                        alert('Arquivo inválido!');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // Initialize
+        loadResumes();
+        
+        // Set up search on Enter
+        document.getElementById('search-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchResumes();
+        });
+    </script>
+</body>
+</html>
